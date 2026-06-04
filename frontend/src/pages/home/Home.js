@@ -5,6 +5,7 @@ import HomeInfoBox from './HomeInfoBox'
 import { productData } from '../../components/carousel/data'
 import CarouselItem from '../../components/carousel/CarouselItem'
 import ProductCarousel from '../../components/carousel/Carousel'
+import ProductCategory from './ProductCategory'
 
 const PageHeading = ({heading, btnText}) => {
   return (
@@ -41,6 +42,12 @@ const Home = () => {
             <HomeInfoBox />
             <PageHeading heading={"Latest Products"} btnText={"Shop Now>>>"}/>
             <ProductCarousel products={productss} />
+          </div>
+      </section> 
+        <section className='--bt-grey'>
+          <div className='container'>
+             <h3>Categories</h3>
+             <ProductCategory />
           </div>
       </section> 
     </>
