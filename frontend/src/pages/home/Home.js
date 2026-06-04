@@ -2,6 +2,9 @@ import React from 'react'
 import Slider from '../../components/slider/Slider'
 import "./Home.scss"
 import HomeInfoBox from './HomeInfoBox'
+import { productData } from '../../components/carousel/data'
+import CarouselItem from '../../components/carousel/CarouselItem'
+import ProductCarousel from '../../components/carousel/Carousel'
 
 const PageHeading = ({heading, btnText}) => {
   return (
@@ -18,6 +21,18 @@ const PageHeading = ({heading, btnText}) => {
 }
 
 const Home = () => {
+  
+  const productss = productData.map((item) => (
+    <div key={item.id}>
+       <CarouselItem 
+        name={item.name}
+        url={item.imageurl}
+        price={item.price}
+        description={item.description}
+       />
+    </div>
+  ))
+  
   return (
     <>
       <Slider />  
@@ -25,6 +40,7 @@ const Home = () => {
           <div className='container'>
             <HomeInfoBox />
             <PageHeading heading={"Latest Products"} btnText={"Shop Now>>>"}/>
+            <ProductCarousel products={productss} />
           </div>
       </section> 
     </>
