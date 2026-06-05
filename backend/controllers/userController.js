@@ -1,8 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs")
 const User = require("../models/userModel")
-
+const jwt = require("jsonwebtoken");
 // the token that will signup the user directly after the registration
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {
@@ -51,7 +49,7 @@ const registerUser = asyncHandler(async (req, res) => {
         httpOnly: true, 
         expires: new Date(Date.now() + 1000 * 86400),
         secure: true,
-        samesite: none
+        samesite: "none"
        })
        // Send user data to the frontend 
        res.status(201).json({
