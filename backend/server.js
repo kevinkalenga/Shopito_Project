@@ -6,6 +6,16 @@ const cookieParser = require("cookie-parser");
 
 const app = express() 
 
+// Middlewares
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({extended: false}));
+app.use(
+  cors({
+      origin: ["http://localhost:3000", "https://shopitoapp.vercel.app"],
+      credentials: true
+  })
+)
 // Routes 
 app.get("/", (req, res) => {
     res.send("Home Page ....")
