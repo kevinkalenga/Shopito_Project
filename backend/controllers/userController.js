@@ -115,16 +115,15 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 const logout = asyncHandler(async (req, res) => {
-    res.cookie("token", "", {
-        path: "/",
-        httpOnly: true, 
-        expires: new Date(0),
-        // secure: true,
-        // samesite: "none"
-    })
+  res.clearCookie("token", {
+    path: "/",
+    httpOnly: true,
+    // sameSite: "lax",
+    // secure: false
+  });
 
-    res.status(200).json({message: "Successfully Logged Out"})
-})
+  res.status(200).json({ message: "Successfully Logged Out" });
+});
 
 // Get user 
 
@@ -139,9 +138,30 @@ const getUser = asyncHandler(async (req, res) => {
     }
 })
 
+// Get Login Status
+const getLoginStatus = asyncHandler(async (req, res) => {
+  
+  const token = req.cookies.token;
+
+  console.log("cookies:", req.cookies);
+  console.log("token:", req.cookies?.token);
+
+  if (!token) {
+    return res.json(false);
+  }
+
+  try {
+    jwt.verify(token, process.env.JWT_SECRET);
+    return res.json(true);
+  } catch (error) {
+    return res.json(false);
+  }
+});
+
 module.exports = {
     registerUser,
     loginUser,
     logout,
-    getUser
+    getUser,
+    getLoginStatus,
 }
