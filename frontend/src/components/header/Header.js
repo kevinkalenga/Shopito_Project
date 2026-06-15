@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import styles from './Header.module.scss'
-import {Link, NavLink} from 'react-router-dom'
+import {Link, NavLink, useNavigate } from 'react-router-dom'
 import { FaShoppingCart, FaTimes } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { logout, RESET_AUTH } from "../../redux/features/auth/authSlice";
+import { useDispatch} from "react-redux";
 
 export const logo = (
     <div className={styles.logo}>
@@ -21,6 +23,8 @@ const Header = () => {
   
    const [showMenu, setShowMenu] = useState(false)
    const [scrollPage, setScrollPage] = useState(false)
+   const dispatch = useDispatch()
+    const navigate = useNavigate();
 
    const fixNavbar = () => {
       if(window.scrollY > 50) {
@@ -37,6 +41,12 @@ const Header = () => {
    }
    const hideMenu = () => {
       setShowMenu(false)
+   }
+
+   const logoutUser = async () => {
+         await dispatch(logout());
+         dispatch(RESET_AUTH());
+         navigate("/login");  
    }
    
    const cart = (
@@ -72,6 +82,7 @@ const Header = () => {
                      <NavLink className={activeLink} to={"login"}>Login</NavLink>
                      <NavLink className={activeLink} to={"register"}>Register</NavLink>
                      <NavLink className={activeLink} to={"order-history"}>My Orders</NavLink>
+                     <Link to={"/"} onClick={logoutUser}>Logout</Link>
                   </span>
                   {cart}
               </div>
