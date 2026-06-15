@@ -14,7 +14,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, isLoading } = useSelector((state) => state.auth);
 
   const validateEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
@@ -35,12 +35,9 @@ const Login = () => {
       return toast.error("Please enter a valid email");
     }
 
-    const userData = {
-      email,
-      password,
-    };
+    const userData = { email, password };
 
-    await dispatch(login(userData));
+    dispatch(login(userData));
   };
 
   useEffect(() => {
@@ -78,10 +75,16 @@ const Login = () => {
             <button
               type="submit"
               className="--btn --btn-primary --btn-block"
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           </form>
+
+          {/* 🔥 FORGOT PASSWORD LINK */}
+          <div style={{ marginTop: "10px" }}>
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </div>
 
           <span className={styles.register}>
             <p>Don't have an account?</p>

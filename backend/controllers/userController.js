@@ -3,6 +3,7 @@ const User = require("../models/userModel")
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
 const crypto = require("crypto");
+const sendEmail = require("../utils/sendEmail");
 // the token that will signup the user directly after the registration
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {
@@ -199,34 +200,61 @@ const forgotPassword = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("User not found");
   }
-
-  // Generate reset token
+  console.log("EMAIL_USER:", process.env.EMAIL_USER);
+console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
+  // 1. Generate raw token
   const resetToken = crypto.randomBytes(32).toString("hex");
 
-  user.resetPasswordToken = resetToken;
+  // 2. Hash token before saving in DB (SECURITY BEST PRACTICE)
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  // 3. Save hashed token + expiration
+  user.resetPasswordToken = hashedToken;
   user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 min
 
   await user.save();
 
+  // 4. Send raw token to frontend/email
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+  // console.log(resetUrl)
 
-  // TODO: replace with real email service later (nodemailer)
-  console.log("RESET URL:", resetUrl);
+   
 
-  res.status(200).json({
-    message: "Reset email sent",
-    resetUrl, // temporaire pour test
-  });
+    try {
+      await sendEmail(
+        user.email,
+        "Password Reset Request",
+        `Click here to reset your password: ${resetUrl}`
+      );
+
+      res.status(200).json({
+        message: "Reset email sent",
+      });
+
+    } catch (error) {
+      console.log("EMAIL ERROR:", error);
+
+      res.status(500);
+      throw new Error("Email could not be sent");
+    }
 });
 
+// Reset Password
 // Reset Password
 const resetPassword = asyncHandler(async (req, res) => {
   const { token } = req.params;
   const { newPassword } = req.body;
 
-  // 1. Find user with valid token
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+
   const user = await User.findOne({
-    resetPasswordToken: token,
+    resetPasswordToken: hashedToken,
     resetPasswordExpire: { $gt: Date.now() },
   });
 
@@ -235,15 +263,12 @@ const resetPassword = asyncHandler(async (req, res) => {
     throw new Error("Invalid or expired token");
   }
 
-  // 2. Hash new password
-  const salt = await bcrypt.genSalt(10);
-  user.password = await bcrypt.hash(newPassword, salt);
+  // 🔥 IMPORTANT : on met le password brut
+  user.password = newPassword;
 
-  // 3. Clear reset fields
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
 
-  // 4. Save user
   await user.save();
 
   res.status(200).json({
