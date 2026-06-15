@@ -1,55 +1,96 @@
-import styles from './auth.module.scss'
-import loginImg from "../../assets/login.png"
-import Card from '../../components/card/Card'
-import {Link} from 'react-router-dom'
-import { useState } from 'react'
+import styles from "./auth.module.scss";
+import loginImg from "../../assets/login.png";
+import Card from "../../components/card/Card";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { login, RESET_AUTH } from "../../redux/features/auth/authSlice";
 
 const Login = () => {
-  
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const loginUser = () => {
-    
-  }
-  
-  
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isLoggedIn } = useSelector((state) => state.auth);
+
+  const validateEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
+  const loginUser = async (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      return toast.error("All fields are required");
+    }
+
+    if (password.length < 6) {
+      return toast.error("Password must be at least 6 characters");
+    }
+
+    if (!validateEmail(email)) {
+      return toast.error("Please enter a valid email");
+    }
+
+    const userData = {
+      email,
+      password,
+    };
+
+    await dispatch(login(userData));
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+      dispatch(RESET_AUTH());
+    }
+  }, [isLoggedIn, navigate, dispatch]);
+
   return (
     <section className={`container ${styles.auth}`}>
-       <div className={styles.img}>
-         <img src={loginImg} alt="login" width="400" />
-       </div>
-        <Card>
-           <div className={styles.form}>
-              <h2>Login</h2>
-              <form onSubmit={loginUser}> 
-                  <input 
-                    type="email"
-                    placeholder="Email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <input 
-                    type="password"
-                    placeholder="Password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <button type='submit' className='--btn --btn-primary --btn-block'>
-                    Login
-                  </button>
-              </form>
-              <span className={styles.register}>
-                 <p>Don't have an account ?</p>
-                 <Link to="/register">Register</Link>
-              </span>
-           </div>
-        </Card>
-    </section>
-  )
-}
+      <div className={styles.img}>
+        <img src={loginImg} alt="login" width="400" />
+      </div>
 
-export default Login
+      <Card>
+        <div className={styles.form}>
+          <h2>Login</h2>
+
+          <form onSubmit={loginUser} noValidate>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <button
+              type="submit"
+              className="--btn --btn-primary --btn-block"
+            >
+              Login
+            </button>
+          </form>
+
+          <span className={styles.register}>
+            <p>Don't have an account?</p>
+            <Link to="/register">Register</Link>
+          </span>
+        </div>
+      </Card>
+    </section>
+  );
+};
+
+export default Login;
