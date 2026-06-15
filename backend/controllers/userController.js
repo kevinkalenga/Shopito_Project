@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel")
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
+const crypto = require("crypto");
 // the token that will signup the user directly after the registration
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {
@@ -103,7 +104,7 @@ const loginUser = asyncHandler(async (req, res) => {
         // samesite: "none"
        })
        // Send user data to the frontend 
-       res.status(201).json(
+       res.status(200).json(
           newUser
        )    
     } else {
@@ -188,6 +189,68 @@ const updatePhoto = asyncHandler(async (req, res) => {
 
 })
 
+// Forgot Password
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  // Generate reset token
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  user.resetPasswordToken = resetToken;
+  user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 min
+
+  await user.save();
+
+  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+  // TODO: replace with real email service later (nodemailer)
+  console.log("RESET URL:", resetUrl);
+
+  res.status(200).json({
+    message: "Reset email sent",
+    resetUrl, // temporaire pour test
+  });
+});
+
+// Reset Password
+const resetPassword = asyncHandler(async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  // 1. Find user with valid token
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("Invalid or expired token");
+  }
+
+  // 2. Hash new password
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(newPassword, salt);
+
+  // 3. Clear reset fields
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  // 4. Save user
+  await user.save();
+
+  res.status(200).json({
+    message: "Password reset successful",
+  });
+});
+
 
 
 
@@ -199,5 +262,7 @@ module.exports = {
     getUser,
     getLoginStatus,
     updateUser,
-    updatePhoto
+    updatePhoto,
+    forgotPassword,
+    resetPassword,
 }

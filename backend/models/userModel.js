@@ -41,7 +41,9 @@ const userSchema = mongoose.Schema(
         },
         address: {
             type: Object,
-        }
+        },
+        resetPasswordToken: String,
+        resetPasswordExpire: Date,
     }
 )
 
