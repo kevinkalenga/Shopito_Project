@@ -1,11 +1,17 @@
 import React from 'react'
 import "./Profile.scss"
+import PageMenu from '../../components/pageMenu/PageMenu'
 
 const Profile = () => {
   return (
-    <div>
-       <h2>Profile</h2>
-    </div>
+    <>
+      <section>
+        <div className='container'>
+          <PageMenu />
+          <h2>Profile</h2>
+        </div>
+      </section>
+    </>
   )
 }
 
