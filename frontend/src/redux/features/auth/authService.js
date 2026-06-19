@@ -27,7 +27,7 @@ const logout = async () => {
 };
 // Get login status
 const getLoginStatus = async () => {
-    const response = await axios.post(API_URL + "getLoginStatus");
+    const response = await axios.get(API_URL + "getLoginStatus");
      return response.data;
 };
 
