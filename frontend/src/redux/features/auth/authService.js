@@ -46,13 +46,32 @@ const resetPassword = async ({ token, newPassword }) => {
   return response.data;
 };
 
+// Get user
+const getUser = async () => {
+    const response = await axios.get(API_URL + "getUser");
+     return response.data;
+};
+// Update user profile
+const updateUser = async (userData) => {
+    const response = await axios.patch(API_URL + "updateUser", userData);
+     return response.data;
+};
+// Update photo
+const updatePhoto = async (userData) => {
+    const response = await axios.patch(API_URL + "updatePhoto", userData);
+     return response.data;
+};
+
 const authService = {
     register,
     login,
     logout,
     forgotPassword,
     resetPassword,
-    getLoginStatus
+    getLoginStatus,
+    getUser,
+    updateUser,
+    updatePhoto
 }
 
 export default authService

@@ -142,11 +142,11 @@ const getUser = asyncHandler(async (req, res) => {
 
 // Get Login Status
 const getLoginStatus = asyncHandler(async (req, res) => {
-   console.log(req.cookies);
+  
   const token = req.cookies.token;
 
-  console.log("cookies:", req.cookies);
-  console.log("token:", req.cookies?.token);
+  // console.log("cookies:", req.cookies);
+  // console.log("token:", req.cookies?.token);
 
   if (!token) {
     return res.json(false);

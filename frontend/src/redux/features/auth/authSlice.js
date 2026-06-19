@@ -105,8 +105,51 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
+export const getUser = createAsyncThunk(
+  "auth/getUser",
+  async (_, thunkAPI) => {
+    try {
+      return await authService.getUser();
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        error.toString();
 
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+export const updateUser = createAsyncThunk(
+  "auth/updateUser",
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.updateUser(userData);
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        error.toString();
 
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+export const updatePhoto = createAsyncThunk(
+  "auth/updatePhoto",
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.updatePhoto(userData);
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 
 
@@ -172,10 +215,11 @@ const authSlice = createSlice({
       state.isLoading = false;
       toast.success("Logged out");
     })
+      // getLoginStatus 
     .addCase(getLoginStatus.pending, (state) => {
        state.isLoading = true;
      })
-     // getLoginStatus 
+   
     .addCase(getLoginStatus.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isLoggedIn = action.payload;
@@ -215,7 +259,58 @@ const authSlice = createSlice({
       state.isError = true;
       state.message = action.payload;
       toast.error(action.payload);
-    });
+    })
+      // getUser
+    .addCase(getUser.pending, (state) => {
+       state.isLoading = true;
+     }) 
+    .addCase(getUser.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isLoggedIn = true;
+      state.isLoggedIn = action.payload;
+    })
+    .addCase(getUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+      state.isLoggedIn = false;
+      state.user = null;
+
+       toast.error(action.payload);
+    })
+     // updateUser
+    .addCase(updateUser.pending, (state) => {
+      state.isLoading = true;
+    })
+
+    .addCase(updateUser.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload;
+      state.isSuccess = true;
+      toast.success("Updated User Successfull");
+    })
+
+    .addCase(updateUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+    })
+     // updatePhoto
+    .addCase(updatePhoto.pending, (state) => {
+      state.isLoading = true;
+    })
+
+    .addCase(updatePhoto.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload; 
+       toast.success("User photo updated");
+    })
+
+    .addCase(updatePhoto.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+    })
   }
 });
 
