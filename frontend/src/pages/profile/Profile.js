@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Profile.scss"
 import PageMenu from '../../components/pageMenu/PageMenu'
 import Card from '../../components/card/Card';
-import {useSelector} from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from '../../redux/features/auth/authSlice';
 
 
 
@@ -11,23 +12,45 @@ const Profile = () => {
       (state) => state.auth
     );
 
-    const initialState = {
-      name: user?.name || "",
-      email: user?.email || "",
-      phone: user?.phone || "",
-      role: user?.role || "",
-      address: user?.address || {}
-
-    };
    
-    const [profile, setProfile] = useState(initialState);
-
+   
+      const [profile, setProfile] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        role: "",
+        address: {}
+      });
+      const dispatch = useDispatch();
+    
+    useEffect(() => {
+      if(user === null) {
+        dispatch(getUser())
+      }
+    
+    }, [dispatch, user])
+    
+    useEffect(() => {
+      if(user) {
+        setProfile({
+            name: user?.name || "",
+            email: user?.email || "",
+            phone: user?.phone || "",
+            role: user?.role || "",
+            address: user?.address || {}
+        })
+      }
+    
+    }, [user])
+   
+    const handleImageChange = () => {}
+    const handleInputChange = (e) => {
+      const {name, value} = e.target;
+      setProfile({...profile, [name]: value})
+    }
     const saveProfile = async() => {
 
     }
-    const handleImageChange = () => {}
-    const handleInputChange = () => {}
-  
   
   return (
     <>
@@ -62,7 +85,7 @@ const Profile = () => {
                           </p>
                           <p>
                             <label>Address:</label>
-                            <input type="text" name='address' value={profile?.address?.address} onChange={handleInputChange} />
+                            <input type="text" name='address' value={profile?.address?.address || ""} onChange={handleInputChange} />
                           </p>
                           <p>
                             <label>State:</label>
