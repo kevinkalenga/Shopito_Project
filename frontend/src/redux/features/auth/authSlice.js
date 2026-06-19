@@ -56,6 +56,21 @@ export const logout = createAsyncThunk(
     await authService.logout();
   }
 );
+export const getLoginStatus = createAsyncThunk(
+  "auth/getLoginStatus",
+  async (_, thunkAPI) => {
+    try {
+      return await authService.getLoginStatus();
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 
 export const forgotPassword = createAsyncThunk(
@@ -156,6 +171,20 @@ const authSlice = createSlice({
       state.isError = false;
       state.isLoading = false;
       toast.success("Logged out");
+    })
+    .addCase(getLoginStatus.pending, (state) => {
+       state.isLoading = true;
+     })
+     // getLoginStatus 
+    .addCase(getLoginStatus.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isLoggedIn = action.payload;
+    })
+    .addCase(getLoginStatus.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+      state.isLoggedIn = false;
     })
      // FORGOT PASSWORD
     .addCase(forgotPassword.pending, (state) => {

@@ -25,6 +25,11 @@ const login = async (userData) => {
 const logout = async () => {
   localStorage.removeItem("user");
 };
+// Get login status
+const getLoginStatus = async () => {
+    const response = await axios.post(API_URL + "getLoginStatus");
+     return response.data;
+};
 
 // FORGOT PASSWORD
 const forgotPassword = async (email) => {
@@ -47,6 +52,7 @@ const authService = {
     logout,
     forgotPassword,
     resetPassword,
+    getLoginStatus
 }
 
 export default authService
