@@ -6,8 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUser } from '../../redux/features/auth/authSlice';
 import Loader from '../../components/loader/Loader';
 import { AiOutlineCloudUpload } from "react-icons/ai";
+import { toast } from 'react-toastify';
 
-
+const cloud_name = process.env.REACT_APP_CLOUD_NAME;
+const upload_preset = process.env.REACT_APP_UPLOAD_PRESET;
+ const url = "https://api.cloudinary.com/v1_1/dy4ouvvwn/image/upload"
+// const url = `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`;
 
 const Profile = () => {
     const { isLoading, user } = useSelector(
@@ -21,6 +25,7 @@ const Profile = () => {
         email: "",
         phone: "",
         role: "",
+        photo: "",
         address: {}
       });
       const dispatch = useDispatch();
@@ -29,6 +34,7 @@ const Profile = () => {
     
     useEffect(() => {
       if(user === null) {
+      
         dispatch(getUser())
       }
     
@@ -77,9 +83,44 @@ const Profile = () => {
             }
         };
     
-       const savePhoto = async() => {
+    
 
-       }
+        const savePhoto = async (e) => {
+               e.preventDefault();
+
+            try {
+              if (!profileImage) return;
+
+              const formData = new FormData();
+              formData.append("file", profileImage);
+              formData.append("upload_preset", upload_preset);
+              
+              const response = await fetch(url, {
+                method: "POST",
+                body: formData,
+              });
+
+              const data = await response.json();
+
+              if (!response.ok) {
+                console.log("Cloudinary error:", data);
+                toast.error(data.error?.message || "Upload failed");
+                return;
+              }
+
+              console.log("UPLOAD OK:", data.secure_url);
+
+              const imageURL = data.secure_url;
+
+               setProfile({
+                  ...profile,
+                  photo: imageURL,
+                });
+
+            } catch (error) {
+              toast.error(error.message);
+            }
+        };
     
     
     const saveProfile = async(e) => {
@@ -88,7 +129,7 @@ const Profile = () => {
        const userData = {
          name: profile.name,
          phone: profile.phone,
-          photo: user?.photo,
+          photo: profile?.photo,
          address: {
            address: profile.address.address,
            state: profile.address.state,
@@ -96,7 +137,7 @@ const Profile = () => {
          }
          
        }
-      // console.log(userData)
+       console.log(userData)
       await dispatch(updateUser(userData))
     }
   
@@ -116,7 +157,11 @@ const Profile = () => {
                      <>
                        <div className='profile-photo'>
                           <div>
-                            <img src={imagePreview === null ? user?.photo : imagePreview} alt='profile' />
+                            <img
+                              src={imagePreview || profile.photo || user?.photo}
+                              alt="profile"
+                            />
+                            {/* <img src={imagePreview === null ? user?.photo : imagePreview} alt='profile' /> */}
                             <h3>Role: {profile.role}</h3>
                             {
                               imagePreview !== null && (

@@ -161,22 +161,44 @@ const getLoginStatus = asyncHandler(async (req, res) => {
 });
 
 
+// const updateUser = asyncHandler(async (req, res) => {
+//    const user = await User.findById(req.user._id);
+
+//    if(user) {
+//      const {name, phone, address} = user;
+//      user.name = req.body.name || name;
+//      user.phone = req.body.phone || phone;
+//      user.address = req.body.address || address;
+//      user.photo = req.body.photo || user.photo;
+
+//      const updatedUser = await user.save()
+//      res.status(200).json(updatedUser)
+//    } else {
+//       res.status(400)
+//       throw new Error("User Not Found");
+//    }
+// })
+
+
 const updateUser = asyncHandler(async (req, res) => {
-   const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user._id);
 
-   if(user) {
-     const {name, phone, address} = user;
-     user.name = req.body.name || name;
-     user.phone = req.body.phone || phone;
-     user.address = req.body.address || address;
+  if (!user) {
+    res.status(400);
+    throw new Error("User Not Found");
+  }
 
-     const updatedUser = await user.save()
-     res.status(200).json(updatedUser)
-   } else {
-      res.status(400)
-      throw new Error("User Not Found");
-   }
-})
+  const { name, phone, address, photo } = req.body;
+
+  user.name = name || user.name;
+  user.phone = phone || user.phone;
+  user.address = address || user.address;
+  user.photo = photo || user.photo;
+
+  const updatedUser = await user.save();
+
+  res.status(200).json(updatedUser);
+});
 
 const updatePhoto = asyncHandler(async (req, res) => {
    
