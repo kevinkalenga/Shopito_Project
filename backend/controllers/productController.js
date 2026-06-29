@@ -87,11 +87,45 @@ const createProduct = asyncHandler(async (req, res) => {
      res.status(200).json(updatedProduct);
 })
 
+// review product
+const reviewProduct = asyncHandler(async (req, res) => {
+   const {star, review, reviewDate} = req.body
+   const {id} = req.params 
+   
+    // Validation    
+    if(star < 1 || !review) {
+        res.status(400)
+        throw new Error("Please add a star and review")
+    }
+
+    const product = await Product.findById(id);
+
+    if(!product) {
+       res.status(400)
+        throw new Error("Product not found")
+    }
+    // update rating 
+    product.ratings.push(
+        {
+            star, 
+            review, 
+            reviewDate,
+            name: req.user.name,
+            userId: req.user._id
+        }
+    )
+    product.save()
+
+    res.status(200).json({
+        message: "Product review has been added."
+    })
+})
 
 module.exports = {
     createProduct,
     getProducts,
     getProduct,
     deleteProduct,
-    updateProduct
+    updateProduct,
+    reviewProduct
 }
