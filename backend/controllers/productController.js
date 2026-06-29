@@ -61,11 +61,37 @@ const createProduct = asyncHandler(async (req, res) => {
     message: "Product has been deleted"
    });
 })
+// update product 
+ const updateProduct = asyncHandler(async (req, res) => {
+    const {name, category, brand, quantity, price, description, image, regularPrice, color} = req.body
+
+    const product = await Product.findById(req.params.id);
+    if(!product) {
+       res.status(400)
+        throw new Error("Product not found")
+    }
+    const updatedProduct = await Product.findByIdAndUpdate(
+        {
+          _id: req.params.id  
+        },
+        {name, category, brand, quantity, price, description, image, regularPrice, color},
+        {
+            new: true,
+            runValidators: true
+        },
+
+       
+
+    );
+
+     res.status(200).json(updatedProduct);
+})
 
 
 module.exports = {
     createProduct,
     getProducts,
     getProduct,
-    deleteProduct
+    deleteProduct,
+    updateProduct
 }
