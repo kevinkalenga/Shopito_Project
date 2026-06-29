@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
-const Product = require("../models/productModel")
+const Product = require("../models/productModel");
+const { default: mongoose } = require("mongoose");
 
  // Create Product  
 const createProduct = asyncHandler(async (req, res) => {
@@ -130,8 +131,7 @@ const reviewDelete = asyncHandler(async (req, res) => {
        res.status(400)
         throw new Error("Product not found")
     }
-    console.log("userId :", userId);
-console.log("ratings :", product.ratings);
+   
     const newRatings = product.ratings.filter((rating) => {
         return rating.userId.toString() !== userId.toString()
     })
@@ -144,6 +144,54 @@ console.log("ratings :", product.ratings);
         message: "Product review has been deleted."
     })
 })
+// review product delete
+const reviewUpdate = asyncHandler(async (req, res) => {
+     const { star, review, reviewDate } = req.body;
+     const userId = req.user._id;
+      const {id} = req.params 
+
+     if(star < 1 || !review) {
+        res.status(400)
+        throw new Error("Please add a star and review")
+      }
+
+      const product = await Product.findById(id);
+
+      if(!product) {
+       res.status(400)
+        throw new Error("Product not found")
+      }
+
+    
+
+   
+
+    // Update product review 
+    const updatedReview = await Product.findOneAndUpdate(
+        {
+            _id: product._id,
+            "ratings.userId": new mongoose.Types.ObjectId(userId)
+        },
+        {
+            $set: {
+                "ratings.$.star": star,
+                "ratings.$.review": review,
+                "ratings.$.reviewDate": reviewDate,
+            }
+        }
+    )
+
+    if(updatedReview) {
+        res.status(200).json({
+          message: "Product review has been updated."
+        })  
+    } else {
+       res.status(400).json({message: "Product review not updated"})
+    }
+
+  
+   
+})
 
 module.exports = {
     createProduct,
@@ -152,5 +200,6 @@ module.exports = {
     deleteProduct,
     updateProduct,
     reviewProduct,
-    reviewDelete
+    reviewDelete,
+    reviewUpdate
 }
