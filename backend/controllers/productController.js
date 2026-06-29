@@ -29,14 +29,28 @@ const createProduct = asyncHandler(async (req, res) => {
 
 })
 
- // Create Product 
+ // get Products 
  const getProducts = asyncHandler(async (req, res) => {
     // sorting base on the creation date
    const products = await Product.find().sort("-createdAt")
     res.status(200).json(products)
 })
+ 
+
+// get single product 
+ const getProduct = asyncHandler(async (req, res) => {
+   const product = await Product.findById(req.params.id);
+   if(!product) {
+       res.status(400)
+        throw new Error("Product not found")
+   }
+
+   res.status(200).json(product);
+})
+
 
 module.exports = {
     createProduct,
-    getProducts
+    getProducts,
+    getProduct
 }
