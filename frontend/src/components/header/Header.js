@@ -84,7 +84,7 @@ const Header = () => {
                     
                      
                      <ShowOnLogin>
-                        <NavLink className={activeLink} to={"login"}>Login</NavLink>
+                        <NavLink className={activeLink} to={"profile"}>Profile</NavLink>
                         <FaUserCircle size={16} color='#ff7722' />
                         <UserName />
                      </ShowOnLogin>
