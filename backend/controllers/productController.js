@@ -121,11 +121,36 @@ const reviewProduct = asyncHandler(async (req, res) => {
     })
 })
 
+// review product delete
+const reviewDelete = asyncHandler(async (req, res) => {
+    const userId = req.user._id
+    const product = await Product.findById(req.params.id);
+
+    if(!product) {
+       res.status(400)
+        throw new Error("Product not found")
+    }
+    console.log("userId :", userId);
+console.log("ratings :", product.ratings);
+    const newRatings = product.ratings.filter((rating) => {
+        return rating.userId.toString() !== userId.toString()
+    })
+
+    product.ratings = newRatings 
+
+    product.save()
+
+     res.status(200).json({
+        message: "Product review has been deleted."
+    })
+})
+
 module.exports = {
     createProduct,
     getProducts,
     getProduct,
     deleteProduct,
     updateProduct,
-    reviewProduct
+    reviewProduct,
+    reviewDelete
 }

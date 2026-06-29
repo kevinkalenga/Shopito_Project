@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {createProduct, getProducts, getProduct, deleteProduct, updateProduct, reviewProduct} = require("../controllers/productController");
+const {createProduct, getProducts, getProduct, deleteProduct, updateProduct, reviewProduct, reviewDelete} = require("../controllers/productController");
 const {protect, adminOnly} = require("../middleware/authMiddleware")
 
 router.post("/create", protect, adminOnly ,createProduct);
@@ -12,6 +12,7 @@ router.patch("/:id", protect, adminOnly, updateProduct);
 
 
 router.patch("/review/:id", protect, reviewProduct);
+router.delete("/deleteReview/:id", protect, reviewDelete);
 
 
 module.exports = router;
