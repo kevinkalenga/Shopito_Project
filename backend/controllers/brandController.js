@@ -1,23 +1,25 @@
 const asyncHandler = require("express-async-handler");
 const Brand = require("../models/brandModel");
+const Category = require("../models/categoryModel");
 const slugify = require("slugify")
 
 const createBrand = asyncHandler(async (req, res) => {
-   const {name} = req.body || {}
-   if(!name) {
+   const {name, category} = req.body || {}
+   if(!name || !category) {
      res.status(400);
-        throw new Error("Please fill in brand name")
+        throw new Error("Please fill in all fields")
    }
 
-   const brandExists = await Brand.findOne({name});
-    if(brandExists) {
+   const categoryExists = await Category.findOne({name:category});
+    if(!categoryExists) {
      res.status(400);
-        throw new Error("Brand name already exists")
+        throw new Error("Parent category not found")
     }
 
     const brand = await Brand.create({
        name,
-       slug: slugify(name)
+       slug: slugify(name),
+       category
     })
 
     res.status(201).json(brand);
