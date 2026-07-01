@@ -23,15 +23,30 @@ const createCategory = asyncHandler(async (req, res) => {
     res.status(201).json(category);
 });
 
- // get Products 
+
  const getCategories = asyncHandler(async (req, res) => {
     // sorting base on the creation date
    const categories = await Category.find().sort("-createdAt")
     res.status(200).json(categories)
 })
 
+ const deleteCategory = asyncHandler(async (req, res) => {
+   const slug = req.params.slug.toLowerCase()
+   const category = await Category.findOneAndDelete({slug});
+   if(!category) {
+       res.status(400)
+        throw new Error("Category not found")
+   }
+   
+
+   res.status(200).json({
+    message: "Category has been deleted"
+   });
+})
+
 
 module.exports = {
   createCategory,
-  getCategories
+  getCategories,
+  deleteCategory
 }
