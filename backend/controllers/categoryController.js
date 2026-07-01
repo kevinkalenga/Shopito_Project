@@ -54,6 +54,7 @@ const updateCategory = asyncHandler(async (req, res) => {
     throw new Error("Category not found");
   }
 
+
   category.name = name || category.name;
   category.slug = slugify(category.name);
 

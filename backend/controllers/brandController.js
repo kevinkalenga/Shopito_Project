@@ -3,65 +3,106 @@ const Brand = require("../models/brandModel");
 const Category = require("../models/categoryModel");
 const slugify = require("slugify")
 
+// const createBrand = asyncHandler(async (req, res) => {
+//    const {name, category} = req.body || {}
+//    if(!name || !category) {
+//      res.status(400);
+//         throw new Error("Please fill in all fields")
+//    }
+
+//    const categoryExists = await Category.findOne({name:category});
+//     if(!categoryExists) {
+//      res.status(400);
+//         throw new Error("Parent category not found")
+//     }
+
+    
+
+//     const brand = await Brand.create({
+//        name,
+//        slug: slugify(name),
+//        category
+//     })
+
+//     res.status(201).json(brand);
+// });
+
 const createBrand = asyncHandler(async (req, res) => {
-   const {name, category} = req.body || {}
-   if(!name || !category) {
-     res.status(400);
-        throw new Error("Please fill in all fields")
-   }
+  const { name, category } = req.body || {};
 
-   const categoryExists = await Category.findOne({name:category});
-    if(!categoryExists) {
-     res.status(400);
-        throw new Error("Parent category not found")
-    }
+  if (!name || !category) {
+    res.status(400);
+    throw new Error("Please fill in all fields");
+  }
 
-    const brand = await Brand.create({
-       name,
-       slug: slugify(name),
-       category
-    })
+  const categoryExists = await Category.findById(category);
 
-    res.status(201).json(brand);
+  if (!categoryExists) {
+    res.status(400);
+    throw new Error("Parent category not found");
+  }
+
+  const brand = await Brand.create({
+    name,
+    slug: slugify(name),
+    category,
+  });
+
+  res.status(201).json(brand);
 });
 
 
- const getBrands = asyncHandler(async (req, res) => {
+
+
+const getBrands = asyncHandler(async (req, res) => {
     // sorting base on the creation date
    const Brands = await Brand.find().sort("-createdAt")
     res.status(200).json(Brands)
 })
 
- const deleteBrand = asyncHandler(async (req, res) => {
-   const slug = req.params.slug.toLowerCase()
-   const category = await Category.findOneAndDelete({slug});
-   if(!category) {
-       res.status(400)
-        throw new Error("Category not found")
-   }
-   
+const deleteBrand = asyncHandler(async (req, res) => {
+  const slug = req.params.slug.toLowerCase();
 
-   res.status(200).json({
-    message: "Category has been deleted"
-   });
-})
+  const brand = await Brand.findOneAndDelete({ slug });
 
-const updateBrand = asyncHandler(async (req, res) => {
-  const { name } = req.body;
-
-  const category = await Category.findById(req.params.id);
-
-  if (!category) {
+  if (!brand) {
     res.status(404);
-    throw new Error("Category not found");
+    throw new Error("Brand not found");
   }
 
-  category.name = name || category.name;
-  category.slug = slugify(category.name);
+  res.status(200).json({
+    message: "Brand has been deleted",
+  });
+});
 
-  const updatedCategory = await category.save();
+const updateBrand = asyncHandler(async (req, res) => {
+  const { name, category } = req.body;
+  const slug = req.params.slug.toLowerCase();
 
-  res.status(200).json(updatedCategory);
+  const brand = await Brand.findOne({ slug });
+
+  if (!brand) {
+    res.status(404);
+    throw new Error("Brand not found");
+  }
+
+  brand.name = name || brand.name;
+  brand.slug = slugify(brand.name);
+
+  if (category) {
+    const categoryExists = await Category.findById(category);
+
+    if (!categoryExists) {
+      res.status(404);
+      throw new Error("Parent category not found");
+    }
+
+    brand.category = category;
+  }
+
+  const updatedBrand = await brand.save();
+
+  res.status(200).json(updatedBrand);
 });
 
 
