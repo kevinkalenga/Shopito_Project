@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const categorySchema = mongoose.Schema({
+const brandSchema = mongoose.Schema({
 
     name: {
         type: String,
@@ -15,12 +15,18 @@ const categorySchema = mongoose.Schema({
         unique: true,
         lowercase: true,
         index: true
+    },
+    category: {
+        type: String,
+        required: true
     }
+
+
 
 }, {
     timestamps: true
 })
 
-const Category = mongoose.model("Category", categorySchema);
+const Brand = mongoose.model("Brand", brandSchema);
 
-module.exports = Category;
+module.exports = Brand;
