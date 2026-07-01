@@ -44,9 +44,28 @@ const createCategory = asyncHandler(async (req, res) => {
    });
 })
 
+const updateCategory = asyncHandler(async (req, res) => {
+  const { name } = req.body;
+
+  const category = await Category.findById(req.params.id);
+
+  if (!category) {
+    res.status(404);
+    throw new Error("Category not found");
+  }
+
+  category.name = name || category.name;
+  category.slug = slugify(category.name);
+
+  const updatedCategory = await category.save();
+
+  res.status(200).json(updatedCategory);
+});
+
 
 module.exports = {
   createCategory,
   getCategories,
-  deleteCategory
+  deleteCategory,
+  updateCategory
 }
