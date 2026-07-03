@@ -16,6 +16,11 @@ const createCoupon = asyncHandler(async (req, res) => {
       discount
     })
 
+    if(!coupon) {
+       res.status(400)
+        throw new Error("Coupon not found")
+    }
+
     res.status(201).json(coupon);
 
 });
@@ -24,11 +29,30 @@ const createCoupon = asyncHandler(async (req, res) => {
 const getCoupons = asyncHandler(async (req, res) => {
     // sorting base on the creation date
    const coupons = await Coupon.find().sort("-createdAt")
+   console.log(coupons);
     res.status(200).json(coupons)
+})
+const getCoupon = asyncHandler(async (req, res) => {
+   
+    // sorting base on the creation date
+   const coupon = await Coupon.findOne({
+   
+      name: req.params.couponName,
+      expiresAt: { $gt: new Date() }
+    //   expiresAt: {$gt: Date.now()}
+   })
+    
+  
+    if(!coupon) {
+       res.status(404)
+        throw new Error("Coupon not found or has expired")
+    }
+    res.status(200).json(coupon)
 })
 
 
 module.exports = {
   createCoupon,
-  getCoupons
+  getCoupons,
+  getCoupon
 }
