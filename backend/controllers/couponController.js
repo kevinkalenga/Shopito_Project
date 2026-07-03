@@ -21,6 +21,14 @@ const createCoupon = asyncHandler(async (req, res) => {
 });
 
 
+const getCoupons = asyncHandler(async (req, res) => {
+    // sorting base on the creation date
+   const coupons = await Coupon.find().sort("-createdAt")
+    res.status(200).json(coupons)
+})
+
+
 module.exports = {
-  createCoupon
+  createCoupon,
+  getCoupons
 }
