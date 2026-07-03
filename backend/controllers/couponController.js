@@ -50,9 +50,32 @@ const getCoupon = asyncHandler(async (req, res) => {
     res.status(200).json(coupon)
 })
 
+const updateCoupon = asyncHandler(async (req, res) => {
+  
+  const { id } = req.params;
+
+  const coupon = await Coupon.findById(id);
+
+  if (!coupon) {
+    res.status(404);
+    throw new Error("Coupon not found");
+  }
+
+  const updatedCoupon = await Coupon.findByIdAndUpdate(
+    id,
+    req.body,
+    {
+      new: true,        // retourne le document mis à jour
+      runValidators: true // applique les règles du schema
+    }
+  );
+
+    res.status(200).json(updatedCoupon);
+});
 
 module.exports = {
   createCoupon,
   getCoupons,
-  getCoupon
+  getCoupon,
+  updateCoupon
 }
