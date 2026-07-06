@@ -8,6 +8,7 @@ const productRoute = require("./routes/productRoute");
 const categoryRoute = require("./routes/categoryRoute");
 const brandRoute = require("./routes/brandRoute");
 const couponRoute = require("./routes/couponRoute");
+const orderRoute = require("./routes/orderRoute");
 const errorHandler = require("./middleware/errorMiddleware")
 
 const app = express() 
@@ -28,6 +29,7 @@ app.use("/api/products", productRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/brand", brandRoute);
 app.use("/api/coupon", couponRoute);
+app.use("/api/order", orderRoute);
 
 app.get("/", (req, res) => {
     res.send("Home Page ....")
