@@ -38,9 +38,30 @@ const getOrders = asyncHandler(async (req, res) => {
 
       return res.status(200).json(orders);
 }); 
+// Get Single Order
+const getOrder = asyncHandler(async (req, res) => { 
+     const order = await Order.findById(req.params.id);
+      if(!order) {
+        res.status(404);
+        throw new Error("Order not found");
+      }
+
+      if(req.user.role === "admin") {
+        return res.status(200).json(order);
+      } 
+
+      // Match order to the user 
+      if(order.user.toString() !== req.user._id) {
+        res.status(404);
+        throw new Error("User not authorized");
+      }
+
+      res.status(200).json(order);
+}); 
 
 
 module.exports = {
   createOrder,
   getOrders,
+  getOrder
 }
