@@ -51,17 +51,48 @@ const getOrder = asyncHandler(async (req, res) => {
       } 
 
       // Match order to the user 
-      if(order.user.toString() !== req.user._id) {
+      if(order.user.toString() !== req.user._id.toString()) {
         res.status(404);
-        throw new Error("User not authorized");
+        throw new Error("User not authorized to view the order");
       }
 
       res.status(200).json(order);
 }); 
 
+// Update Order Status 
+const updateOrderStatus = asyncHandler(async (req, res) => { 
+  
+
+     const {orderStatus} = req.body;
+     const {id} = req.params 
+
+     const order = await Order.findById(id);
+
+      if(!order) {
+        res.status(404);
+        throw new Error("Order not found");
+      }
+
+      // Update the order status 
+      await Order.findByIdAndUpdate(
+        {_id: id},
+        {
+          orderStatus
+        },
+        {
+          new: true,
+          runValidators: true
+        }
+      )
+
+      res.status(200).json({message: "Order status updated"});
+}); 
+
+
 
 module.exports = {
   createOrder,
   getOrders,
-  getOrder
+  getOrder,
+  updateOrderStatus
 }
