@@ -25,7 +25,22 @@ const createOrder = asyncHandler(async (req, res) => {
    res.status(200).json({message: "Order has been Created"});
 }); 
 
+// Get Orders
+const getOrders = asyncHandler(async (req, res) => { 
+    let orders;
+    if(req.user.role === "admin") {
+      // All Orders
+      orders = await Order.find().sort("-createdAt");
+      return res.status(200).json(orders);
+    }
+    // user specific orders  
+     orders = await Order.find({user:req.user._id}).sort("-createdAt");
+
+      return res.status(200).json(orders);
+}); 
+
 
 module.exports = {
-  createOrder
+  createOrder,
+  getOrders,
 }
