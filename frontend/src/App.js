@@ -9,9 +9,9 @@ import {ToastContainer} from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css"
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import axios from 'axios'
-import { getLoginStatus } from "./redux/features/auth/authSlice";
+import { getLoginStatus, getUser } from "./redux/features/auth/authSlice";
 import Profile from "./pages/profile/Profile";
 import Admin from "./pages/admin/Admin";
 
@@ -20,9 +20,23 @@ const App = () => {
    const dispatch = useDispatch();
   axios.defaults.withCredentials = true
 
+  const {isLoggedIn, user} = useSelector((state) => state.auth)
+
   useEffect(() => {
     dispatch(getLoginStatus())
   }, [dispatch])
+  
+  
+  useEffect(() => {
+    
+    if(isLoggedIn && user === null){
+       dispatch(getUser())
+    }
+    
+    
+  }, [dispatch, isLoggedIn, user])
+  
+  
   
   return (
     <>
