@@ -13,6 +13,7 @@ import { useDispatch} from "react-redux";
 import axios from 'axios'
 import { getLoginStatus } from "./redux/features/auth/authSlice";
 import Profile from "./pages/profile/Profile";
+import Admin from "./pages/admin/Admin";
 
 
 const App = () => {
@@ -35,7 +36,8 @@ const App = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
-                 <Route path="/profile" element={<Profile />} />
+                <Route path="/profile" element={<Profile />} />
+                 <Route path="/admin/*" element={<Admin />} />
             </Routes>
             <Footer />
         </BrowserRouter>

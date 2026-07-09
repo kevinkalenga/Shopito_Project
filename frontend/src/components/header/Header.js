@@ -78,15 +78,19 @@ const Header = () => {
                 <li>
                    <NavLink to="/shop" className={activeLink} > Shop</NavLink>
                 </li>
+                <li>
+                   <NavLink to="/admin/home" className={activeLink} >|  Admin</NavLink>
+                </li>
               </ul>
               <div className={styles["header-right"]}>
                   <span className={styles.links}>
                     
                      
                      <ShowOnLogin>
-                        <NavLink className={activeLink} to={"profile"}>Profile</NavLink>
-                        <FaUserCircle size={16} color='#ff7722' />
-                        <UserName />
+                        <Link to={"profile"}>
+                           <FaUserCircle size={16} color='#ff7722' />
+                           <UserName />
+                        </Link>
                      </ShowOnLogin>
                      <ShowOnLogout>
                         <NavLink className={activeLink} to={"login"}>Login</NavLink>
