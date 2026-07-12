@@ -51,7 +51,7 @@ const categoryAndbrandSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
-                state.category.push(action.payload);
+                state.categorries.push(action.payload);
                 toast.success("Category created successfully")
                 
              })
