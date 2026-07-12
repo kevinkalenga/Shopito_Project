@@ -41,6 +41,26 @@ export const getCategories = createAsyncThunk(
   }
 )
 
+// Update category
+export const updateCategory = createAsyncThunk(
+  "category/updateCategory",
+
+  async ({ id, formData }, thunkAPI) => {
+    try {
+      return await categoryAndbrandService.updateCategory(id, formData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 
 
 
@@ -90,6 +110,33 @@ const categoryAndbrandSlice = createSlice({
                   state.isLoading = false;
                   state.isError = true;
                   state.message = action.payload;
+                  toast.error(action.payload);
+              })
+
+              // Update category
+              .addCase(updateCategory.pending, (state) => {
+                  state.isLoading = true;
+              })
+              .addCase(updateCategory.fulfilled, (state, action) => {
+                  state.isLoading = false;
+                  state.isSuccess = true;
+                  state.isError = false;
+
+                  const index = state.categories.findIndex(
+                    (cat) => cat._id === action.payload._id
+                  );
+
+                  if (index !== -1) {
+                    state.categories[index] = action.payload;
+                  }
+
+                  toast.success("Category updated successfully");
+              })
+              .addCase(updateCategory.rejected, (state, action) => {
+                  state.isLoading = false;
+                  state.isError = true;
+                  state.message = action.payload;
+
                   toast.error(action.payload);
               })
   }

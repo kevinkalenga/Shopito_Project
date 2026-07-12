@@ -18,9 +18,20 @@ const getCategories = async () => {
     return response.data
 }
 
+// Update Category
+const updateCategory = async (id, formData) => {
+    const response = await axios.put(
+        API_URL + `category/${id}`,
+        formData
+    );
+
+    return response.data;
+};
+
 const categoryAndbrandService = {
     createCategory,
-    getCategories
+    getCategories,
+    updateCategory
 }
 
 export default categoryAndbrandService

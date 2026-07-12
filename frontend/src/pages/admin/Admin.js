@@ -4,6 +4,7 @@ import Navbar from '../../components/admin/navbar/Navbar'
 import AdminHome from '../../components/admin/AdminHome/AdminHome'
 import { Routes, Route } from 'react-router-dom'
 import Category from '../../components/admin/category/Category'
+import EditCategory from '../../components/admin/category/EditCategory'
 
 
 const Admin = () => {
@@ -17,6 +18,7 @@ const Admin = () => {
           <Routes>
             <Route path="home" element={<AdminHome />} />
             <Route path="category" element={<Category />} />
+            <Route path="category/edit/:id" element={<EditCategory />} />
           </Routes>
        </div>
     </div>

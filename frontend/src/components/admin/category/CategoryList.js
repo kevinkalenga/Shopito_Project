@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import { getCategories } from '../../../redux/features/categoryAndbrand/categoryAndbrandSlice'
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import Loader from '../../loader/Loader'
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -9,17 +11,18 @@ const CategoryList = () => {
 
    const {isLoading, categories} = useSelector((state) => state.category)
    const dispatch = useDispatch() 
+   const navigate = useNavigate();
 
    useEffect(() => {
       dispatch(getCategories())
    }, [dispatch])
   
   
-   const editCategory = async() => {
-     
+   const editCategory = (category) => {
+      navigate(`/admin/category/edit/${category._id}`);
    }
-   const confirmDelete = async() => {
-     
+   const confirmDelete = (slug) => {
+      console.log(slug)
    }
    
    
@@ -27,7 +30,9 @@ const CategoryList = () => {
    
    
    
-   
+   if (isLoading) {
+    return <Loader />;
+   }
    
    return (
     <div className='--mb2'>
