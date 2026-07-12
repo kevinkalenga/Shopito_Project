@@ -1,6 +1,7 @@
 import React from 'react'
 import CreateCategory from './CreateCategory'
 import CategoryList from './CategoryList'
+import './Category.scss'
 
 const Category = () => {
   return (
