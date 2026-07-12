@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import { getCategories } from '../../../redux/features/categoryAndbrand/categoryAndbrandSlice'
+import { getCategories, deleteCategory } from '../../../redux/features/categoryAndbrand/categoryAndbrandSlice'
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import Loader from '../../loader/Loader'
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,13 @@ const CategoryList = () => {
       navigate(`/admin/category/edit/${category._id}`);
    }
    const confirmDelete = (slug) => {
-      console.log(slug)
+        const confirm = window.confirm(
+            "Are you sure you want to delete this category?"
+        );
+
+        if(confirm){
+          dispatch(deleteCategory(slug));
+        }
    }
    
    
@@ -30,59 +36,60 @@ const CategoryList = () => {
    
    
    
-   if (isLoading) {
-    return <Loader />;
-   }
+  
    
    return (
-    <div className='--mb2'>
-      <h3>All Categories</h3>
-      <div className='table'>
-         {
-           categories.length === 0 ? (
-               <p>No Category Found</p>
-           ):(
-             <table>
-                <thead>
-                  <tr>
-                    <th>s/n</th>
-                    <th>Name</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                   {
-                    categories.map((cat, index) => {
-                       const {_id, name, slug} = cat
-                       return(
-                        <tr key={_id}>
-                          <td>{index + 1}</td>
-                          <td>{name}</td>
-                          <td>
-                            <span>
-                                <FaEdit
-                                  size={20}
-                                  color="green"
-                                  style={{ cursor: "pointer", marginRight: "10px" }}
-                                  onClick={() => editCategory(cat)}
-                                />
-                            </span>
-                            
-                            
-                            <span>
-                              <FaTrashAlt size={20} color={"red"} onClick={()=>confirmDelete(slug)} />
-                            </span>
-                          </td>
-                        </tr>
-                       )
-                    })
-                   }
-                </tbody>
-             </table>
-           )
-         }
+    <>
+      {isLoading && <Loader />}
+      <div className='--mb2'>
+        <h3>All Categories</h3>
+        <div className='table'>
+          {
+            categories.length === 0 ? (
+                <p>No Category Found</p>
+            ):(
+              <table>
+                  <thead>
+                    <tr>
+                      <th>s/n</th>
+                      <th>Name</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      categories.map((cat, index) => {
+                        const {_id, name, slug} = cat
+                        return(
+                          <tr key={_id}>
+                            <td>{index + 1}</td>
+                            <td>{name}</td>
+                            <td>
+                              <span>
+                                  <FaEdit
+                                    size={20}
+                                    color="green"
+                                    style={{ cursor: "pointer", marginRight: "10px" }}
+                                    onClick={() => editCategory(cat)}
+                                  />
+                              </span>
+                              
+                              
+                              <span>
+                                <FaTrashAlt size={20} color={"red"} onClick={()=>confirmDelete(slug)} />
+                              </span>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
+              </table>
+            )
+          }
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

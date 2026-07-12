@@ -61,6 +61,28 @@ export const updateCategory = createAsyncThunk(
   }
 );
 
+// Delete Category 
+export const deleteCategory = createAsyncThunk(
+  "category/deleteCategory",
+
+  async (slug, thunkAPI) => {
+    try {
+      await categoryAndbrandService.deleteCategory(slug);
+
+      return slug; // on renvoie le slug supprimé
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 
 
 
@@ -133,6 +155,30 @@ const categoryAndbrandSlice = createSlice({
                   toast.success("Category updated successfully");
               })
               .addCase(updateCategory.rejected, (state, action) => {
+                  state.isLoading = false;
+                  state.isError = true;
+                  state.message = action.payload;
+
+                  toast.error(action.payload);
+              })
+
+              // Delete Category 
+              .addCase(deleteCategory.pending, (state) => {
+                  state.isLoading = true;
+              })
+
+              .addCase(deleteCategory.fulfilled, (state, action) => {
+                  state.isLoading = false;
+                  state.isSuccess = true;
+
+                  state.categories = state.categories.filter(
+                      (cat) => cat.slug !== action.payload
+                  );
+
+                  toast.success("Category deleted successfully");
+              })
+
+              .addCase(deleteCategory.rejected, (state, action) => {
                   state.isLoading = false;
                   state.isError = true;
                   state.message = action.payload;

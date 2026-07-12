@@ -28,10 +28,22 @@ const updateCategory = async (id, formData) => {
     return response.data;
 };
 
+// Delete Category
+const deleteCategory = async (slug) => {
+    const response = await axios.delete(
+        API_URL + `category/${slug}`
+    );
+
+    return response.data;
+};
+
+
+
 const categoryAndbrandService = {
     createCategory,
     getCategories,
-    updateCategory
+    updateCategory,
+    deleteCategory
 }
 
 export default categoryAndbrandService
