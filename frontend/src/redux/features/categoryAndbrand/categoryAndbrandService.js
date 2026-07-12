@@ -10,9 +10,17 @@ const createCategory = async (formData) => {
 
     return response.data
 }
+// Get Categories
+
+const getCategories = async () => {
+    const response = await axios.get(API_URL + "category/getCategories")
+
+    return response.data
+}
 
 const categoryAndbrandService = {
     createCategory,
+    getCategories
 }
 
 export default categoryAndbrandService

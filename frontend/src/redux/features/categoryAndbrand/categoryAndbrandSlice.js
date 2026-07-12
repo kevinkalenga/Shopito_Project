@@ -25,6 +25,21 @@ export const createCategory = createAsyncThunk(
     
   }
 )
+// Get categories 
+export const getCategories = createAsyncThunk(
+  "category/getCategories",
+
+  async (_, thunkAPI ) => {
+    try {
+      return await categoryAndbrandService.getCategories()
+    } catch (error) {
+      const message = (error.response && error.response.data && error.response.data.message) || 
+      error.message || error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+    
+  }
+)
 
 
 
@@ -51,7 +66,7 @@ const categoryAndbrandSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
-                state.categorries.push(action.payload);
+                state.categories.push(action.payload);
                 toast.success("Category created successfully")
                 
              })
@@ -61,6 +76,22 @@ const categoryAndbrandSlice = createSlice({
                state.message = action.payload;
                toast.error(action.payload);
              })
+             // Get categories
+             .addCase(getCategories.pending, (state) => {
+                  state.isLoading = true;
+              })
+              .addCase(getCategories.fulfilled, (state, action) => {
+                  state.isLoading = false;
+                  state.isSuccess = true;
+                  state.isError = false;
+                  state.categories = action.payload;
+              })
+              .addCase(getCategories.rejected, (state, action) => {
+                  state.isLoading = false;
+                  state.isError = true;
+                  state.message = action.payload;
+                  toast.error(action.payload);
+              })
   }
 });
 
