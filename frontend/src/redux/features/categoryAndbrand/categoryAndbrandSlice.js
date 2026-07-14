@@ -206,7 +206,7 @@ const categoryAndbrandSlice = createSlice({
              .addCase(createBrand.pending, (state) => {
                 state.isLoading = true
              })
-             .addCase(createCategory.fulfilled, (state, action) => {
+             .addCase(createBrand.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
