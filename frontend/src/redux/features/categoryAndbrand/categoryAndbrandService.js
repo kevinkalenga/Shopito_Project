@@ -41,7 +41,7 @@ const deleteCategory = async (slug) => {
 // Create Brand
 
 const createBrand = async (formData) => {
-    const response = await axios.post(API_URL + "category/createBrand", formData)
+    const response = await axios.post(API_URL + "brand/createBrand", formData)
 
     return response.data
 }

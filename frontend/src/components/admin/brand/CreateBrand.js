@@ -24,11 +24,15 @@ const CreateBrand = () => {
       e.preventDefault() 
 
       if(name.length < 3) {
-        return toast.error("Coupon must be up to 3 characters")
+        return toast.error("Brand must be up to 3 characters")
+      }
+      if(!category) {
+        return toast.error("Please add a parent category")
       }
 
       const formData = {
-         name
+         name,
+         category
       }
 
       dispatch(createBrand(formData))

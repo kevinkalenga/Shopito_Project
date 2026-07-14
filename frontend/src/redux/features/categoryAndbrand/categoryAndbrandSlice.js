@@ -86,7 +86,7 @@ export const deleteCategory = createAsyncThunk(
 
 // Create brand 
 export const createBrand = createAsyncThunk(
-  "category/createBrand",
+  "brand/createBrand",
 
   async (formData, thunkAPI ) => {
     try {
