@@ -4,6 +4,7 @@ import categoryAndbrandService from './categoryAndbrandService'
 
 const initialState = {
     categories: [],
+    brands: [],
     isError: false, 
     isSuccess: false,
     isLoading: false,
@@ -82,6 +83,22 @@ export const deleteCategory = createAsyncThunk(
     }
   }
 );
+
+// Create brand 
+export const createBrand = createAsyncThunk(
+  "category/createBrand",
+
+  async (formData, thunkAPI ) => {
+    try {
+      return await categoryAndbrandService.createBrand(formData)
+    } catch (error) {
+      const message = (error.response && error.response.data && error.response.data.message) || 
+      error.message || error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+    
+  }
+)
 
 
 
@@ -185,6 +202,24 @@ const categoryAndbrandSlice = createSlice({
 
                   toast.error(action.payload);
               })
+              // Create brand
+             .addCase(createBrand.pending, (state) => {
+                state.isLoading = true
+             })
+             .addCase(createCategory.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.brands.push(action.payload);
+                toast.success("Brand created successfully")
+                
+             })
+             .addCase(createBrand.rejected, (state, action) => {
+               state.isLoading = false;
+               state.isError = true;
+               state.message = action.payload;
+               toast.error(action.payload);
+             })
   }
 });
 

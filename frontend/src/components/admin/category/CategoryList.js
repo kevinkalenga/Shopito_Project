@@ -4,6 +4,8 @@ import { getCategories, deleteCategory } from '../../../redux/features/categoryA
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import Loader from '../../loader/Loader'
 import { useNavigate } from "react-router-dom";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 
 
@@ -18,27 +20,31 @@ const CategoryList = () => {
    }, [dispatch])
   
   
-   const editCategory = (category) => {
-      navigate(`/admin/category/edit/${category._id}`);
-   }
-   const confirmDelete = (slug) => {
-        const confirm = window.confirm(
-            "Are you sure you want to delete this category?"
-        );
-
-        if(confirm){
-          dispatch(deleteCategory(slug));
-        }
-   }
+      const editCategory = (category) => {
+          navigate(`/admin/category/edit/${category._id}`);
+      }
+   
+   
+    const confirmDelete = (slug) => {
+      confirmAlert({
+        title: "Delete Category",
+        message: "Are you sure you want to delete this category?",
+        buttons: [
+          {
+            label: "Delete",
+            onClick: () => dispatch(deleteCategory(slug))
+          },
+          {
+            label: "Cancel",
+            onClick: () => {}
+          }
+        ]
+      });
+    };
    
    
    
-   
-   
-   
-  
-   
-   return (
+  return (
     <>
       {isLoading && <Loader />}
       <div className='--mb2'>
