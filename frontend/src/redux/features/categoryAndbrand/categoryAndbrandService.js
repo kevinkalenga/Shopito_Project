@@ -46,10 +46,13 @@ const createBrand = async (formData) => {
     return response.data
 }
 
+// Get Categories
 
+const getBrands = async () => {
+    const response = await axios.get(API_URL + "brand/getBrands")
 
-
-
+    return response.data
+}
 
 
 
@@ -59,6 +62,7 @@ const categoryAndbrandService = {
     updateCategory,
     deleteCategory,
     createBrand,
+    getBrands
 }
 
 export default categoryAndbrandService
