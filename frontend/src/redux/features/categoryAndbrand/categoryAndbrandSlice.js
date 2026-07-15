@@ -117,6 +117,49 @@ export const getBrands = createAsyncThunk(
 )
 
 
+// Update brand
+export const updateBrand = createAsyncThunk(
+  "brand/updateBrand",
+
+  async ({ id, formData }, thunkAPI) => {
+    try {
+      return await categoryAndbrandService.updateBrand(id, formData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Delete Brand 
+export const deleteBrand = createAsyncThunk(
+  "brand/deleteBrand",
+
+  async (slug, thunkAPI) => {
+    try {
+      await categoryAndbrandService.deleteBrand(slug);
+
+      return slug; // on renvoie le slug supprimé
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+
 
 
 const categoryAndbrandSlice = createSlice({
@@ -253,6 +296,57 @@ const categoryAndbrandSlice = createSlice({
                   state.message = action.payload;
                   toast.error(action.payload);
               })
+              // Update Brand
+              .addCase(updateBrand.pending, (state) => {
+                  state.isLoading = true;
+              })
+              .addCase(updateBrand.fulfilled, (state, action) => {
+                   console.log("UPDATE RESPONSE :", action.payload);
+                  state.isLoading = false;
+                  state.isSuccess = true;
+                  state.isError = false;
+
+                  const index = state.brands.findIndex(
+                    (br) => br._id === action.payload._id
+                  );
+
+                  if (index !== -1) {
+                    state.brands[index] = action.payload;
+                  }
+
+                  toast.success("Brand updated successfully");
+              })
+              .addCase(updateBrand.rejected, (state, action) => {
+                  state.isLoading = false;
+                  state.isError = true;
+                  state.message = action.payload;
+
+                  toast.error(action.payload);
+              })
+              // Delete Category 
+              .addCase(deleteBrand.pending, (state) => {
+                  state.isLoading = true;
+              })
+
+              .addCase(deleteBrand.fulfilled, (state, action) => {
+                  state.isLoading = false;
+                  state.isSuccess = true;
+
+                  state.brands = state.brands.filter(
+                      (br) => br.slug !== action.payload
+                  );
+
+                  toast.success("Brands deleted successfully");
+              })
+
+              .addCase(deleteBrand.rejected, (state, action) => {
+                  state.isLoading = false;
+                  state.isError = true;
+                  state.message = action.payload;
+
+                  toast.error(action.payload);
+              })
+
   }
 });
 

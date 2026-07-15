@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom'
 import Category from '../../components/admin/category/Category'
 import EditCategory from '../../components/admin/category/EditCategory'
 import Brand from '../../components/admin/brand/Brand'
+import EditBrand from '../../components/admin/brand/EditBrand'
 
 
 const Admin = () => {
@@ -21,6 +22,7 @@ const Admin = () => {
             <Route path="category" element={<Category />} />
             <Route path="category/edit/:id" element={<EditCategory />} />
              <Route path="brand" element={<Brand />} />
+              <Route path="brand/edit/:id" element={<EditBrand />} />
           </Routes>
        </div>
     </div>

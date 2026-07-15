@@ -34,9 +34,11 @@ const CreateBrand = () => {
          name,
          category
       }
-
+      console.log(formData);
+      
       dispatch(createBrand(formData))
       setName("")
+      setCategory("")
    }
   
   
@@ -63,14 +65,22 @@ const CreateBrand = () => {
               />
               <label>Parent Category:</label> 
               
-              <select name='category' className='form-control' onChange={(e) => setCategory(e.target.value)}>
-                 <option>Select Category</option>
-                 {
-                  categories.length > 0 && categories.map((cat) => (
-                    <option key={cat._id} value={cat.name}>{cat.name}</option>
-                  ))
-                 }
-              </select>
+               <select 
+                  name="category"
+                  className="form-control"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="">Select Category</option>
+
+                  {
+                    categories.map((cat) => (
+                      <option key={cat._id} value={cat.name}>
+                        {cat.name}
+                      </option>
+                    ))
+                  }
+                </select>
               
               
               <div className='--my'>

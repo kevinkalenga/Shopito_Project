@@ -35,7 +35,7 @@ const createBrand = asyncHandler(async (req, res) => {
     throw new Error("Please fill in all fields");
   }
 
-  const categoryExists = await Category.findById(category);
+    const categoryExists = await Category.findOne({ name: category });
 
   if (!categoryExists) {
     res.status(400);
@@ -75,11 +75,11 @@ const deleteBrand = asyncHandler(async (req, res) => {
   });
 });
 
+
 const updateBrand = asyncHandler(async (req, res) => {
   const { name, category } = req.body;
-  const slug = req.params.slug.toLowerCase();
 
-  const brand = await Brand.findOne({ slug });
+  const brand = await Brand.findById(req.params.id);
 
   if (!brand) {
     res.status(404);
@@ -90,10 +90,10 @@ const updateBrand = asyncHandler(async (req, res) => {
   brand.slug = slugify(brand.name);
 
   if (category) {
-    const categoryExists = await Category.findById(category);
+    const categoryExists = await Category.findOne({ name: category });
 
     if (!categoryExists) {
-      res.status(404);
+      res.status(400);
       throw new Error("Parent category not found");
     }
 

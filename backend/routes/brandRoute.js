@@ -8,7 +8,7 @@ const {protect, adminOnly} = require("../middleware/authMiddleware")
 router.post("/createBrand", protect, adminOnly, createBrand);
 router.get("/getBrands", protect, adminOnly, getBrands);
 router.delete("/:slug", protect, adminOnly, deleteBrand);
-router.put("/:slug", protect, adminOnly, updateBrand);
+router.put("/:id", protect, adminOnly, updateBrand);
 
 
 

@@ -54,6 +54,25 @@ const getBrands = async () => {
     return response.data
 }
 
+// Update Category
+const updateBrand = async (id, formData) => {
+    const response = await axios.put(
+        API_URL + `brand/${id}`,
+        formData
+    );
+
+    return response.data;
+};
+
+// Delete Category
+const deleteBrand = async (slug) => {
+    const response = await axios.delete(
+        API_URL + `brand/${slug}`
+    );
+
+    return response.data;
+};
+
 
 
 const categoryAndbrandService = {
@@ -62,7 +81,9 @@ const categoryAndbrandService = {
     updateCategory,
     deleteCategory,
     createBrand,
-    getBrands
+    getBrands,
+    updateBrand,
+    deleteBrand
 }
 
 export default categoryAndbrandService
