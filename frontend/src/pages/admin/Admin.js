@@ -7,6 +7,9 @@ import Category from '../../components/admin/category/Category'
 import EditCategory from '../../components/admin/category/EditCategory'
 import Brand from '../../components/admin/brand/Brand'
 import EditBrand from '../../components/admin/brand/EditBrand'
+import AddProduct from '../../components/admin/addProduct/AddProduct'
+import ViewProducts from '../../components/admin/viewProducts/ViewProducts'
+import EditProduct from '../../components/admin/editProduct/EditProduct'
 
 
 const Admin = () => {
@@ -21,8 +24,12 @@ const Admin = () => {
             <Route path="home" element={<AdminHome />} />
             <Route path="category" element={<Category />} />
             <Route path="category/edit/:id" element={<EditCategory />} />
-             <Route path="brand" element={<Brand />} />
-              <Route path="brand/edit/:id" element={<EditBrand />} />
+            <Route path="brand" element={<Brand />} />
+            <Route path="brand/edit/:id" element={<EditBrand />} />
+            <Route path="add-product" element={<AddProduct/>} />
+            <Route path="all-products" element={<ViewProducts/>} />
+            <Route path="edit-product/:id" element={<EditProduct/>} />
+           
           </Routes>
        </div>
     </div>
