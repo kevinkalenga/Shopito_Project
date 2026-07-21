@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Loader from '../../loader/Loader';
 import ProductForm from '../productForm/ProductForm';
 import "./AddProduct.scss";
-import { getCategories } from '../../../redux/features/categoryAndbrand/categoryAndbrandSlice';
+import { getCategories, getBrands } from '../../../redux/features/categoryAndbrand/categoryAndbrandSlice';
 
 const initialState = {
   name: "",
@@ -17,15 +17,38 @@ const initialState = {
 
 const AddProduct = () => {
   const dispatch = useDispatch();
+  const [filteredBrands, setFilteredBrands] = useState([])
   const [product, setProduct] = useState(initialState);
   const {name, category, brand, quantity, color, price, regularPrice} = product
   const {isLoading} = useSelector((state) => state.product)
+  // from mongodb
   const {categories} = useSelector((state) => state.category);
   const {brands} = useSelector((state) => state.brand);
 
   useEffect(() => {
-    dispatch(getCategories())
+    dispatch(getCategories());
+     dispatch(getBrands());
   }, [dispatch])
+
+  // Filter Brands based on selected category 
+
+  const filterBrands = (selectedCategory) => {
+     
+      if (!selectedCategory) {
+         setFilteredBrands([]);
+         return;
+      }
+   
+     const newBrands = brands.filter((brand) => brand.category === selectedCategory)
+     
+     setFilteredBrands(newBrands)
+  }
+
+  useEffect(() => {
+     filterBrands(category)
+  }, [category, brands])
+  
+
 
   const handleInputChange = (e) => {
      const {name, value} = e.target; 
@@ -46,7 +69,9 @@ const AddProduct = () => {
           <ProductForm 
             saveProduct={saveProduct}
             product={product} 
-            handleInputChange={handleInputChange} categories={categories} brands={brands} isEditing={false} />
+            handleInputChange={handleInputChange} 
+            categories={categories} 
+            brands={brands} isEditing={false} filteredBrands={filteredBrands} />
        </div>
     </section>
   )

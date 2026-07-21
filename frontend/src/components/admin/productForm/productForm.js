@@ -2,7 +2,7 @@ import React from 'react';
 import "./ProductForm.scss"
 import Card from '../../card/Card';
 
-const productForm = ({saveProduct, product, handleInputChange, categories, brands, isEditing,}) => {
+const productForm = ({saveProduct, product, handleInputChange, categories, brands, isEditing, filteredBrands}) => {
   return (
     <div className='add-product'>
        <h3>Upload Widget Placeholder</h3>
@@ -27,6 +27,19 @@ const productForm = ({saveProduct, product, handleInputChange, categories, brand
                  )}
                  {categories.length > 0 && categories.map((cat) => (
                    <option value={cat.name} key={cat._id}>{cat.name}</option>
+                 ))}
+              </select>
+
+               
+              <label>Product Brands:</label>
+              <select name="brand" value={product?.brand} onChange={handleInputChange}>
+                 {isEditing ? (
+                   <option value={product?.brand}>{product?.brand}</option>
+                 ):(
+                  <option>Select Brand</option>
+                 )}
+                 {filteredBrands.length > 0 && filteredBrands.map((brand) => (
+                   <option value={brand.name} key={brand._id}>{brand.name}</option>
                  ))}
               </select>
               
