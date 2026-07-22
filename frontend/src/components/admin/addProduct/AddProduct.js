@@ -19,6 +19,7 @@ const AddProduct = () => {
   const dispatch = useDispatch();
   const [filteredBrands, setFilteredBrands] = useState([])
   const [product, setProduct] = useState(initialState);
+  const [description, setDescription] = useState("");
   const {name, category, brand, quantity, color, price, regularPrice} = product
   const {isLoading} = useSelector((state) => state.product)
   // from mongodb
@@ -58,6 +59,7 @@ const AddProduct = () => {
   const saveProduct = async (e) => {
      e.preventDefault()
      console.log(product)
+     console.log(description)
   }
   
   return (
@@ -71,7 +73,11 @@ const AddProduct = () => {
             product={product} 
             handleInputChange={handleInputChange} 
             categories={categories} 
-            brands={brands} isEditing={false} filteredBrands={filteredBrands} />
+            brands={brands} isEditing={false}
+            filteredBrands={filteredBrands} 
+            description={description}
+            setDescription={setDescription}
+         />
        </div>
     </section>
   )
