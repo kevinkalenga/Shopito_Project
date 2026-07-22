@@ -22,6 +22,7 @@ const AddProduct = () => {
   const navigate = useNavigate();
   const [filteredBrands, setFilteredBrands] = useState([])
   const [product, setProduct] = useState(initialState);
+  const [files, setFiles] = useState([]);
   const [description, setDescription] = useState("");
   const {name, category, brand, quantity, color, price, regularPrice} = product
   const {isLoading} = useSelector((state) => state.product)
@@ -102,6 +103,8 @@ const AddProduct = () => {
             filteredBrands={filteredBrands} 
             description={description}
             setDescription={setDescription}
+            files={files}
+            setFiles={setFiles}
          />
        </div>
     </section>
