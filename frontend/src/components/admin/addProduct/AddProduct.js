@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import Loader from '../../loader/Loader';
+import {useNavigate} from 'react-router-dom';
 import ProductForm from '../productForm/ProductForm';
 import "./AddProduct.scss";
 import { getCategories, getBrands } from '../../../redux/features/categoryAndbrand/categoryAndbrandSlice';
+import { createProduct } from '../../../redux/features/product/productSlice';
 
 const initialState = {
   name: "",
@@ -17,6 +19,7 @@ const initialState = {
 
 const AddProduct = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [filteredBrands, setFilteredBrands] = useState([])
   const [product, setProduct] = useState(initialState);
   const [description, setDescription] = useState("");
@@ -56,10 +59,32 @@ const AddProduct = () => {
      setProduct({...product, [name]: value})
   }
 
+  const generateSKU = (category) => {
+     const letter = category.slice(0, 3).toUpperCase();
+     const number = Date.now();
+     const sku = letter + "-" + number;
+     return sku;
+  }
+
   const saveProduct = async (e) => {
      e.preventDefault()
-     console.log(product)
-     console.log(description)
+     const formData = {
+        name,
+        sku: generateSKU(category),
+        category,
+        brand,
+        color,
+        quantity: Number(quantity),
+        regularPrice,
+        price,
+        description,
+        //images
+     }
+
+   //console.log(formData)
+   await dispatch(createProduct(formData));
+
+   //navigate("/admin/all-poducts")
   }
   
   return (
