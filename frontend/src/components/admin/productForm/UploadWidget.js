@@ -115,8 +115,10 @@ const UploadWidget = ({files, setFiles}) => {
                   </p>
                ):(
                 <div className='--center-all'>
-                  <button className='--btn --btn-danger --btn-large' onClick={uploadImages}>
-                    Upload Image
+                  <button className='--btn --btn-danger --btn-large' disabled={uploading} onClick={uploadImages}>
+                    {
+                      uploading ? `Uploading ${progress} of ${images.length}` : `Upload ${images.length} Image(s)`
+                    }
                   </button>
                 </div>
                )
