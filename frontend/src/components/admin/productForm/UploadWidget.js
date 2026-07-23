@@ -61,6 +61,23 @@ const UploadWidget = () => {
              />
           </label>
           <br />
+          {
+            selectedImages.length > 0 && (
+               (selectedImages.length > 5 ? (
+                  <p className='error'>You can't upload more than 5 images!
+                    <br />
+                    <span>Please remove <b>{selectedImages.length - 5}</b> of them</span>
+                  </p>
+               ):(
+                <div className='--center-all'>
+                  <button className='--btn --btn-danger --btn-large'>
+                    Upload Image
+                  </button>
+                </div>
+               )
+              )
+            )
+          }
 
           {/* View Selected Images */}
           <div className={selectedImages.length > 0 ? "images" : ""}>
