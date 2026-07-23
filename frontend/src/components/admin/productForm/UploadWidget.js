@@ -1,12 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Card from '../../card/Card'
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import {BsTrash} from "react-icons/bs"
 
 const UploadWidget = () => {
   
-  const addImages = () => {
+  // To select into the camputer
+  const [selectedImages, setSelectedImages] = useState([])
+  // To add into the cloudinary
+  const [images, setImages] = useState([])
+  const [progress, setProgress] = useState(0)
+  const [uploading, setUploading] = useState(false)
+  
+  const addImages = (e) => {
+    // All the files selected
+    const selectedFiles = e.target.files 
+    // to create an array of files
+    const selectedFilesArray = Array.from(selectedFiles)
 
+    const imagesArray = selectedFilesArray.map((file) => {
+       return URL.createObjectURL(file)
+    })
+    // upload to cloudinary
+    setImages((prevImages) => prevImages.concat(selectedFilesArray))
+    
+    // Adding the array in what currenctly exist
+    setSelectedImages((prevImages) => prevImages.concat(imagesArray))
+
+    e.target.value = ""
   }
   
   
@@ -26,6 +47,24 @@ const UploadWidget = () => {
              />
           </label>
           <br />
+
+          {/* View Selected Images */}
+          <div className={selectedImages.length > 0 ? "images" : ""}>
+             {
+              selectedImages !== 0 && 
+              selectedImages.map((image, index) => {
+                return (
+                  <div key={image} className='image'>
+                      <img src={image} alt="productImage" width={200} />
+                      <button className='-btn'>
+                         <BsTrash />
+                      </button>
+                      <p>{index + 1}</p>
+                  </div>
+                )
+              })
+             }
+          </div>
        </Card>
     </div>
   )
