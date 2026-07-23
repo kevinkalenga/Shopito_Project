@@ -4,6 +4,7 @@ import Card from '../../card/Card';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import UploadWidget from './UploadWidget';
+import {BsTrash} from "react-icons/bs"
 
 const ProductForm = ({saveProduct, 
   product, 
@@ -24,6 +25,28 @@ const ProductForm = ({saveProduct,
        <Card cardClass={"card"}>
           <br />
           <form onSubmit={saveProduct}>
+             <label>Product Images:</label>
+             <div className='slide-container'>
+                <aside>
+                  {
+                    files.length > 0 && 
+                    files.map((image) => (
+                      <div key={image} className='thumbnail'>
+                         <img src={image} alt='productImage' height={100} />
+                         <div>
+                            <BsTrash size={25} className='thumbnailIcon'/>
+                         </div>
+                      </div>
+                    ))
+                  }
+                  {
+                    files.length < 1 && (
+                      <p className='--m'>No image set for this product.</p>
+                    ) 
+                  }
+                </aside>
+             </div>
+             
              <label>Product Name:</label>
              <input 
                type="text"
