@@ -29,6 +29,20 @@ const UploadWidget = () => {
 
     e.target.value = ""
   }
+
+  const removeImage = (image) => {
+    // the img that we selected to the browser
+     const imageIndex = selectedImages.indexOf(image);
+     setSelectedImages(
+       selectedImages.filter((img) => img !== image)
+     )
+    // the img that we uploaded to the cloudinary
+    setImages(
+      images.filter((img, index) => index !== imageIndex)
+    )
+
+    URL.revokeObjectURL(image)
+  }
   
   
   return (
@@ -56,8 +70,8 @@ const UploadWidget = () => {
                 return (
                   <div key={image} className='image'>
                       <img src={image} alt="productImage" width={200} />
-                      <button className='-btn'>
-                         <BsTrash />
+                      <button className='-btn' onClick={() => removeImage(image)}>
+                         <BsTrash size={25}/>
                       </button>
                       <p>{index + 1}</p>
                   </div>
