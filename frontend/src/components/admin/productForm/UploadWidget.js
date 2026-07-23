@@ -2,8 +2,12 @@ import React, { useState } from 'react'
 import Card from '../../card/Card'
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import {BsTrash} from "react-icons/bs"
+import {toast} from 'react-toastify'
 
-const UploadWidget = () => {
+const upload_preset = process.env.REACT_APP_UPLOAD_PRESET;
+ const url = "https://api.cloudinary.com/v1_1/dy4ouvvwn/image/upload"
+
+const UploadWidget = ({files, setFiles}) => {
   
   // To select into the camputer
   const [selectedImages, setSelectedImages] = useState([])
@@ -43,6 +47,47 @@ const UploadWidget = () => {
 
     URL.revokeObjectURL(image)
   }
+
+  const uploadImages = () => {
+    setUploading(true)
+    // console.log(images)
+    // the image from the cloudinary will be pushed here
+    let imageUrls = []
+
+    const formData = new FormData()
+    for(let i = 0; i < images.length; i++) {
+      let file = images[i]
+      formData.append("file", file)
+      formData.append("upload_preset", upload_preset)
+      formData.append("folder", "shopitoApp") 
+
+      fetch(url, {
+        method: "POST",
+        body: formData
+      }).then((response) => {
+        return response.json()
+      }).then((data) => {
+        console.log(data)
+        imageUrls.push(data.secure_url)
+        setProgress(imageUrls.length)
+
+        if(imageUrls.length === images.length) {
+          setFiles((prevFiles) => prevFiles.concat(imageUrls))
+          setUploading(false)
+          console.log(files)
+          toast.success("Image upload successfully!")
+          setImages([])
+          setSelectedImages([])
+          setProgress(0)
+        }
+      }).catch((error) => {
+        setUploading(false)
+        toast.error(error.message)
+        console.log(error)
+      })
+
+    }
+  }
   
   
   return (
@@ -70,7 +115,7 @@ const UploadWidget = () => {
                   </p>
                ):(
                 <div className='--center-all'>
-                  <button className='--btn --btn-danger --btn-large'>
+                  <button className='--btn --btn-danger --btn-large' onClick={uploadImages}>
                     Upload Image
                   </button>
                 </div>
