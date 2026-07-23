@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import UploadWidget from './UploadWidget';
 import {BsTrash} from "react-icons/bs"
+import {toast} from 'react-toastify'
 
 const ProductForm = ({saveProduct, 
   product, 
@@ -18,6 +19,13 @@ const ProductForm = ({saveProduct,
   files,
   setFiles
 }) => {
+  
+  const removeImage = (image) => {
+      setFiles(files.filter((img) => img !== image))
+      toast.success("The image has been deleted successfully!")
+  }
+  
+  
   return (
     <div className='add-product'>
        <UploadWidget files={files} setFiles={setFiles} />
@@ -34,7 +42,7 @@ const ProductForm = ({saveProduct,
                       <div key={image} className='thumbnail'>
                          <img src={image} alt='productImage' height={100} />
                          <div>
-                            <BsTrash size={25} className='thumbnailIcon'/>
+                            <BsTrash size={25} className='thumbnailIcon' onClick={() => removeImage(image)}/>
                          </div>
                       </div>
                     ))

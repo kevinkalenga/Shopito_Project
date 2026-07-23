@@ -6,6 +6,7 @@ import ProductForm from '../productForm/ProductForm';
 import "./AddProduct.scss";
 import { getCategories, getBrands } from '../../../redux/features/categoryAndbrand/categoryAndbrandSlice';
 import { createProduct } from '../../../redux/features/product/productSlice';
+import {toast} from 'react-toastify'
 
 const initialState = {
   name: "",
@@ -69,7 +70,12 @@ const AddProduct = () => {
 
   const saveProduct = async (e) => {
      e.preventDefault()
-     const formData = {
+      
+      if(files.length < 1) {
+         return toast.error("Please add an image")
+      }
+      
+      const formData = {
         name,
         sku: generateSKU(category),
         category,
@@ -79,13 +85,13 @@ const AddProduct = () => {
         regularPrice,
         price,
         description,
-        //images
-     }
+        image: files
+      }
 
-   //console.log(formData)
-   await dispatch(createProduct(formData));
+     //console.log(formData)
+     await dispatch(createProduct(formData));
 
-   //navigate("/admin/all-poducts")
+     navigate("/admin/all-poducts")
   }
   
   return (
