@@ -20,7 +20,7 @@ const getProducts = async () => {
 
 const productService = {
     createProduct,
-    getProducts
+    getProducts,
 
 }
 
