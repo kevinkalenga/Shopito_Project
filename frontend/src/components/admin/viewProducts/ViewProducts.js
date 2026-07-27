@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import {getProducts} from "../../../redux/features/product/productSlice"
+import {deleteProduct, getProducts} from "../../../redux/features/product/productSlice"
 import Search from '../../search/Search';
 import { Spinner } from '../../loader/Loader';
 import { AiOutlineEye } from "react-icons/ai";
@@ -8,6 +8,8 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import {Link} from "react-router-dom"
 import { shortenText } from '../../../utils';
 import ReactPaginate from 'react-paginate';
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 
 const ViewProducts = () => {
@@ -23,6 +25,29 @@ const ViewProducts = () => {
       dispatch(getProducts())
     }
   }, [isLoggedIn, dispatch])
+
+  
+    const confirmDelete = (id) => {
+      confirmAlert({
+        title: "Delete Product",
+        message: "Are you sure you want to delete this product?",
+        buttons: [
+          {
+            label: "Delete",
+            onClick: () => delProduct(id),
+          },
+          {
+            label: "Cancel",
+          },
+        ],
+      });
+    };
+  
+  
+  const delProduct = async (id) => {
+    await dispatch(deleteProduct(id))
+     dispatch(getProducts())
+  }
   
   
   // Begin Paginate 
@@ -107,7 +132,7 @@ const ViewProducts = () => {
                                 </span>
                                 <span>
                                  
-                                    <FaTrashAlt size={20} color={"red"} />
+                                    <FaTrashAlt size={20} color={"red"} onClick={() => confirmDelete(_id)} />
                                 
                                 </span>
                               </td>
