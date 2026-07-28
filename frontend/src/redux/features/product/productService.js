@@ -32,12 +32,18 @@ const getProduct = async (id) => {
   const response = await axios.get(`${PRODUCTS_URL}/${id}`);
    return response.data;;
 };
+// Update Product
+const updateProduct = async (id, formData) => {
+  const response = await axios.patch(`${PRODUCTS_URL}/${id}`, formData);
+   return response.data;;
+};
 
 const productService = {
     createProduct,
     getProducts,
     deleteProduct,
-    getProduct
+    getProduct,
+    updateProduct
 
 }
 
