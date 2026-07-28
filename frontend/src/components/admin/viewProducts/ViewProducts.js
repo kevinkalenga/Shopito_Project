@@ -126,7 +126,7 @@ const ViewProducts = () => {
                                   </Link>
                                 </span>
                                 <span>
-                                  <Link to="/">
+                                  <Link to={`/admin/edit-product/${_id}`}>
                                     <FaEdit size={20} color={"green"} />
                                   </Link>
                                 </span>
