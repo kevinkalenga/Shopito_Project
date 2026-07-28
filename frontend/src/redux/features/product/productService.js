@@ -27,11 +27,17 @@ const deleteProduct = async (id) => {
   await axios.delete(`${PRODUCTS_URL}/${id}`);
   return id;
 };
+// Get Product
+const getProduct = async (id) => {
+  const response = await axios.get(`${PRODUCTS_URL}/${id}`);
+   return response.data;;
+};
 
 const productService = {
     createProduct,
     getProducts,
     deleteProduct,
+    getProduct
 
 }
 
