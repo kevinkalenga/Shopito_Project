@@ -238,7 +238,7 @@ const productSlice = createSlice({
                     : product
             );
 
-            toast.success("Product updated successfully");
+            // toast.success("Product updated successfully");
         })
 
         .addCase(updateProduct.rejected, (state, action) => {
