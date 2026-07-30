@@ -51,7 +51,7 @@ const ViewProducts = () => {
   
   
   // Begin Paginate 
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
   const [itemOffset, setItemOffset] = useState(0);
 
   const endOffset = itemOffset + itemsPerPage;
