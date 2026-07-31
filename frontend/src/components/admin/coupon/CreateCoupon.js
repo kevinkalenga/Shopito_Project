@@ -3,24 +3,42 @@ import {useDispatch, useSelector} from 'react-redux'
 import Card from '../../card/Card'
 import DatePicker from "react-datepicker";
 import Loader from '../../loader/Loader'
-
+import "react-datepicker/dist/react-datepicker.css";
+import {toast} from 'react-toastify'
+import { createCoupon } from '../../../redux/features/coupon/couponSlice';
 
 const CreateCoupon = () => {
    const [name, setName] = useState("")
    const [discount, setDiscount] = useState(0)
    const [expiresAt, setExpiresAt] = useState(new Date())
 
-   const {isLoading} = useSelector((state) => state.category)
+   const {isLoading} = useSelector((state) => state.coupon)
    const dispatch = useDispatch()
    
    
    const saveCoupon = async(e) => {
       e.preventDefault() 
 
-  
+      
+      if(name.length < 5) {
+        return toast.error("Coupon must be up to 5 characters")
+      }
+      if(discount < 1) {
+        return toast.error("Discount must be greater than one")
+      }
+
+      const formData = {
+         name,
+         discount,
+         expiresAt
+      }
+
+      await dispatch(createCoupon(formData))
+      setName("")
+      setDiscount(0)
 
      
-   }
+    }
   
   
   
