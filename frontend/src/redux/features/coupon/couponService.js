@@ -14,7 +14,7 @@ const createCoupon = async (formData) => {
 // Get all coupons
 
 const getCoupons = async () => {
-    const response = await axios.get(API_URL + "/getCoupons")
+    const response = await axios.get(API_URL + "getCoupons")
 
     return response.data
 }
