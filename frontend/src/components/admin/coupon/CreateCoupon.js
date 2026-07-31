@@ -33,9 +33,13 @@ const CreateCoupon = () => {
          expiresAt
       }
 
-      await dispatch(createCoupon(formData))
-      setName("")
-      setDiscount(0)
+      const result = await dispatch(createCoupon(formData))
+      if (createCoupon.fulfilled.match(result)) {
+        setName("");
+        setDiscount(0);
+        setExpiresAt(new Date());
+      }
+     
 
      
     }

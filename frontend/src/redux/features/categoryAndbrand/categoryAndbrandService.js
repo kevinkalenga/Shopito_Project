@@ -46,7 +46,7 @@ const createBrand = async (formData) => {
     return response.data
 }
 
-// Get Categories
+// Get brands
 
 const getBrands = async () => {
     const response = await axios.get(API_URL + "brand/getBrands")
