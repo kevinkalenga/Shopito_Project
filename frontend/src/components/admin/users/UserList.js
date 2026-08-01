@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../../redux/features/users/userSlice";
+import { getUsers, deleteUser } from "../../../redux/features/users/userSlice";
 import Loader from "../../loader/Loader";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import './User.scss'
 import { useNavigate } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+
 
 const UserList = () => {
   const dispatch = useDispatch();
@@ -22,6 +25,34 @@ const UserList = () => {
      navigate(`/admin/edit-user/${user._id}`);
   };
 
+  const confirmDelete = (id) => {
+
+      confirmAlert({
+
+        title: "Delete User",
+
+        message: "Are you sure you want to delete this user?",
+
+        buttons: [
+
+          {
+            label: "Delete",
+            onClick: () => dispatch(deleteUser(id))
+          },
+
+          {
+            label: "Cancel"
+          }
+
+        ]
+
+      });
+
+    };
+  
+  
+  
+  
   return (
     <>
       {isLoading && <Loader />}
@@ -89,7 +120,7 @@ const UserList = () => {
                       style={{
                         cursor: "pointer",
                       }}
-                      
+                      onClick={() => confirmDelete(user._id)}
                     />
                   </td>
                   </tr>

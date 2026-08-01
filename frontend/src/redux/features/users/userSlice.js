@@ -47,6 +47,26 @@ export const updateUser = createAsyncThunk(
 )
 
 
+export const deleteUser = createAsyncThunk(
+    "users/deleteUser",
+    async (id, thunkAPI) => {
+
+        try {
+        return await userService.deleteUser(id);
+
+        } catch(error) {
+
+        const message =
+            error.response?.data?.message ||
+            error.message ||
+            error.toString();
+
+        return thunkAPI.rejectWithValue(message);
+        }
+    }
+)
+
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -85,6 +105,9 @@ const userSlice = createSlice({
     })
 
     // update user 
+    .addCase(updateUser.pending, (state) => {
+            state.isLoading = true;
+    })
     .addCase(updateUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
@@ -95,7 +118,46 @@ const userSlice = createSlice({
             : user
         );
 
-        toast.success("User updated successfully");
+        //toast.success("User updated successfully");
+    })
+    .addCase(updateUser.rejected, (state, action) => {
+
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+
+        toast.error(action.payload);
+
+    })
+
+    // delete user 
+    .addCase(deleteUser.pending, (state) => {
+            state.isLoading = true;
+    })
+
+
+    .addCase(deleteUser.fulfilled, (state, action) => {
+
+        state.isLoading = false;
+        state.isSuccess = true;
+
+        state.users = state.users.filter(
+            (user) => user._id !== action.payload
+        );
+
+        toast.success("User deleted successfully");
+
+    })
+
+
+    .addCase(deleteUser.rejected, (state, action) => {
+
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+
+        toast.error(action.payload);
+
     })
             
 

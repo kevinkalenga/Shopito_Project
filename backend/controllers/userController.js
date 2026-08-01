@@ -327,6 +327,24 @@ const updateUserByAdmin = asyncHandler(async (req, res) => {
   res.status(200).json(updatedUser);
 });
 
+const deleteUser = asyncHandler(async (req, res) => {
+
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  await user.deleteOne();
+
+  res.status(200).json({
+    id: req.params.id,
+    message: "User deleted successfully"
+  });
+
+});
+
 
 
 
@@ -342,5 +360,6 @@ module.exports = {
     forgotPassword,
     resetPassword,
     getUsers,
-    updateUserByAdmin
+    updateUserByAdmin,
+    deleteUser
 }

@@ -12,17 +12,25 @@ const updateUser = async (id, userData) => {
     const response = await axios.patch(
         `${USERS_URL}/${id}`,
         userData,
-        // {
-        //   withCredentials: true,
-        // }
+       
     );
 
     return response.data;
 };
 
+const deleteUser = async (id) => {
+
+    await axios.delete(`${USERS_URL}/${id}`, {
+        withCredentials: true,
+    });
+
+    return id;
+};
+
 const userService = {
     getUsers,
-    updateUser
+    updateUser,
+    deleteUser
 }
 
 export default userService
