@@ -298,6 +298,12 @@ const resetPassword = asyncHandler(async (req, res) => {
   });
 });
 
+// Get users
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password");
+  res.status(200).json(users);
+});
+
 
 
 
@@ -312,4 +318,5 @@ module.exports = {
     updatePhoto,
     forgotPassword,
     resetPassword,
+    getUsers
 }
