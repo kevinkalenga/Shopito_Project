@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 
 const AdminOnlyRoute = ({children}) => {
     const {user} = useSelector((state) => state.auth)
-    const userRole = user?.role ?? {} 
+    const userRole = user?.role ?? "" 
     if(userRole === "admin") {
         return children
     }
@@ -26,7 +26,7 @@ const AdminOnlyRoute = ({children}) => {
 
 export const AdminOnlyLink = ({children}) => {
     const {user} = useSelector((state) => state.auth)
-    const userRole = user?.role ?? {} 
+    const userRole = user?.role ?? "" 
     if(userRole === "admin") {
         return children
     }

@@ -31,7 +31,7 @@ export const getUsers = createAsyncThunk(
 
 
 const userSlice = createSlice({
-  name: "coupon",
+  name: "user",
   initialState,
   reducers: {
     RESET_USER(state) {
@@ -73,4 +73,4 @@ const userSlice = createSlice({
 
 export const {RESET_USER} = userSlice.actions
 
-export default couponSlice.reducer
+export default userSlice.reducer
