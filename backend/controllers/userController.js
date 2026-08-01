@@ -285,7 +285,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     throw new Error("Invalid or expired token");
   }
 
-  // 🔥 IMPORTANT : on met le password brut
+  //  IMPORTANT : on met le password brut
   user.password = newPassword;
 
   user.resetPasswordToken = undefined;

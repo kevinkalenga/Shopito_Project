@@ -14,6 +14,7 @@ import axios from 'axios'
 import { getLoginStatus, getUser } from "./redux/features/auth/authSlice";
 import Profile from "./pages/profile/Profile";
 import Admin from "./pages/admin/Admin";
+import AdminOnlyRoute from "./components/hiddenLink/AdminOnlyRoute";
 
 
 const App = () => {
@@ -51,7 +52,13 @@ const App = () => {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
                 <Route path="/profile" element={<Profile />} />
-                 <Route path="/admin/*" element={<Admin />} />
+                 <Route path="/admin/*" element={
+                     <AdminOnlyRoute>
+                          <Admin />
+                     </AdminOnlyRoute>
+                      
+                    } 
+                  />
             </Routes>
             <Footer />
         </BrowserRouter>
