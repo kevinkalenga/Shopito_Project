@@ -32,12 +32,19 @@ const updateCoupon = async (id, formData) => {
    return response.data;
 };
 
+// Delete Coupon
+const deleteCoupon = async (id) => {
+  const response = await axios.delete(`${API_URL}${id}`);
+  return response.data;
+};
+
 
 const couponService = {
     createCoupon,
     getCoupons,
     getCoupon,
-    updateCoupon
+    updateCoupon,
+    deleteCoupon
 }
 
 export default couponService

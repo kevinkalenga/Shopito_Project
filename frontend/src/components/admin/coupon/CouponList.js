@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector} from "react-redux";
 import { getCoupons } from '../../../redux/features/coupon/couponSlice';
 import Loader from "../../loader/Loader";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import './Coupon.scss'
 import { useNavigate } from "react-router-dom";
+import { deleteCoupon } from "../../../redux/features/coupon/couponSlice";
 
 const CouponList = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
-  //  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  
     const { isLoading, coupons = [] } = useSelector((state) => state.coupon);
     // console.log(coupons)
 
@@ -23,7 +24,11 @@ const CouponList = () => {
       navigate(`/admin/edit-coupon/${coupon._id}`);
     };
   
-  
+    const confirmDelete = (id) => {
+      if(window.confirm("Are you sure you want to delete this coupon?")){
+        dispatch(deleteCoupon(id));
+      }
+    };
   
    return (
      <>
@@ -69,14 +74,14 @@ const CouponList = () => {
                         color="green"
                         className='icon edit'
                          onClick={() => editCoupon(coupon)}
-                        // onClick={() => setSelectedCoupon(coupon)}
+                        
                       />
 
                       <FaTrashAlt
                         size={20}
                         color="red"
                         className='icon delete'
-                       
+                         onClick={() => confirmDelete(coupon._id)}
                       />
                     </td> 
                   </tr>
