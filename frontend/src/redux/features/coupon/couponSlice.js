@@ -65,6 +65,25 @@ export const getCoupon = createAsyncThunk(
   }
 );
 
+// Update coupon
+export const updateCoupon = createAsyncThunk(
+  "coupons/updateCoupon",
+  async ({id, formData}, thunkAPI) => {
+    try {
+      return await couponService.updateCoupon(id, formData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 
 
 const couponSlice = createSlice({
@@ -125,6 +144,38 @@ const couponSlice = createSlice({
               console.log(action.payload)
           })
           .addCase(getCoupon.rejected, (state, action) => {
+              state.isLoading = false;
+              state.isError = true;
+              state.message = action.payload;
+          
+              toast.error(action.payload);
+          })
+          // Update Coupon
+          .addCase(updateCoupon.pending, (state) => {
+              state.isLoading = true;
+              state.isError = false;
+              state.isSuccess = false;
+              state.message = "";
+          })
+          
+          .addCase(updateCoupon.fulfilled, (state, action) => {
+              state.isLoading = false;
+              state.isSuccess = true;
+              state.isError = false;
+          
+              state.coupon = action.payload;
+          
+              // Mise à jour dans la liste
+              state.coupons = state.coupons.map((coupon) =>
+                  coupon._id === action.payload._id
+                      ? action.payload
+                      : coupon
+              );
+          
+              // toast.success("Product updated successfully");
+          })
+          
+          .addCase(updateCoupon.rejected, (state, action) => {
               state.isLoading = false;
               state.isError = true;
               state.message = action.payload;

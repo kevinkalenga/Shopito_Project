@@ -22,7 +22,13 @@ const getCoupons = async () => {
 
 // Get coupon
 const getCoupon = async (couponName) => {
-  const response = await axios.get(API_URL + "getCoupon" + couponName);
+  const response = await axios.get(API_URL + "getCoupon/" + couponName);
+   return response.data;
+};
+
+// Update Coupon
+const updateCoupon = async (id, formData) => {
+  const response = await axios.put(`${API_URL}${id}`, formData);
    return response.data;
 };
 
@@ -31,6 +37,7 @@ const couponService = {
     createCoupon,
     getCoupons,
     getCoupon,
+    updateCoupon
 }
 
 export default couponService

@@ -7,6 +7,7 @@ import Category from '../../components/admin/category/Category'
 import EditCategory from '../../components/admin/category/EditCategory'
 import Brand from '../../components/admin/brand/Brand'
 import EditBrand from '../../components/admin/brand/EditBrand'
+import EditCoupon from '../../components/admin/coupon/EditCoupon'
 import AddProduct from '../../components/admin/addProduct/AddProduct'
 import ViewProducts from '../../components/admin/viewProducts/ViewProducts'
 import EditProduct from '../../components/admin/editProduct/EditProduct'
@@ -31,6 +32,7 @@ const Admin = () => {
             <Route path="all-products" element={<ViewProducts/>} />
             <Route path="coupon" element={<Coupon/>} />
             <Route path="edit-product/:id" element={<EditProduct/>} />
+            <Route path="edit-coupon/:id" element={<EditCoupon/>} />
            
           </Routes>
        </div>

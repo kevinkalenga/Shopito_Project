@@ -72,7 +72,7 @@ const CreateCoupon = () => {
                 placeholder='Coupon discount'
                 name='discount'
                 value={discount}
-                onChange={(e) => setDiscount(e.target.value)}
+                onChange={(e) => setDiscount(Number(e.target.value))}
                 required
               />
               <label>Expiry Date :</label> 
