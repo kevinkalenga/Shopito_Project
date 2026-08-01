@@ -8,8 +8,21 @@ const getUsers = async () => {
     return response.data;
 };
 
+const updateUser = async (id, userData) => {
+    const response = await axios.patch(
+        `${USERS_URL}/${id}`,
+        userData,
+        // {
+        //   withCredentials: true,
+        // }
+    );
+
+    return response.data;
+};
+
 const userService = {
-    getUsers
+    getUsers,
+    updateUser
 }
 
 export default userService

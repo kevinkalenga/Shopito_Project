@@ -304,6 +304,29 @@ const getUsers = asyncHandler(async (req, res) => {
   res.status(200).json(users);
 });
 
+// Update users 
+const updateUserByAdmin = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const { name, email, phone, address, photo, role } = req.body;
+
+  user.name = name || user.name;
+  user.email = email || user.email;
+  user.phone = phone || user.phone;
+  user.address = address || user.address;
+  user.photo = photo || user.photo;
+  user.role = role || user.role;
+
+  const updatedUser = await user.save();
+
+  res.status(200).json(updatedUser);
+});
+
 
 
 
@@ -318,5 +341,6 @@ module.exports = {
     updatePhoto,
     forgotPassword,
     resetPassword,
-    getUsers
+    getUsers,
+    updateUserByAdmin
 }

@@ -4,10 +4,11 @@ import { getUsers } from "../../../redux/features/users/userSlice";
 import Loader from "../../loader/Loader";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import './User.scss'
+import { useNavigate } from "react-router-dom";
 
 const UserList = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate() 
   const { isLoading, users } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -16,6 +17,10 @@ const UserList = () => {
   }, [dispatch]);
 
   console.log("USERS :", users);
+
+  const editUser = (user) => {
+     navigate(`/admin/edit-user/${user._id}`);
+  };
 
   return (
     <>
@@ -75,7 +80,7 @@ const UserList = () => {
                         cursor: "pointer",
                         marginRight: "12px",
                       }}
-                     
+                       onClick={() => editUser(user)}
                     />
 
                     <FaTrashAlt
