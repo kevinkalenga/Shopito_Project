@@ -6,7 +6,7 @@ const AdminOnlyRoute = ({children}) => {
     const {user} = useSelector((state) => state.auth)
     const userRole = user?.role ?? {} 
     if(userRole === "admin") {
-        return 
+        return children
     }
   return (
     <section style={{height: "80vh"}}>
@@ -22,6 +22,16 @@ const AdminOnlyRoute = ({children}) => {
          </div>
     </section>
   )
+}
+
+export const AdminOnlyLink = ({children}) => {
+    const {user} = useSelector((state) => state.auth)
+    const userRole = user?.role ?? {} 
+    if(userRole === "admin") {
+        return children
+    }
+
+    return null
 }
 
 export default AdminOnlyRoute
