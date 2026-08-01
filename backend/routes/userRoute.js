@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { registerUser, loginUser, logout, getUser, getLoginStatus, updateUser, updatePhoto, forgotPassword, resetPassword, getUsers} = require("../controllers/userController");
+const { registerUser, loginUser, logout, getUser, getLoginStatus, updateUser, updatePhoto, forgotPassword, resetPassword, getUsers,updateUserByAdmin} = require("../controllers/userController");
 const {protect, adminOnly} = require("../middleware/authMiddleware")
 
 
@@ -15,5 +15,6 @@ router.patch("/updatePhoto", protect, updatePhoto);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
 router.get("/", protect, adminOnly, getUsers);
+router.patch("/:id", protect, adminOnly, updateUserByAdmin);
 
 module.exports = router;

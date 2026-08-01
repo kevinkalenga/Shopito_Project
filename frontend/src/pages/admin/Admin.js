@@ -13,6 +13,7 @@ import ViewProducts from '../../components/admin/viewProducts/ViewProducts'
 import EditProduct from '../../components/admin/editProduct/EditProduct'
 import Coupon from '../../components/admin/coupon/Coupon'
 import UserList from '../../components/admin/users/UserList'
+import EditUser from '../../components/admin/users/EditUser'
 
 
 const Admin = () => {
@@ -35,6 +36,7 @@ const Admin = () => {
             <Route path="edit-product/:id" element={<EditProduct/>} />
             <Route path="edit-coupon/:id" element={<EditCoupon/>} />
              <Route path="user" element={<UserList />} />
+             <Route path="edit-user/:id" element={<EditUser />} />
            
           </Routes>
        </div>
