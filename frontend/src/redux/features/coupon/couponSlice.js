@@ -45,6 +45,27 @@ export const getCoupons = createAsyncThunk(
 )
 
 
+// getCoupon 
+
+export const getCoupon = createAsyncThunk(
+  "coupons/getCoupon",
+  async (couponName, thunkAPI) => {
+    try {
+      return await couponService.getCoupon(couponName);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+
 
 const couponSlice = createSlice({
   name: "coupon",
@@ -85,6 +106,29 @@ const couponSlice = createSlice({
               state.isLoading = false;
               state.isError = true;
               state.message = action.payload;
+              toast.error(action.payload);
+          })
+           // Get single Coupon
+          .addCase(getCoupon.pending, (state) => {
+              state.isLoading = true;
+              state.isError = false;
+              state.isSuccess = false;
+              state.message = "";
+          })
+          
+          .addCase(getCoupon.fulfilled, (state, action) => {
+              state.isLoading = false;
+              state.isSuccess = true;
+              state.isError = false;
+          
+              state.coupon = action.payload;
+              console.log(action.payload)
+          })
+          .addCase(getCoupon.rejected, (state, action) => {
+              state.isLoading = false;
+              state.isError = true;
+              state.message = action.payload;
+          
               toast.error(action.payload);
           })
 

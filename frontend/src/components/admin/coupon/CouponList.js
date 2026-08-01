@@ -11,7 +11,8 @@ const CouponList = () => {
     console.log(coupons)
 
    useEffect(() => {
-     dispatch(getCoupons())
+     dispatch(getCoupons());
+    
    }, [dispatch])
 
    
@@ -51,9 +52,9 @@ const CouponList = () => {
 
                     <td>{coupon.discount}</td>
 
-                    <td>{new Date(coupon.createdAt).toLocaleDateString()}</td>
+                    <td>{new Date(coupon.createdAt).toLocaleDateString("en-US")}</td>
                     
-                    <td>{new Date(coupon.expiresAt).toLocaleDateString()}</td>
+                    <td>{new Date(coupon.expiresAt).toLocaleDateString("en-US")}</td>
                     
                   
 

@@ -20,9 +20,17 @@ const getCoupons = async () => {
 }
 
 
+// Get coupon
+const getCoupon = async (couponName) => {
+  const response = await axios.get(API_URL + "getCoupon" + couponName);
+   return response.data;
+};
+
+
 const couponService = {
     createCoupon,
     getCoupons,
+    getCoupon,
 }
 
 export default couponService
