@@ -1,0 +1,76 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import {toast} from 'react-toastify'
+import userService from './userService'
+
+
+const initialState = {
+    users: [],
+    user: null,
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    message: "",
+}
+
+
+export const getUsers = createAsyncThunk(
+ "users/getUsers",
+ async (_, thunkAPI) => {
+   try {
+      return await userService.getUsers();
+   } catch(error) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+   }
+ }
+)
+
+
+const userSlice = createSlice({
+  name: "coupon",
+  initialState,
+  reducers: {
+    RESET_USER(state) {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = false;
+        state.message = "";
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+    // Get Users
+    .addCase(getUsers.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+        state.message = "";
+    })
+
+    .addCase(getUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+
+        state.users = action.payload;
+    })
+
+    .addCase(getUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+
+        toast.error(action.payload);
+    })
+            
+
+  }
+});
+
+export const {RESET_USER} = userSlice.actions
+
+export default couponSlice.reducer

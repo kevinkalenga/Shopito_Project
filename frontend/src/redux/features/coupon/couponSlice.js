@@ -108,7 +108,14 @@ export const deleteCoupon = createAsyncThunk(
 const couponSlice = createSlice({
   name: "coupon",
   initialState,
-  reducers: {},
+  reducers: {
+    RESET_COUPON(state) {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = false;
+        state.message = "";
+    }
+  },
   extraReducers: (builder) => {
     builder
         // Create coupon
@@ -211,7 +218,7 @@ const couponSlice = createSlice({
               state.isSuccess = true;
 
               state.coupons = state.coupons.filter(
-                  (coupon) => coupon._id !== action.payload.id
+                  (coupon) => coupon._id !== action.payload
               );
 
               toast.success("Coupon deleted successfully");
@@ -228,6 +235,6 @@ const couponSlice = createSlice({
   }
 });
 
-export const {} = couponSlice.actions
+export const {RESET_COUPON} = couponSlice.actions
 
 export default couponSlice.reducer
