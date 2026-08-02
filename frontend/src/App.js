@@ -16,6 +16,7 @@ import Profile from "./pages/profile/Profile";
 import Admin from "./pages/admin/Admin";
 import AdminOnlyRoute from "./components/hiddenLink/AdminOnlyRoute";
 import NotFound from "./pages/404/NotFound";
+import Product from "./pages/shop/Product";
 
 
 const App = () => {
@@ -50,9 +51,10 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/shop" element={<Product />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
-                <Route path="/profile" element={<Profile />} />
                  <Route path="/admin/*" element={
                      <AdminOnlyRoute>
                           <Admin />
