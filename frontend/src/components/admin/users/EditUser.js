@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../../redux/features/users/userSlice";
 import Loader from "../../loader/Loader";
 import { toast } from "react-toastify";
+import './User.scss'
 
 const EditUser = () => {
 

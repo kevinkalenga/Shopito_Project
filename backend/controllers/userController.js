@@ -200,6 +200,7 @@ const updateUser = asyncHandler(async (req, res) => {
   res.status(200).json(updatedUser);
 });
 
+// update photo
 const updatePhoto = asyncHandler(async (req, res) => {
    
     const {photo} = req.body

@@ -8,6 +8,7 @@ import {
   updateCategory,
 } from "../../../redux/features/categoryAndbrand/categoryAndbrandSlice";
 import Loader from "../../loader/Loader";
+import './Category.scss'
 
 const EditCategory = () => {
   const [name, setName] = useState("");

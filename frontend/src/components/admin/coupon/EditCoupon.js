@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
 import { updateCoupon, getCoupon } from "../../../redux/features/coupon/couponSlice";
+import './Coupon.scss'
 
 
 const EditCoupon = () => {

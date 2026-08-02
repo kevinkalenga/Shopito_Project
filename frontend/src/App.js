@@ -15,6 +15,7 @@ import { getLoginStatus, getUser } from "./redux/features/auth/authSlice";
 import Profile from "./pages/profile/Profile";
 import Admin from "./pages/admin/Admin";
 import AdminOnlyRoute from "./components/hiddenLink/AdminOnlyRoute";
+import NotFound from "./pages/404/NotFound";
 
 
 const App = () => {
@@ -59,6 +60,7 @@ const App = () => {
                       
                     } 
                   />
+                  <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
         </BrowserRouter>
