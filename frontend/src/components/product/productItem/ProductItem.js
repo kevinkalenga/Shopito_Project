@@ -2,11 +2,21 @@ import React from 'react'
 import styles from "./ProductItem.module.scss"
 import Card from '../../card/Card'
 import {Link} from "react-router-dom"
-import { shortenText } from '../../../utils'
 import {toast} from 'react-toastify'
 import DOMPurify from "dompurify"
+import ProductRating from '../productRating/ProductRating'
+import {
+  calculateAverageRating,
+  shortenText,
+} from "../../../utils";
 
 const ProductItem = ({product, grid, _id, name, price, image, regularPrice}) => {
+  
+  
+  
+  
+   const averageRating = calculateAverageRating(product.ratings);
+  
   return (
     <Card cardClass={grid ? `${styles.grid}` : `${styles.list}`}>
        <Link to={`product-details/${_id}`}>
@@ -20,7 +30,10 @@ const ProductItem = ({product, grid, _id, name, price, image, regularPrice}) => 
               <span>{regularPrice > 0 && <del>${regularPrice}</del>}</span>
               {` $${price}`}
             </p>
-            <h4>Rating ***</h4>
+             <ProductRating 
+               averageRating={averageRating}
+               noOfRatings={product?.ratings.length}
+             />
             <h4>{shortenText(name, 18)}</h4>
 
             {
