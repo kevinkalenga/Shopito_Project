@@ -18,12 +18,12 @@ const ProductList = ({products}) => {
             <BsFillGridFill 
              size={22} 
              color="orangered"
-            //  onClick={() => setGrid(true)}
+            onClick={() => setGrid(true)}
             />
             <FaListAlt 
              size={24} 
              color="#0066d4"
-            //  onClick={() => setGrid(false)}
+              onClick={() => setGrid(false)}
             />
             <p>
               <strong>{products.length} Products found</strong>
