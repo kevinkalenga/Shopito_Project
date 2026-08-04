@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import {useSelector} from "react-redux"
+import React, { useState, useEffect } from 'react'
+import {useSelector, useDispatch} from "react-redux"
 import styles from "./ProductFilter.module.scss"
+import { FILTER_BY_CATEGORY } from '../../../redux/features/product/filterSlice';
 
 const ProductFilter = () => {
-  
+  const dispatch = useDispatch()
   const {products, minPrice, maxPrice} = useSelector((state) => state.product)
 
   const [category, setCategory] = useState("All")
@@ -14,8 +15,14 @@ const ProductFilter = () => {
   ]
   //console.log(allCategories)
 
+  useEffect(() => {
+     dispatch(FILTER_BY_CATEGORY({ products, category }));
+  }, [dispatch, products, category]);
+
   const filterProductCategory = (cat) => {
-     console.log(cat)
+    setCategory(cat)
+    dispatch(FILTER_BY_CATEGORY({products:products, category:cat}))
+    //console.log(cat)
   }
   
   return (
@@ -29,7 +36,8 @@ const ProductFilter = () => {
                     key={index}
                     type='button'
                     className={`${category}` === cat ? `${styles.active}` : null}
-                    onClick={() => filterProductCategory(cat)}
+                     
+                      onClick={() => filterProductCategory(cat)}
                     >
                     &#8250; {cat}
                   </button>

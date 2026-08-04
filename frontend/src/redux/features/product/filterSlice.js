@@ -39,12 +39,26 @@ const filterSlice = createSlice({
             tempProducts.sort((a, b) => b.name.localeCompare(a.name));
           }
           state.filteredProducts = tempProducts
-    }
+    },
+      FILTER_BY_CATEGORY(state, action){
+        const { products, category } = action.payload;
+         let tempProducts = [];
+
+          if (category === "All") {
+            tempProducts = [...products];
+          } else {
+            tempProducts = products.filter(
+              (product) => product.category === category
+            );
+          }
+
+          state.filteredProducts = tempProducts;
+      }
 
   }
 });
 
-export const {FILTER_BY_SEARCH, SORT_PRODUCTS} = filterSlice.actions 
+export const {FILTER_BY_SEARCH, SORT_PRODUCTS, FILTER_BY_CATEGORY} = filterSlice.actions 
 
 export const selecteFilteredProducts = (state) => state.filter.filteredProducts;
 
