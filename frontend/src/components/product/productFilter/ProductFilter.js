@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {useSelector, useDispatch} from "react-redux"
 import styles from "./ProductFilter.module.scss"
-import { FILTER_BY_BRAND, FILTER_BY_CATEGORY } from '../../../redux/features/product/filterSlice';
+import { FILTER_BY_BRAND, FILTER_BY_CATEGORY, FILTER_BY_PRICE } from '../../../redux/features/product/filterSlice';
 import { GET_PRICE_RANGE } from '../../../redux/features/product/productSlice';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -39,6 +39,11 @@ const ProductFilter = () => {
   useEffect(() => {
      dispatch(FILTER_BY_BRAND({ products, brand }));
   }, [dispatch, products, brand]);
+
+    // Filter By Price 
+  useEffect(() => {
+     dispatch(FILTER_BY_PRICE({ products, price }));
+  }, [dispatch, products, price]);
   
   
   // Filter by range
