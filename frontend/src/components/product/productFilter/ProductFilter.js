@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {useSelector, useDispatch} from "react-redux"
 import styles from "./ProductFilter.module.scss"
 import { FILTER_BY_BRAND, FILTER_BY_CATEGORY } from '../../../redux/features/product/filterSlice';
+import { GET_PRICE_RANGE } from '../../../redux/features/product/productSlice';
 
 const ProductFilter = () => {
   const dispatch = useDispatch()
@@ -35,6 +36,12 @@ const ProductFilter = () => {
   useEffect(() => {
      dispatch(FILTER_BY_BRAND({ products, brand }));
   }, [dispatch, products, brand]);
+  
+  
+  // Filter by range
+  useEffect(() => {
+     dispatch(GET_PRICE_RANGE({ products }));
+  }, [dispatch, products]);
 
  
   
