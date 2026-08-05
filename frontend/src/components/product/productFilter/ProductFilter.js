@@ -3,6 +3,8 @@ import {useSelector, useDispatch} from "react-redux"
 import styles from "./ProductFilter.module.scss"
 import { FILTER_BY_BRAND, FILTER_BY_CATEGORY } from '../../../redux/features/product/filterSlice';
 import { GET_PRICE_RANGE } from '../../../redux/features/product/productSlice';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 const ProductFilter = () => {
   const dispatch = useDispatch()
@@ -10,6 +12,7 @@ const ProductFilter = () => {
 
   const [category, setCategory] = useState("All")
   const [brand, setBrand] = useState("All")
+  const [price, setPrice] = useState([50, 2000])
   
   const allCategories = [
     "All",
@@ -43,7 +46,7 @@ const ProductFilter = () => {
      dispatch(GET_PRICE_RANGE({ products }));
   }, [dispatch, products]);
 
- 
+ console.log(minPrice, maxPrice)
   
   return (
     <div className={styles.filter}>
@@ -76,6 +79,26 @@ const ProductFilter = () => {
                 })
               }
             </select>
+          </div>
+          <h4>Price</h4>
+          <div className={styles.price}>
+            <Slider 
+              range
+              marks={{
+                1: `${price[0]}`,
+                1000: `${price[1]}`,
+              }}
+              min={minPrice}
+              max={maxPrice}
+              defaultValue={[minPrice, maxPrice]}
+              tipFormatter={(value) => `${value}`}
+              tipProps={{
+                placement: "top",
+                visible: true,
+              }}
+              value={price}
+              onChange={(price) => setPrice(price)}
+            />
           </div>
     </div>
   )
