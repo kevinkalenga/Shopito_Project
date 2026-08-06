@@ -16,6 +16,22 @@ const ProductDetails = () => {
     dispatch(getProduct(id))
   }, [dispatch, id])
   // console.log(product)
+
+  const slideLength = product?.image?.length;
+  const nextSlide = () => {
+    setImageIndex(imageIndex === slideLength - 1 ? 0 : imageIndex + 1)
+  }
+
+  let slideInterval;
+  useEffect(() => {
+    if(product?.image?.length > 1){
+       const auto = () => {
+        slideInterval = setInterval(nextSlide, 3000)
+       }
+       auto()
+    }
+    return () => clearInterval(slideInterval)
+  }, [imageIndex, slideInterval, product])
   
   return (
     <section>
