@@ -27,6 +27,21 @@
       outline: none;
     }
   }
+  .clearBtn {
+    width: 80%;
+    margin-top: 2rem;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d62828;
+    color: white;
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+
+  .clearBtn:hover {
+    background-color: #b71c1c;
+  }
 }
 
 .price {
@@ -62,3 +77,5 @@
   height: 100%;
   background-color: var(--color-danger);
 }
+
+

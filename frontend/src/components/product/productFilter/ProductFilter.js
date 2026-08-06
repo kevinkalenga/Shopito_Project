@@ -52,6 +52,12 @@ const ProductFilter = () => {
   }, [dispatch, products]);
 
  console.log(minPrice, maxPrice)
+
+  const clearFilter = () => {
+    setCategory("All")
+    setBrand("All")
+    setPrice([minPrice, maxPrice])
+  }
   
   return (
     <div className={styles.filter}>
@@ -74,7 +80,7 @@ const ProductFilter = () => {
             }
           </div>
           <h4>Brands</h4>
-          <div className={styles.bland}>
+          <div className={styles.brand}>
             <select value={brand} onChange={(e) => setBrand(e.target.value)}>
               {
                 allBrands.map((brand, index) => {
@@ -105,6 +111,11 @@ const ProductFilter = () => {
               onChange={(price) => setPrice(price)}
             />
           </div>
+          <br />
+          <br />
+          <button className={styles.clearBtn} onClick={clearFilter}>
+            Clear Filter
+          </button>
     </div>
   )
 }
