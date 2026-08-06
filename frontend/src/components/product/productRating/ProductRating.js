@@ -14,7 +14,7 @@ const ProductRating = ({averageRating, noOfRatings}) => {
                 rating={averageRating}
                 editing={false}
               />
-              ({noOfRatings})
+              ({noOfRatings});
             </>
             
         )
