@@ -10,6 +10,7 @@ import {
 } from "../../../utils";
 import { toast } from 'react-toastify'
 import DOMPurify from "dompurify"
+import Card from '../../card/Card'
 
 const ProductDetails = () => {
   
@@ -140,6 +141,10 @@ const ProductDetails = () => {
               </>
             )
            }
+           {/* Review Section */}
+           <Card cardClass={styles.card}>
+              <h3>Product Review</h3>
+           </Card>
         </div>
     </section>
   )
