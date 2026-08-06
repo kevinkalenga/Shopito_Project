@@ -6,6 +6,7 @@ import Search from '../../search/Search';
 import ProductItem from '../productItem/ProductItem';
 import {useDispatch, useSelector} from "react-redux"
 import { FILTER_BY_SEARCH, selecteFilteredProducts, SORT_PRODUCTS } from '../../../redux/features/product/filterSlice';
+import ReactPaginate from 'react-paginate';
 
 const ProductList = ({products}) => {
   const dispatch = useDispatch()
@@ -23,7 +24,20 @@ const ProductList = ({products}) => {
     dispatch(FILTER_BY_SEARCH({products, search}))
   }, [dispatch, products, search])
 
+    // Begin Paginate 
+    const itemsPerPage = 9;
+    const [itemOffset, setItemOffset] = useState(0);
   
+    const endOffset = itemOffset + itemsPerPage;
+   
+    const currentItems = filteredProducts.slice(itemOffset, endOffset);
+    const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
+  
+    // Invoke when user click to request another page.
+    const handlePageClick = (event) => {
+      const newOffset = (event.selected * itemsPerPage) % filteredProducts.length;
+      setItemOffset(newOffset);
+    };
   
   return (
     <div className={styles["product-list"]}>
@@ -40,7 +54,7 @@ const ProductList = ({products}) => {
               onClick={() => setGrid(false)}
             />
             <p>
-              <strong>{products.length} Products found</strong>
+              <strong>{currentItems.length} Products found</strong>
             </p>
          </div>
          <div>
@@ -65,7 +79,7 @@ const ProductList = ({products}) => {
             ) : (
               <>
                 {
-                  filteredProducts?.map((product) => {
+                  currentItems?.map((product) => {
                     return (
                       <div key={product._id}>
                           <ProductItem {...product} grid={grid} product={product}/>
@@ -77,6 +91,21 @@ const ProductList = ({products}) => {
             )
           }
        </div>
+       <ReactPaginate
+          breakLabel="..."
+          nextLabel="Next"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          pageCount={pageCount}
+          previousLabel="Prev"
+          renderOnZeroPageCount={null}
+          containerClassName="pagination"
+          pageLinkClassName="page-num"
+          previousLinkClassName="page-num"
+          nextLinkClassName="page-num"
+          activeLinkClassName="activePage"
+          />
+       
     </div>
   )
 }
