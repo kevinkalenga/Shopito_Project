@@ -22,7 +22,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     ADD_TO_CART(state, action) {
-      // action.payload is the products in db
+      // action.payload is the products that we are sending
        const cartQuantity = getCartQuantityById(state.cartItems, action.payload._id)
       // find the index of the product that you want to send in the cartItems
       const productIndex = state.cartItems.findIndex((item) => item?._id === action.payload._id)
@@ -53,11 +53,37 @@ const cartSlice = createSlice({
         localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
       }
         
+    },
+    DECREASE_CART(state, action) {
+      
+      // find the index of the product that you want to send in the cartItems
+      const productIndex = state.cartItems.findIndex((item) => item?._id === action.payload._id)
+
+      if(state.cartItems[productIndex].cartQuantity > 1) {
+        
+             state.cartItems[productIndex].cartQuantity -= 1
+              toast.success(`${action.payload.name} decrease by one`, {
+              position: "top-left"
+            })
+         
+      } else if(state.cartItems[productIndex].cartQuantity === 1){
+        
+        const newCartItem = state.cartItems.filter((item) => item._id !== action.payload._id)
+        state.cartItems = newCartItem 
+
+        toast.success(`${action.payload.name} removed from cart`, {
+              position: "top-left"
+        })
+      }
+
+      // Save the cart to the localStorage
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
+        
     }
   }
 });
 
-export const {ADD_TO_CART} = cartSlice.actions 
+export const {ADD_TO_CART, DECREASE_CART} = cartSlice.actions 
 // the method when you want to import one thing
 export const selectCartItems = (state) => state.cart.cartItems;
 export const selectCartTotalQuantity = (state) => state.cart.cartTotalQuantity;

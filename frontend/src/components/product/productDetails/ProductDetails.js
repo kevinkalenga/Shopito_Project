@@ -11,7 +11,8 @@ import {
 import { toast } from 'react-toastify'
 import DOMPurify from "dompurify"
 import Card from '../../card/Card'
-import { ADD_TO_CART, selectCartItems } from '../../../redux/features/cart/cartSlice'
+import { ADD_TO_CART, selectCartItems, DECREASE_CART} from '../../../redux/features/cart/cartSlice'
+
 
 const ProductDetails = () => {
   
@@ -50,6 +51,9 @@ const ProductDetails = () => {
   
   const addToCart = (product) => {
      dispatch(ADD_TO_CART(product))
+  }
+  const decreaseCart = (product) => {
+     dispatch(DECREASE_CART(product))
   }
   
   
@@ -132,7 +136,7 @@ const ProductDetails = () => {
                           isCartAdded < 0 ? null : (
 
                             <>
-                              <button className='--btn'>
+                              <button className='--btn' onClick={() => decreaseCart(product)}>
                                 -
                               </button>
                               <p>
