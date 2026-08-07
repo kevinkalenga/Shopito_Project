@@ -82,7 +82,7 @@ const ProductDetails = () => {
                          <p>
                            <b>SKU:</b>
                          </p>
-                         <p>${product?.sku}</p>
+                         <p>{product?.sku}</p>
                       </div>
                       <div className={styles.property}>
                          <p>
@@ -128,14 +128,15 @@ const ProductDetails = () => {
                          }
                          <button className="--btn --btn-danger">ADD TO WISHLIST</button>
                       </div>
-                      <div className='--underline'>
-                              <div dangerouslySetInnerHTML={{
+                      <div className="--underline"></div>
+                     
+                      <div dangerouslySetInnerHTML={{
                                 //  __html: DOMPurify.sanitize(product?.description || ""),
                                  __html: DOMPurify.sanitize(product?.description),
                               }}>
 
-                           </div>
                       </div>
+                     
                    </div>
                 </div>
               </>
