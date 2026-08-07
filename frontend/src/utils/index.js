@@ -26,6 +26,16 @@ export function calculateAverageRating(ratings) {
   return totalStars / ratings.length;
 }
 
+export const getCartQuantityById = (products, id) => {
+   for(let i = 0; i < products.length; i++) {
+      if(products[i]._id === id) {
+        return products[i].cartQuantity;
+      }
+   }
+    // return 0 if the id is not found
+   return 0;
+}
+
 // export const shortenText = (html, n) => {
 //   const text = html.replace(/<[^>]*>/g, "");
 //   return text.length > n ? text.substring(0, n) + "..." : text;

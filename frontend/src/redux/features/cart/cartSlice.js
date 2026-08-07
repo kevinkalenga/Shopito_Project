@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify';
+import { getCartQuantityById } from '../../../utils';
 
 const initialState = {
     cartItems: localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [],
@@ -12,20 +13,32 @@ const initialState = {
     message: "",
 }
 
+
+
+
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
     ADD_TO_CART(state, action) {
+      // action.payload is the products
+       const cartQuantity = getCartQuantityById(state.cartItems, action.payload._id)
       // find the index of the product that you want to send in the cartItems
-      const productIndex = state.cartItems.findIndex((item) => item._id === action.payload._id)
+      const productIndex = state.cartItems.findIndex((item) => item?._id === action.payload._id)
 
       if(productIndex >= 0) {
          // Item already exist in the cart, we are going to increase the quantity
-         state.cartItems[productIndex].cartQuantity += 1
-          toast.success(`${action.payload.name} increased by one`, {
-          position: "top-left"
-        })
+         if(cartQuantity === action.payload.quantity) {
+             state.cartItems[productIndex].cartQuantity += 0
+             toast.info("Max number of product reached!!!")
+         } else {
+                state.cartItems[productIndex].cartQuantity += 1
+              toast.success(`${action.payload.name} increased by one`, {
+              position: "top-left"
+            })
+         }
+        
          
       } else {
         // Item doesn't exist in the cart, we are going to add 
