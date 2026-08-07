@@ -22,7 +22,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     ADD_TO_CART(state, action) {
-      // action.payload is the products
+      // action.payload is the products in db
        const cartQuantity = getCartQuantityById(state.cartItems, action.payload._id)
       // find the index of the product that you want to send in the cartItems
       const productIndex = state.cartItems.findIndex((item) => item?._id === action.payload._id)
@@ -38,6 +38,8 @@ const cartSlice = createSlice({
               position: "top-left"
             })
          }
+
+          localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
         
          
       } else {
@@ -50,10 +52,15 @@ const cartSlice = createSlice({
         // Save the cart to the localStorage
         localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
       }
+        
     }
   }
 });
 
-export const {ADD_TO_CART} = cartSlice.actions
+export const {ADD_TO_CART} = cartSlice.actions 
+// the method when you want to import one thing
+export const selectCartItems = (state) => state.cart.cartItems;
+export const selectCartTotalQuantity = (state) => state.cart.cartTotalQuantity;
+export const selectCartTotalAmount = (state) => state.cart.cartTotalAmount;
 
 export default cartSlice.reducer

@@ -11,7 +11,7 @@ import {
 import { toast } from 'react-toastify'
 import DOMPurify from "dompurify"
 import Card from '../../card/Card'
-import { ADD_TO_CART } from '../../../redux/features/cart/cartSlice'
+import { ADD_TO_CART, selectCartItems } from '../../../redux/features/cart/cartSlice'
 
 const ProductDetails = () => {
   
@@ -19,7 +19,13 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const {product, isLoading} = useSelector((state) => state.product)
   const [imageIndex, setImageIndex] = useState(0)
-     const averageRating = calculateAverageRating(product?.ratings);
+  const averageRating = calculateAverageRating(product?.ratings);
+  const cartItems = useSelector(selectCartItems);
+
+  const cart = cartItems.find((cart) => cart._id === id)
+  const isCartAdded = cartItems.findIndex((cart) => {
+     return cart._id === id
+  })
 
   useEffect(() => {
     dispatch(getProduct(id))
@@ -120,6 +126,25 @@ const ProductDetails = () => {
                            <b>Sold:</b>
                          </p>
                          <p>{product?.sold}</p>
+                      </div>
+                      <div className={styles.count}>
+                         {
+                          isCartAdded < 0 ? null : (
+
+                            <>
+                              <button className='--btn'>
+                                -
+                              </button>
+                              <p>
+                                <b>{cart.cartQuantity}</b>
+                              </p>
+                              <button className='--btn' onClick={() => addToCart(product)}>
+                                +
+                              </button>
+                            </>
+
+                          )
+                         }
                       </div>
                       <div className='--flex-start'>
                          {
