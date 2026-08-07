@@ -11,6 +11,7 @@ import {
 import { toast } from 'react-toastify'
 import DOMPurify from "dompurify"
 import Card from '../../card/Card'
+import { ADD_TO_CART } from '../../../redux/features/cart/cartSlice'
 
 const ProductDetails = () => {
   
@@ -40,6 +41,12 @@ const ProductDetails = () => {
     }
     return () => clearInterval(slideInterval)
   }, [imageIndex, slideInterval, product])
+  
+  const addToCart = (product) => {
+     dispatch(ADD_TO_CART(product))
+  }
+  
+  
   
   return (
     <section>
@@ -117,7 +124,7 @@ const ProductDetails = () => {
                       <div className='--flex-start'>
                          {
                            product?.quantity > 0 ? (
-                            <button className='--btn --btn-primary'>
+                            <button className='--btn --btn-primary' onClick={() => addToCart(product)}>
                                 ADD TO CART
                             </button>
                            ) : (
