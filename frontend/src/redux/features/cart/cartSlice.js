@@ -126,7 +126,7 @@ const cartSlice = createSlice({
           const {price, cartQuantity} = item 
           const cartItemAmount = price * cartQuantity
           return array.push(cartItemAmount);
-        })
+        });
 
         const totalAmount = array.reduce((a, b) => {
             return a + b;

@@ -346,6 +346,25 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 });
 
+// Save Cart
+const saveCart = asyncHandler(async (req, res) => {
+   const {cartItems} = req.body 
+
+   const user = await User.findById(req.user._id) 
+
+   if(user) {
+    user.cartItems = cartItems
+    user.save();
+    // send to the frontend 
+    res.status(200).json({message: "Cart saved"})
+   } else {
+       res.status(404);
+       throw new Error("User not found");
+   }
+})
+
+
+
 
 
 
@@ -362,5 +381,6 @@ module.exports = {
     resetPassword,
     getUsers,
     updateUserByAdmin,
-    deleteUser
+    deleteUser,
+    saveCart,
 }
