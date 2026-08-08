@@ -63,7 +63,9 @@ const Cart = () => {
                                  <td>{index + 1}</td>
                                  <td>
                                    <p><b>{name}</b></p>
-                                   <img src={image[0]} alt={name} style={{width:"100px"}}/>
+                                    <Link to={`/product-details/${_id}`}>
+                                      <img src={image[0]} alt={name} style={{width:"100px"}}/>
+                                    </Link>
                                  </td>
                                  <td>${price}</td>
                                  <td>
