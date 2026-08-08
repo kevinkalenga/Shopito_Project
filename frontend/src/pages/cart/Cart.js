@@ -3,7 +3,7 @@ import styles from "./Cart.module.scss"
 import "./Radio.scss"
 import {useNavigate, Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux"
-import { selectCartItems } from '../../redux/features/cart/cartSlice';
+import { ADD_TO_CART, DECREASE_CART, selectCartItems } from '../../redux/features/cart/cartSlice';
 import { FaTrashAlt } from "react-icons/fa";
 
 const Cart = () => {
@@ -11,18 +11,18 @@ const Cart = () => {
    const dispatch = useDispatch()
    const cartItems = useSelector(selectCartItems)
   
-  const increaseCart = () => {
-    
+  const increaseCart = (product) => {
+     dispatch(ADD_TO_CART(product))
   }
-  const decreaseCart = () => {
-
+  const decreaseCart = (product) => {
+     dispatch(DECREASE_CART(product))
   }
   const removeFromCart = () => {
 
   }
   
-  
-  
+ 
+ 
   
   
   
