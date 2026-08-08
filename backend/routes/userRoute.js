@@ -1,7 +1,20 @@
 const express = require("express");
 const router = express.Router();
 
-const { registerUser, loginUser, logout, getUser, getLoginStatus, updateUser, updatePhoto, forgotPassword, resetPassword, getUsers,updateUserByAdmin, deleteUser, saveCart} = require("../controllers/userController");
+const { 
+    registerUser, 
+    loginUser, 
+    logout,
+    getUser, 
+    getLoginStatus, 
+    updateUser,
+    updatePhoto, 
+    forgotPassword, 
+    resetPassword, 
+    getUsers,
+    updateUserByAdmin, 
+    deleteUser, 
+    saveCart, getCart} = require("../controllers/userController");
 const {protect, adminOnly} = require("../middleware/authMiddleware")
 
 
@@ -19,6 +32,7 @@ router.patch("/:id", protect, adminOnly, updateUserByAdmin);
 router.delete("/:id", protect, adminOnly, deleteUser);
 
 // Cart
+router.patch("/getCart", protect, getCart);
 router.patch("/saveCart", protect, saveCart);
 
 module.exports = router;

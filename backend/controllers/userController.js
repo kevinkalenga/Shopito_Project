@@ -363,6 +363,21 @@ const saveCart = asyncHandler(async (req, res) => {
    }
 })
 
+// Get Cart 
+const  getCart = asyncHandler(async (req, res) => {
+   
+
+    const user = await User.findById(req.user._id) 
+
+    if(user) {
+     
+      res.status(200).json(user.cartItems)
+    } else {
+        res.status(404);
+        throw new Error("User not found");
+    }
+})
+
 
 
 
@@ -383,4 +398,5 @@ module.exports = {
     updateUserByAdmin,
     deleteUser,
     saveCart,
+    getCart
 }
