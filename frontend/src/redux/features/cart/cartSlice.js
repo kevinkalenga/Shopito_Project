@@ -77,7 +77,7 @@ const cartSlice = createSlice({
       }
 
       // Save the cart to the localStorage
-      localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         
     },
 
@@ -87,10 +87,10 @@ const cartSlice = createSlice({
 
         toast.success(`${action.payload.name} removed from cart`, {
               position: "top-left"
-        })
+        });
 
          // Save the cart to the localStorage
-      localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     CLEAR_CART(state, action) {
         

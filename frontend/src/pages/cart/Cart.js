@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from "./Cart.module.scss"
 import "./Radio.scss"
 import {useNavigate, Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux"
-import { ADD_TO_CART, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, selectCartItems } from '../../redux/features/cart/cartSlice';
+import { ADD_TO_CART, CALCULATE_TOTAL_QUANTITY, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, selectCartItems, selectCartTotalQuantity } from '../../redux/features/cart/cartSlice';
 import { FaTrashAlt } from "react-icons/fa";
+import Card from '../../components/card/Card';
 
 const Cart = () => {
    const navigate = useNavigate();
    const dispatch = useDispatch()
    const cartItems = useSelector(selectCartItems)
+   const cartTotalQuantity = useSelector(selectCartTotalQuantity)
   
   const increaseCart = (product) => {
      dispatch(ADD_TO_CART(product))
@@ -23,6 +25,10 @@ const Cart = () => {
   const clearCart = () => {
      dispatch(CLEAR_CART())
   }
+
+  useEffect(() => {
+    dispatch(CALCULATE_TOTAL_QUANTITY())
+  }, [dispatch, cartItems])
   
  
  
@@ -103,7 +109,19 @@ const Cart = () => {
                     <div className={styles.summary}>
                        <button className='--btn --btn-danger' onClick={clearCart}>Clear Cart</button>
                        <div className={styles.checkout}>
-                          <Link to={"/shop"}>&larr; Continue Shopping</Link>
+                          <div>
+                            <Link to={"/shop"}>&larr; Continue Shopping</Link>
+                          </div>
+                          <br /> 
+                          <Card cardClass={styles.card}>
+                             <p>
+                               <b>
+                                 {
+                                   `Cart item(s): ${cartTotalQuantity}`
+                                 }
+                               </b>
+                             </p>
+                          </Card>
                        </div>
                     </div>
                   </>

@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './Header.module.scss'
 import {Link, NavLink, useNavigate } from 'react-router-dom'
 import { FaShoppingCart, FaTimes, FaUserCircle } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { logout, RESET_AUTH } from "../../redux/features/auth/authSlice";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import ShowOnLogin, { ShowOnLogout } from '../hiddenLink/hiddenLink';
 import { UserName } from '../../pages/profile/Profile';
 import { AdminOnlyLink } from '../hiddenLink/AdminOnlyRoute';
+import { CALCULATE_TOTAL_QUANTITY, selectCartTotalQuantity, selectCartItems } from '../../redux/features/cart/cartSlice';
 
 export const logo = (
     <div className={styles.logo}>
@@ -23,7 +24,8 @@ const activeLink = ({isActive}) => (isActive ? `${styles.active}` : "")
 
 
 const Header = () => {
-  
+   const cartTotalQuantity = useSelector(selectCartTotalQuantity)
+   const cartItems = useSelector(selectCartItems)
    const [showMenu, setShowMenu] = useState(false)
    const [scrollPage, setScrollPage] = useState(false)
    const dispatch = useDispatch()
@@ -51,13 +53,17 @@ const Header = () => {
          dispatch(RESET_AUTH());
          navigate("/login");  
    }
+
+     useEffect(() => {
+       dispatch(CALCULATE_TOTAL_QUANTITY())
+     }, [dispatch, cartItems])
    
    const cart = (
     <span className={styles.cart}>
        <Link to="/cart">
           Cart
           <FaShoppingCart size={20} />
-          <p>0</p>
+          <p>{cartTotalQuantity}</p>
        </Link>
     </span>
    )
