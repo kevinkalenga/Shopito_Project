@@ -119,10 +119,33 @@ const cartSlice = createSlice({
 
        state.cartTotalQuantity = totalQuantity
     },
+    CALCULATE_SUBTOTAL(state, action) {
+        const array = []
+
+        state.cartItems?.map((item) => {
+          const {price, cartQuantity} = item 
+          const cartItemAmount = price * cartQuantity
+          return array.push(cartItemAmount)
+        })
+
+        const totalAmount = array.reduce((a, b) => {
+            return a + b
+       }, 0)
+
+        state.cartTotalAmount = totalAmount;
+       
+    },
   }
 });
 
-export const {ADD_TO_CART, DECREASE_CART, REMOVE_FROM_CART, CLEAR_CART,CALCULATE_TOTAL_QUANTITY} = cartSlice.actions 
+export const {
+  ADD_TO_CART, 
+  DECREASE_CART, 
+  REMOVE_FROM_CART, 
+  CLEAR_CART,
+  CALCULATE_TOTAL_QUANTITY, 
+  CALCULATE_SUBTOTAL
+} = cartSlice.actions 
 // the method when you want to import one thing
 export const selectCartItems = (state) => state.cart.cartItems;
 export const selectCartTotalQuantity = (state) => state.cart.cartTotalQuantity;
