@@ -3,7 +3,7 @@ import styles from "./Cart.module.scss"
 import "./Radio.scss"
 import {useNavigate, Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux"
-import { ADD_TO_CART, CALCULATE_TOTAL_QUANTITY, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, selectCartItems, selectCartTotalQuantity } from '../../redux/features/cart/cartSlice';
+import { ADD_TO_CART, CALCULATE_SUBTOTAL, CALCULATE_TOTAL_QUANTITY, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, selectCartItems, selectCartTotalAmount, selectCartTotalQuantity } from '../../redux/features/cart/cartSlice';
 import { FaTrashAlt } from "react-icons/fa";
 import Card from '../../components/card/Card';
 
@@ -12,6 +12,7 @@ const Cart = () => {
    const dispatch = useDispatch()
    const cartItems = useSelector(selectCartItems)
    const cartTotalQuantity = useSelector(selectCartTotalQuantity)
+   const cartTotalAmount = useSelector(selectCartTotalAmount)
   
   const increaseCart = (product) => {
      dispatch(ADD_TO_CART(product))
@@ -27,8 +28,11 @@ const Cart = () => {
   }
 
   useEffect(() => {
-    dispatch(CALCULATE_TOTAL_QUANTITY())
+    dispatch(CALCULATE_TOTAL_QUANTITY());
+     dispatch(CALCULATE_SUBTOTAL())
   }, [dispatch, cartItems])
+  
+ 
   
  
  
@@ -117,10 +121,16 @@ const Cart = () => {
                              <p>
                                <b>
                                  {
-                                   `Cart item(s): ${cartTotalQuantity}`
+                                   `Cart item(s) : ${cartTotalQuantity}`
                                  }
                                </b>
                              </p>
+                             <div className={styles.text}>
+                                <h4>Subtotal:</h4>
+                                <h3>
+                                  {`$${cartTotalAmount?.toFixed(2)}`}
+                                </h3>
+                             </div>
                           </Card>
                        </div>
                     </div>
