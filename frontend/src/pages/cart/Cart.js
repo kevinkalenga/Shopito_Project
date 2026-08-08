@@ -3,7 +3,7 @@ import styles from "./Cart.module.scss"
 import "./Radio.scss"
 import {useNavigate, Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux"
-import { ADD_TO_CART, DECREASE_CART, REMOVE_FROM_CART, selectCartItems } from '../../redux/features/cart/cartSlice';
+import { ADD_TO_CART, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, selectCartItems } from '../../redux/features/cart/cartSlice';
 import { FaTrashAlt } from "react-icons/fa";
 
 const Cart = () => {
@@ -19,6 +19,9 @@ const Cart = () => {
   }
   const removeFromCart = (product) => {
      dispatch(REMOVE_FROM_CART(product))
+  }
+  const clearCart = () => {
+     dispatch(CLEAR_CART())
   }
   
  
@@ -95,6 +98,12 @@ const Cart = () => {
                         }
                       </tbody>
                     </table>
+                    <div className={styles.summary}>
+                       <button className='--btn --btn-danger' onClick={clearCart}>Clear Cart</button>
+                       <div className={styles.checkout}>
+                          <Link to={"/shop"}>&larr; Continue Shopping</Link>
+                       </div>
+                    </div>
                   </>
               )
             }

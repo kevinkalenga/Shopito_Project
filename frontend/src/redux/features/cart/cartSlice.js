@@ -91,11 +91,22 @@ const cartSlice = createSlice({
 
          // Save the cart to the localStorage
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
-    }
+    },
+    CLEAR_CART(state, action) {
+        
+        state.cartItems = []
+
+        toast.success(`Cart has been cleared successfully!`, {
+              position: "top-left"
+        })
+
+         // Save the cart to the localStorage
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
+    },
   }
 });
 
-export const {ADD_TO_CART, DECREASE_CART, REMOVE_FROM_CART} = cartSlice.actions 
+export const {ADD_TO_CART, DECREASE_CART, REMOVE_FROM_CART, CLEAR_CART} = cartSlice.actions 
 // the method when you want to import one thing
 export const selectCartItems = (state) => state.cart.cartItems;
 export const selectCartTotalQuantity = (state) => state.cart.cartTotalQuantity;
