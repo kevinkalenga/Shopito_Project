@@ -31,6 +31,22 @@ export const saveCartDB = createAsyncThunk(
   }
 )
 
+// Get CartDB 
+export const getCartDB = createAsyncThunk(
+  "cart/getCartDB",
+
+  async (_, thunkAPI ) => {
+    try {
+      return await cartService.getCartDB()
+    } catch (error) {
+      const message = (error.response && error.response.data && error.response.data.message) || 
+      error.message || error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+    
+  }
+)
+
 
 
 
@@ -167,6 +183,7 @@ const cartSlice = createSlice({
               state.isSuccess = true;
               state.isError = false;
               state.message = "";
+              console.log(action.payload)
               
                      
           })
@@ -176,6 +193,28 @@ const cartSlice = createSlice({
             state.message = action.payload;
             toast.error(action.payload);
           })
+          // GetCartDB
+          .addCase(getCartDB.pending, (state) => { 
+            state.isLoading = true; 
+            state.isSuccess = false; 
+            state.isError = false; 
+          })
+          .addCase(getCartDB.fulfilled, (state, action) => { 
+            state.isLoading = false; 
+            state.isSuccess = true; 
+            state.isError = false; 
+            state.message = ""; 
+            state.cartItems = action.payload;
+            console.log(action.payload)
+         })
+         .addCase(getCartDB.rejected, (state, action) => { 
+          state.isLoading = false; 
+          state.isSuccess = false; 
+          state.isError = true; 
+          state.message = action.payload; 
+          toast.error(action.payload); 
+        });
+          
   }
 });
 

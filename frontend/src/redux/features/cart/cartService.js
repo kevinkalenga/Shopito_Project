@@ -10,10 +10,19 @@ const saveCartDB = async (cartData) => {
 
     return response.data;
 }
+// Get Cart
+
+const getCartDB = async () => {
+    const response = await axios.get(API_URL + "getCart")
+
+    return response.data;
+}
 
 
 const cartService = {
-   saveCartDB
+   saveCartDB,
+   getCartDB
+   
 }
 
 export default cartService;
