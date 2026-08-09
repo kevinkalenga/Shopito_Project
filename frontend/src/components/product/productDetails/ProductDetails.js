@@ -11,7 +11,7 @@ import {
 import { toast } from 'react-toastify'
 import DOMPurify from "dompurify"
 import Card from '../../card/Card'
-import { ADD_TO_CART, selectCartItems, DECREASE_CART} from '../../../redux/features/cart/cartSlice'
+import { ADD_TO_CART, selectCartItems, DECREASE_CART, saveCartDB} from '../../../redux/features/cart/cartSlice'
 
 
 const ProductDetails = () => {
@@ -51,9 +51,13 @@ const ProductDetails = () => {
   
   const addToCart = (product) => {
      dispatch(ADD_TO_CART(product))
+    //  to get what is in the localeStorage to send in the db
+     dispatch(saveCartDB({cartItems: JSON.parse(localStorage.getItem("cartItems"))}))
   }
   const decreaseCart = (product) => {
      dispatch(DECREASE_CART(product))
+      //to get what is in the localeStorage to send in the db
+     dispatch(saveCartDB({cartItems: JSON.parse(localStorage.getItem("cartItems"))}))
   }
   
   

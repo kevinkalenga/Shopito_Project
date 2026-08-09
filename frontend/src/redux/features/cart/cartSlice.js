@@ -167,7 +167,7 @@ const cartSlice = createSlice({
               state.isSuccess = true;
               state.isError = false;
               state.message = "";
-              toast.success("Cart has been saved in the database successfully")
+              
                      
           })
           .addCase(saveCartDB.rejected, (state, action) => {

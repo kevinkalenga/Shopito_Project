@@ -3,7 +3,7 @@ import styles from "./Cart.module.scss"
 import "./Radio.scss"
 import {useNavigate, Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux"
-import { ADD_TO_CART, CALCULATE_SUBTOTAL, CALCULATE_TOTAL_QUANTITY, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, selectCartItems, selectCartTotalAmount, selectCartTotalQuantity } from '../../redux/features/cart/cartSlice';
+import { ADD_TO_CART, CALCULATE_SUBTOTAL, CALCULATE_TOTAL_QUANTITY, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, saveCartDB, selectCartItems, selectCartTotalAmount, selectCartTotalQuantity } from '../../redux/features/cart/cartSlice';
 import { FaTrashAlt } from "react-icons/fa";
 import Card from '../../components/card/Card';
 
@@ -15,16 +15,24 @@ const Cart = () => {
    const cartTotalAmount = useSelector(selectCartTotalAmount)
   
   const increaseCart = (product) => {
-     dispatch(ADD_TO_CART(product))
+     dispatch(ADD_TO_CART(product));
+      //to get what is in the localeStorage to send in the db
+     dispatch(saveCartDB({cartItems: JSON.parse(localStorage.getItem("cartItems"))}))
   }
   const decreaseCart = (product) => {
-     dispatch(DECREASE_CART(product))
+     dispatch(DECREASE_CART(product));
+      //to get what is in the localeStorage to send in the db
+     dispatch(saveCartDB({cartItems: JSON.parse(localStorage.getItem("cartItems"))}))
   }
   const removeFromCart = (product) => {
-     dispatch(REMOVE_FROM_CART(product))
+     dispatch(REMOVE_FROM_CART(product));
+      //to get what is in the localeStorage to send in the db
+     dispatch(saveCartDB({cartItems: JSON.parse(localStorage.getItem("cartItems"))}))
   }
   const clearCart = () => {
-     dispatch(CLEAR_CART())
+     dispatch(CLEAR_CART());
+        //to get what is in the localeStorage to send in the db
+     dispatch(saveCartDB({cartItems: []}))
   }
 
   useEffect(() => {

@@ -9,7 +9,7 @@ import {
   calculateAverageRating,
   shortenText,
 } from "../../../utils";
-import { ADD_TO_CART } from '../../../redux/features/cart/cartSlice'
+import { ADD_TO_CART, saveCartDB } from '../../../redux/features/cart/cartSlice'
 import {useDispatch} from "react-redux"
 
 const ProductItem = ({product, grid, _id, name, price, image, regularPrice}) => {
@@ -22,6 +22,8 @@ const ProductItem = ({product, grid, _id, name, price, image, regularPrice}) => 
   
     const addToCart = (product) => {
        dispatch(ADD_TO_CART(product))
+        //  to get what is in the localeStorage to send in the db
+        dispatch(saveCartDB({cartItems: JSON.parse(localStorage.getItem("cartItems"))}))
     }
   
   
