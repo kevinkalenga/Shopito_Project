@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 import { getCartQuantityById } from '../../../utils';
 import cartService from './cartService';
 
+
+
 const initialState = {
     cartItems: localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) : [],
     cartTotalQuantity: 0,
@@ -183,7 +185,7 @@ const cartSlice = createSlice({
               state.isSuccess = true;
               state.isError = false;
               state.message = "";
-              console.log(action.payload)
+              //console.log(action.payload)
               
                      
           })
@@ -205,7 +207,13 @@ const cartSlice = createSlice({
             state.isError = false; 
             state.message = ""; 
             state.cartItems = action.payload;
-            console.log(action.payload)
+
+              localStorage.setItem(
+                "cartItems",
+                JSON.stringify(action.payload)
+            );
+
+            // console.log(action.payload);
          })
          .addCase(getCartDB.rejected, (state, action) => { 
           state.isLoading = false; 

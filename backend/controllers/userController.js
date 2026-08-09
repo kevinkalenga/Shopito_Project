@@ -352,15 +352,18 @@ const saveCart = asyncHandler(async (req, res) => {
 
    const user = await User.findById(req.user._id) 
 
-   if(user) {
-    user.cartItems = cartItems
-    user.save();
-    // send to the frontend 
-    res.status(200).json({message: "Cart saved"})
-   } else {
-       res.status(404);
-       throw new Error("User not found");
-   }
+     if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+      }
+
+      user.cartItems = cartItems;
+
+      await user.save();
+
+      res.status(200).json({
+        message: "Cart saved",
+      });
 })
 
 // Get Cart 
@@ -369,13 +372,12 @@ const  getCart = asyncHandler(async (req, res) => {
 
     const user = await User.findById(req.user._id) 
 
-    if(user) {
-     
-      res.status(200).json(user.cartItems)
-    } else {
+      if (!user) {
         res.status(404);
         throw new Error("User not found");
-    }
+      }
+
+      res.status(200).json(user.cartItems || []);
 })
 
 

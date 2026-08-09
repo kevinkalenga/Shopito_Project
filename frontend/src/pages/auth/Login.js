@@ -5,7 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { login, RESET_AUTH } from "../../redux/features/auth/authSlice";
+// import { login, RESET_AUTH } from "../../redux/features/auth/authSlice";
+import { login} from "../../redux/features/auth/authSlice";
+import { getCartDB } from "../../redux/features/cart/cartSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -42,9 +44,11 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
+      dispatch(getCartDB())
       navigate("/");
-      dispatch(RESET_AUTH());
+     
     }
+    //  dispatch(RESET_AUTH());
   }, [isLoggedIn, navigate, dispatch]);
 
   return (

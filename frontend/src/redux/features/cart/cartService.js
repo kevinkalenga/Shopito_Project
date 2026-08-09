@@ -6,14 +6,18 @@ export const API_URL = `${BACKEND_URL}/api/users/`;
 // Save Cart
 
 const saveCartDB = async (cartData) => {
-    const response = await axios.patch(API_URL + "saveCart", cartData)
+    const response = await axios.patch(API_URL + "saveCart", cartData, {
+         withCredentials: true,
+    })
 
     return response.data;
 }
 // Get Cart
 
 const getCartDB = async () => {
-    const response = await axios.get(API_URL + "getCart")
+    const response = await axios.get(API_URL + "getCart", {
+         withCredentials: true,
+    })
 
     return response.data;
 }
@@ -21,7 +25,7 @@ const getCartDB = async () => {
 
 const cartService = {
    saveCartDB,
-   getCartDB
+   getCartDB,
    
 }
 
