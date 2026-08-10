@@ -38,7 +38,7 @@ const ProductItem = ({product, grid, _id, name, price, image, regularPrice}) => 
          <div className={styles.details}>
             <p>
               <span>{regularPrice > 0 && <del>${regularPrice}</del>}</span>
-              {` $${price}`}
+                {` $${price}`}
             </p>
              <ProductRating 
                averageRating={averageRating}

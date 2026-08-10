@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import styles from "./Cart.module.scss"
 import "./Radio.scss"
-import {useNavigate, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux"
 import { ADD_TO_CART, CALCULATE_SUBTOTAL, CALCULATE_TOTAL_QUANTITY, CLEAR_CART, DECREASE_CART, REMOVE_FROM_CART, saveCartDB, selectCartItems, selectCartTotalAmount, selectCartTotalQuantity } from '../../redux/features/cart/cartSlice';
 import { FaTrashAlt } from "react-icons/fa";
 import Card from '../../components/card/Card';
+import VerifyCoupon from '../../components/verifyCoupon/VerifyCoupon';
 
 const Cart = () => {
-   const navigate = useNavigate();
+   
    const dispatch = useDispatch()
    const cartItems = useSelector(selectCartItems)
    const cartTotalQuantity = useSelector(selectCartTotalQuantity)
@@ -139,6 +140,7 @@ const Cart = () => {
                                   {`$${cartTotalAmount?.toFixed(2)}`}
                                 </h3>
                              </div>
+                             <VerifyCoupon />
                           </Card>
                        </div>
                     </div>

@@ -71,16 +71,7 @@ const Home = () => {
        />
     </div>
   ))
-  // const productss = productData.map((item) => (
-  //   <div key={item.id}>
-  //      <CarouselItem 
-  //       name={item.name}
-  //       url={item.imageurl}
-  //       price={item.price}
-  //       description={item.description}
-  //      />
-  //   </div>
-  // ))
+ 
   
   return (
     <>
