@@ -1,5 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const Order = require("../models/orderModel");
+const Product = require("../models/productModel");
+const { calculateTotalPrice } = require("../utils");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY) 
 
 const createOrder = asyncHandler(async (req, res) => { 
   // coming from the frontend
@@ -88,11 +91,53 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
       res.status(200).json({message: "Order status updated"});
 }); 
 
+// Pay With Stripe 
+
+const payWithStripe = asyncHandler(async (req, res) => {
+     const {items, shipping, description, coupon} = req.body;
+
+     const products = await Product.find()
+
+     let orderAmount;
+     orderAmount = calculateTotalPrice(products, items)
+     if(coupon !== null && coupon?.name !== "nil") {
+      let totalAfterDicount = orderAmount - (orderAmount * coupon.discount) / 100 
+      orderAmount = totalAfterDicount;
+     }
+
+     const paymentIntent = await stripe.paymentIntents.create({
+      amount: orderAmount,
+      currency: "usd",
+      automatic_payment_methods: {
+        enabled: true,
+      },
+      description,
+      shipping: {
+        address: {
+          line1: shipping.line1,
+          line2: shipping.line2,
+          city: shipping.city,
+          country: shipping.country,
+          postal_code: shipping.postal_code,
+          
+        },
+        name: shipping.name,
+        phone: shipping.phone
+      }
+     });
+
+     res.send({
+       clientSecret: paymentIntent.client_secret,
+     })
+
+})
+
 
 
 module.exports = {
   createOrder,
   getOrders,
   getOrder,
-  updateOrderStatus
+  updateOrderStatus,
+  payWithStripe
 }

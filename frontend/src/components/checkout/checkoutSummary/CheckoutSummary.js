@@ -4,7 +4,7 @@ import { CALCULATE_SUBTOTAL } from '../../../redux/features/cart/cartSlice';
 import { Link } from 'react-router-dom';
 import styles from "./CheckoutSummary.module.scss"
 import Card from '../../card/Card';
-import VerifyCoupon, { CartDiscount } from "../../verifyCoupon/VerifyCoupon";
+import { CartDiscount } from "../../verifyCoupon/VerifyCoupon";
 
 const CheckoutSummary = () => {
   
