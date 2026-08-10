@@ -4,6 +4,7 @@ import { CALCULATE_SUBTOTAL } from '../../../redux/features/cart/cartSlice';
 import { Link } from 'react-router-dom';
 import styles from "./CheckoutSummary.module.scss"
 import Card from '../../card/Card';
+import VerifyCoupon, { CartDiscount } from "../../verifyCoupon/VerifyCoupon";
 
 const CheckoutSummary = () => {
   
@@ -40,6 +41,7 @@ const CheckoutSummary = () => {
                   <h3>${cartTotalAmount.toFixed(2)}</h3>
                </div>
                {/* Cart Discount */}
+               <CartDiscount />
                {
                  cartItems.map((item) => {
                    const {_id, name, price, cartQuantity} = item

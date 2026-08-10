@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux"
 import Card from '../card/Card'
 import { getCoupon, REMOVE_COUPON } from '../../redux/features/coupon/couponSlice'
 
-const CartDiscount = () => {
+export const CartDiscount = () => {
    const {coupon} = useSelector((state) => state.coupon)
 
   const {initialCartTotalAmount} = useSelector((state) => state.cart)
@@ -34,7 +34,7 @@ const VerifyCoupon = () => {
 
   const verifyCoupon = (e) => {
     e.preventDefault()
-    dispatch(getCoupon(couponName))
+    dispatch(getCoupon(couponName));
   }
   const removeCoupon = () => {
     dispatch(REMOVE_COUPON())
