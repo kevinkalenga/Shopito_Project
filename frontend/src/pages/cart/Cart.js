@@ -7,6 +7,7 @@ import { ADD_TO_CART, CALCULATE_SUBTOTAL, CALCULATE_TOTAL_QUANTITY, CLEAR_CART, 
 import { FaTrashAlt } from "react-icons/fa";
 import Card from '../../components/card/Card';
 import VerifyCoupon from '../../components/verifyCoupon/VerifyCoupon';
+import PaymentOptions from '../../components/paymentOptions/PaymentOptions';
 
 const Cart = () => {
    
@@ -142,6 +143,8 @@ const Cart = () => {
                                 </h3>
                              </div>
                              <VerifyCoupon />
+                             <div className='--underline --my'></div>
+                             <PaymentOptions />
                           </Card>
                        </div>
                     </div>
