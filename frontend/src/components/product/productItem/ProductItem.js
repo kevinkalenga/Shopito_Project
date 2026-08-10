@@ -60,7 +60,7 @@ const ProductItem = ({product, grid, _id, name, price, image, regularPrice}) => 
 
             {
               product?.quantity > 0 ? (
-                <button className='--btn --btn-primary'onClick={() => addToCart(product)}>
+                <button className='--btn --btn-primary mt-2'onClick={() => addToCart(product)}>
                    Add To Cart
                 </button>
               ) : (
