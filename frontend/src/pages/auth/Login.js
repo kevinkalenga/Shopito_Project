@@ -1,17 +1,19 @@
 import styles from "./auth.module.scss";
 import loginImg from "../../assets/login.png";
 import Card from "../../components/card/Card";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 // import { login, RESET_AUTH } from "../../redux/features/auth/authSlice";
 import { login} from "../../redux/features/auth/authSlice";
-import { getCartDB } from "../../redux/features/cart/cartSlice";
+import { getCartDB, saveCartDB } from "../../redux/features/cart/cartSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [urlParams] = useSearchParams();
+  const redirect = urlParams.get("redirect")
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,12 +46,16 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
+      if(redirect === "cart") {
+        dispatch(saveCartDB({cartItems: JSON.parse(localStorage.getItem("cartItems"))}))
+        return navigate("/cart")
+      }
       dispatch(getCartDB())
       navigate("/");
      
     }
     //  dispatch(RESET_AUTH());
-  }, [isLoggedIn, navigate, dispatch]);
+  }, [isLoggedIn, navigate, dispatch, redirect]);
 
   return (
     <section className={`container ${styles.auth}`}>
