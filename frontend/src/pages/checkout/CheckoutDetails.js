@@ -6,6 +6,7 @@ import { SAVE_BILLING_ADDRESS, SAVE_SHIPPING_ADDRESS, selectBillingAddress, sele
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import CheckoutSummary from '../../components/checkout/checkoutSummary/CheckoutSummary'
 
 const initialAddressState = {
   name: "",
@@ -238,6 +239,11 @@ const CheckoutDetails = () => {
                            Proceed To Checkout
                         </button>
                 </Card>
+             </div>
+             <div>
+               <Card cardClass={styles.card}>
+                  <CheckoutSummary />
+               </Card>
              </div>
            </form>
         </div>
