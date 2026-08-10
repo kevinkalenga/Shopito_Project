@@ -1,6 +1,27 @@
 import React, { useState } from 'react'
 import "./VerifyCoupon.scss"
 import {useDispatch, useSelector} from "react-redux"
+import Card from '../card/Card'
+
+const CartDiscount = () => {
+   const {coupon} = useSelector((state) => state.coupon)
+
+  const {initialCartTotalAmount} = useSelector((state) => state.cart)
+   return <>
+          {coupon !== null && (
+            <Card cardClass={"coupon-msg"}>
+                <p className='--center-all'>
+                  Initial Total: ${initialCartTotalAmount} |
+                  Coupon: {coupon?.name} |
+                  Discount: ${coupon?.discount} |
+                </p>
+            </Card>
+          )}
+   </>
+}
+
+
+
 
 const VerifyCoupon = () => {
   const dispatch = useDispatch()
@@ -8,7 +29,7 @@ const VerifyCoupon = () => {
   const [showForm, setShowForm] = useState(false);
   const {coupon} = useSelector((state) => state.coupon)
 
-  const {cartTotalAmount, fixedCartTotalAmount} = useSelector((state) => state.cart)
+  const {cartTotalAmount, initialCartTotalAmount} = useSelector((state) => state.cart)
 
   const verifyCoupon = () => {
     
@@ -20,6 +41,7 @@ const VerifyCoupon = () => {
   
   return (
     <>
+      <CartDiscount />
       <div className='--flex-between'>
           <p>Have a coupon ?</p>
           {
