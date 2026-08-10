@@ -32,35 +32,35 @@ const getCoupons = asyncHandler(async (req, res) => {
    console.log(coupons);
     res.status(200).json(coupons)
 })
-// const getCoupon = asyncHandler(async (req, res) => {
+const getCoupon = asyncHandler(async (req, res) => {
    
-//     // sorting base on the creation date
-//    const coupon = await Coupon.findOne({
+    // sorting base on the creation date
+   const coupon = await Coupon.findOne({
    
-//       name: req.params.couponName,
-//       expiresAt: { $gt: new Date() }
-//     //   expiresAt: {$gt: Date.now()}
-//    })
+      name: req.params.couponName,
+      expiresAt: { $gt: new Date() }
+    //   expiresAt: {$gt: Date.now()}
+   })
     
   
-//     if(!coupon) {
-//        res.status(404)
-//         throw new Error("Coupon not found or has expired")
-//     }
-//     res.status(200).json(coupon)
-// })
+    if(!coupon) {
+       res.status(404)
+        throw new Error("Coupon not found or has expired")
+    }
+    res.status(200).json(coupon)
+})
 
-const getCoupon = asyncHandler(async (req, res) => {
+// const getCoupon = asyncHandler(async (req, res) => {
 
-  const coupon = await Coupon.findById(req.params.id);
+//   const coupon = await Coupon.findById(req.params.id);
 
-  if (!coupon) {
-    res.status(404);
-    throw new Error("Coupon not found");
-  }
+//   if (!coupon) {
+//     res.status(404);
+//     throw new Error("Coupon not found");
+//   }
 
-  res.status(200).json(coupon);
-});
+//   res.status(200).json(coupon);
+// });
 
 const updateCoupon = asyncHandler(async (req, res) => {
   

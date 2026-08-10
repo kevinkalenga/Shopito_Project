@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "./VerifyCoupon.scss"
 import {useDispatch, useSelector} from "react-redux"
 import Card from '../card/Card'
+import { getCoupon } from '../../redux/features/coupon/couponSlice'
 
 const CartDiscount = () => {
    const {coupon} = useSelector((state) => state.coupon)
@@ -13,7 +14,7 @@ const CartDiscount = () => {
                 <p className='--center-all'>
                   Initial Total: ${initialCartTotalAmount} |
                   Coupon: {coupon?.name} |
-                  Discount: ${coupon?.discount} |
+                  Discount: {coupon?.discount}%
                 </p>
             </Card>
           )}
@@ -31,8 +32,9 @@ const VerifyCoupon = () => {
 
   const {cartTotalAmount, initialCartTotalAmount} = useSelector((state) => state.cart)
 
-  const verifyCoupon = () => {
-    
+  const verifyCoupon = (e) => {
+    e.preventDefault()
+    dispatch(getCoupon(couponName))
   }
   const removeCoupon = () => {
     
