@@ -1,10 +1,30 @@
 import React, { useState } from 'react'
 import "./Radio.scss"
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector} from "react-redux";
+import { SAVE_PAYMENT_METHOD } from '../../redux/features/checkout/checkoutSlice';
 
 const PaymentOptions = () => {
   const [paymentMethod, setPaymentMethod] = useState("")
-  const setPayment = () => {
-
+    const { isLoggedIn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  
+  const setPayment = (e) => {
+    e.preventDefault()
+    if(paymentMethod === "") {
+      return toast.error("Please select a payment method.")
+    }
+    dispatch(SAVE_PAYMENT_METHOD(paymentMethod))
+    if(isLoggedIn) {
+      navigate("/checkout-details")
+    } else {
+      // after the login redirect the user to the cart page
+       navigate("/login?redirect=cart")
+    }
+    //console.log(paymentMethod)
   }
   
   

@@ -19,6 +19,7 @@ import NotFound from "./pages/404/NotFound";
 import Product from "./pages/shop/Product";
 import ProductDetails from "./components/product/productDetails/ProductDetails";
 import Cart from "./pages/cart/Cart";
+import CheckoutDetails from "./pages/checkout/CheckoutDetails";
 
 
 const App = () => {
@@ -57,6 +58,7 @@ const App = () => {
                 <Route path="/shop" element={<Product />} />
                 <Route path="/product-details/:id" element={<ProductDetails />} />
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout-details" element={<CheckoutDetails />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
                  <Route path="/admin/*" element={

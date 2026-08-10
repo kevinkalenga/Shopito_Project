@@ -27,4 +27,8 @@ const checkoutSlice = createSlice({
 
 export const {SAVE_PAYMENT_METHOD, SAVE_SHIPPING_ADDRESS, SAVE_BILLING_ADDRESS} = checkoutSlice.actions
 
-export default checkoutSlice.reducer
+export const selectPaymentMethod = (state) => state.checkout.paymentMethod;
+export const selectShippingAddress = (state) => state.checkout.shipppingAddress;
+export const selectBillingAddress = (state) => state.checkout.billingAddress;
+
+export default checkoutSlice.reducer;
