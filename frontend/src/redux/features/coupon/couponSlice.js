@@ -109,11 +109,9 @@ const couponSlice = createSlice({
   name: "coupon",
   initialState,
   reducers: {
-    RESET_COUPON(state) {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.isError = false;
-        state.message = "";
+    REMOVE_COUPON(state) {
+      
+        state.coupon = null
     }
   },
   extraReducers: (builder) => {
@@ -235,6 +233,6 @@ const couponSlice = createSlice({
   }
 });
 
-export const {RESET_COUPON} = couponSlice.actions
+export const {REMOVE_COUPON} = couponSlice.actions
 
 export default couponSlice.reducer

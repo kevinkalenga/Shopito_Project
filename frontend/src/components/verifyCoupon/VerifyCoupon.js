@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import "./VerifyCoupon.scss"
 import {useDispatch, useSelector} from "react-redux"
 import Card from '../card/Card'
-import { getCoupon } from '../../redux/features/coupon/couponSlice'
+import { getCoupon, REMOVE_COUPON } from '../../redux/features/coupon/couponSlice'
 
 const CartDiscount = () => {
    const {coupon} = useSelector((state) => state.coupon)
@@ -37,7 +37,7 @@ const VerifyCoupon = () => {
     dispatch(getCoupon(couponName))
   }
   const removeCoupon = () => {
-    
+    dispatch(REMOVE_COUPON())
   }
   
   
