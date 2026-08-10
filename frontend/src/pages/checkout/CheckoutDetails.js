@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from "./CheckoutDetails.module.scss"
 import Card from '../../components/card/Card'
 import {CountryDropdown} from "react-country-region-selector"
-import { selectBillingAddress, selectPaymentMethod, selectShippingAddress } from '../../redux/features/checkout/checkoutSlice'
+import { SAVE_BILLING_ADDRESS, SAVE_SHIPPING_ADDRESS, selectBillingAddress, selectPaymentMethod, selectShippingAddress } from '../../redux/features/checkout/checkoutSlice'
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +40,26 @@ const CheckoutDetails = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault()
+    dispatch(SAVE_SHIPPING_ADDRESS(shippingAddress))
+    dispatch(SAVE_BILLING_ADDRESS(billingAddress))
+
+    if(paymentMethod === "") {
+      toast.info("Please select a payment method!!")
+      navigate("/cart")
+    }
+    if(paymentMethod === "stripe") {
+      navigate("/checkout-stripe")
+    }
+    if(paymentMethod === "flutterwave") {
+      navigate("/checkout-flutterwave")
+    }
+    if(paymentMethod === "paypal") {
+      navigate("/checkout-paypal")
+    }
+    if(paymentMethod === "wallet") {
+      navigate("/checkout-wallet")
+    }
+    
   }
 
   const handleShipping = (e) => {
@@ -90,7 +110,7 @@ const CheckoutDetails = () => {
                   <input 
                     type='text'
                     placeholder='Address line 2'
-                    name='line1'
+                    name='line2'
                     value={shippingAddress.line2}
                     onChange={(e) => handleShipping(e)}
                     required
@@ -198,7 +218,7 @@ const CheckoutDetails = () => {
                         className={styles.select} 
                         valueType='short'
                         value={billingAddress.country}
-                        onChange={(val) => handleShipping({
+                        onChange={(val) => handleBilling({
                           target: {
                             name: "country",
                             value: val,
@@ -211,7 +231,7 @@ const CheckoutDetails = () => {
                           placeholder='Phone'
                           name='phone'
                           value={billingAddress.phone}
-                          onChange={(e) => handleShipping(e)}
+                          onChange={(e) => handleBilling(e)}
                           required
                         />
                         <button type='submit' className='--btn --btn-primary'>
