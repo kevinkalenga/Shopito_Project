@@ -3,6 +3,14 @@ import { toast } from 'react-toastify';
 import { getCartQuantityById } from '../../../utils';
 import cartService from './cartService';
 
+// Apply discount to cart 
+function applyDiscount(cartTotalAmount, discountPercentage) {
+  var discountAmount = (discountPercentage / 100) * cartTotalAmount;
+  var updatedTotal = cartTotalAmount - discountAmount;
+
+  return updatedTotal;
+}
+
 
 
 const initialState = {
@@ -168,7 +176,19 @@ const cartSlice = createSlice({
             return a + b;
        }, 0)
 
-        state.cartTotalAmount = totalAmount;
+        state.initialCartTotalAmount = totalAmount;
+        
+        // if the information contains the coupon
+        if(action.payload && action.payload.coupon !== null) {
+           const discountedTotalAmount = applyDiscount(
+             totalAmount,
+             action.payload.coupon.discount
+           )
+
+            state.cartTotalAmount = discountedTotalAmount;
+        } else {
+            state.cartTotalAmount = totalAmount;
+        }
        
     },
   },
