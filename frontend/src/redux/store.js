@@ -7,6 +7,7 @@ import filterReducer from "../redux/features/product/filterSlice"
 import couponReducer from "../redux/features/coupon/couponSlice"
 import userReducer from "../redux/features/users/userSlice"
 import cartReducer from "../redux/features/cart/cartSlice"
+import checkoutReducer from "../redux/features/checkout/checkoutSlice"
 
 export const store = configureStore({
     reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
        user:userReducer,
        filter: filterReducer,
        cart: cartReducer,
+       checkout: checkoutReducer,
     }
 })

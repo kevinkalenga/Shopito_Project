@@ -1,0 +1,30 @@
+import { createSlice } from '@reduxjs/toolkit'
+
+const initialState = {
+   paymentMethod: localStorage.getItem("paymentMethod") ? JSON.parse(localStorage.getItem("paymentMethod")) : "",
+   shipppingAddress: localStorage.getItem("shippingAddress") ? JSON.parse(localStorage.getItem("shippingAddress")) : "",
+   billingAddress: localStorage.getItem("billingAddress") ? JSON.parse(localStorage.getItem("billingAddress")) : ""
+}
+
+const checkoutSlice = createSlice({
+  name: "checkout",
+  initialState,
+  reducers: {
+    SAVE_PAYMENT_METHOD(state, action) {
+        state.paymentMethod = action.payload
+        localStorage.setItem("paymentMethod", JSON.stringify(state.paymentMethod))
+    },
+    SAVE_SHIPPING_ADDRESS(state, action) {
+        state.shipppingAddress = action.payload
+        localStorage.setItem("shipppingAddress", JSON.stringify(state.shipppingAddress))
+    },
+    SAVE_BILLING_ADDRESS(state, action) {
+        state.billingAddress = action.payload
+        localStorage.setItem("billingAddress", JSON.stringify(state.billingAddress))
+    },
+  }
+});
+
+export const {SAVE_PAYMENT_METHOD, SAVE_SHIPPING_ADDRESS, SAVE_BILLING_ADDRESS} = checkoutSlice.actions
+
+export default checkoutSlice.reducer
