@@ -10,7 +10,7 @@ router.get("/getOrders", protect, getOrders);
 router.get("/:id", protect, getOrder);
 router.patch("/:id", protect, adminOnly, updateOrderStatus);
 
-router.post("/create-payment-intentt", payWithStripe);
+router.post("/create-payment-intent", payWithStripe);
 
 
 module.exports = router;

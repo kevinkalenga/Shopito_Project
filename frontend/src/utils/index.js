@@ -34,7 +34,23 @@ export const getCartQuantityById = (products, id) => {
    }
     // return 0 if the id is not found
    return 0;
+} 
+
+// Extract id and cart quantity from cartItems
+export function extractIdAndCartQuantity(products) {
+  return products.map(function(product) {
+    return {
+      _id: product._id,
+      cartQuantity: product.cartQuantity
+    }
+  })
 }
+
+
+
+
+
+
 
 // export const shortenText = (html, n) => {
 //   const text = html.replace(/<[^>]*>/g, "");

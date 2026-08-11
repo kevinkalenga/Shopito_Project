@@ -4,7 +4,7 @@ const initialState = {
    paymentMethod: localStorage.getItem("paymentMethod") ? JSON.parse(localStorage.getItem("paymentMethod")) : "",
    shipppingAddress: localStorage.getItem("shippingAddress") ? JSON.parse(localStorage.getItem("shippingAddress")) : "",
    billingAddress: localStorage.getItem("billingAddress") ? JSON.parse(localStorage.getItem("billingAddress")) : ""
-}
+};
 
 const checkoutSlice = createSlice({
   name: "checkout",
