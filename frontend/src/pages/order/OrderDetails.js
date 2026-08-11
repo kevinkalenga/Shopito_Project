@@ -14,10 +14,14 @@ const OrderDetails = () => {
     useEffect(() => {
        dispatch(getOrder(id))
      }, [dispatch, id])
+
+     const downloadPdf = () => {
+      
+     }
   
   
    return (
-    <section>
+    <section style={{height: "100vh"}}>
        <div className='container'>
           <h2>Order Details</h2>
           <div>
@@ -58,9 +62,59 @@ const OrderDetails = () => {
                     <br />
                     Country: {order?.shippingAddress.country}
                   </p>
+                  <br />
+                
+                    <table>
+                      <thead>
+                        <tr>
+                           <th>s/n</th>
+                           <th>Product</th>
+                           <th>Price</th>
+                           <th>Quantity</th>
+                           <th>Total</th>
+                           <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          order?.cartItems?.map((cart, index) => {
+                            const {_id, name, price, image, cartQuantity} = cart
+                            return(
+                              <tr key={_id}>
+                                 <td>{index + 1}</td>
+                                 <td>
+                                   <p><b>{name}</b></p>
+                                    <Link to={`/product-details/${_id}`}>
+                                      <img src={image[0]} alt={name} style={{width:"100px"}}/>
+                                    </Link>
+                                 </td>
+                                 <td>${price}</td>
+                                 <td>
+                                     {cartQuantity}
+                                 </td>
+                                 <td>{price * cartQuantity}</td>
+                                 <td className={"icons"}>
+                                   <button className='--btn --btn-primary'>
+                                     Review Product
+                                   </button>
+                                 </td>
+                                
+                              </tr>
+                            )
+                          })
+                        }
+                      </tbody>
+                    </table>
+                
+                
+                
+                
                 </>
               )
              }
+          </div>
+          <div className='--center-all --my'>
+              <button className='--btn --btn-primary --btn-lg' onClick={downloadPdf}>Download as PDF</button>
           </div>
        </div>
     </section>
