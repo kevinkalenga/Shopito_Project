@@ -167,8 +167,8 @@ const cartSlice = createSlice({
         const array = []
 
         state.cartItems?.map((item) => {
-          const {price, cartQuantity} = item 
-          const cartItemAmount = price * cartQuantity
+          const {price, cartQuantity} = item ;
+          const cartItemAmount = price * cartQuantity;
           return array.push(cartItemAmount);
         });
 
