@@ -10,7 +10,7 @@ const Loader = () => {
             </div>
         </div>,
         document.getElementById("loader")
-    )
+    );
 }
 
 export const Spinner = () => {

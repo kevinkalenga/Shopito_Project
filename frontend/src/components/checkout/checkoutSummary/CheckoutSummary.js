@@ -15,7 +15,7 @@ const CheckoutSummary = () => {
 
     useEffect(() => {
       
-       dispatch(CALCULATE_SUBTOTAL({coupon}))
+       dispatch(CALCULATE_SUBTOTAL({coupon}));
     }, [dispatch, cartItems, coupon])
   
   

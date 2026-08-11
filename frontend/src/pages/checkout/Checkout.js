@@ -18,7 +18,7 @@ const Checkout = () => {
 
   const productIDs = extractIdAndCartQuantity(cartItems)
 
-  const {user} = useSelector((state) => state.user)
+  const {user} = useSelector((state) => state.auth)
   const {coupon} = useSelector((state) => state.coupon)
   
 // /create-payment-intent
