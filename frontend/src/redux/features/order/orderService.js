@@ -29,7 +29,7 @@ const getOrders = async () => {
 
 const orderService = {
    createOrder,
-   getOrders
+   getOrders,
 }
 
-export default orderService
+export default orderService;

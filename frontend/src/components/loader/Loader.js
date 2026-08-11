@@ -1,6 +1,6 @@
-import styles from './Loader.module.scss'
-import ReactDOM from 'react-dom'
-import loaderImg from "../../assets/loader.gif"
+import styles from './Loader.module.scss';
+import ReactDOM from 'react-dom';
+import loaderImg from "../../assets/loader.gif";
 
 const Loader = () => {
     return ReactDOM.createPortal(
