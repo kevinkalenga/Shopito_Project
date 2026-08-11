@@ -10,14 +10,20 @@ const OrderHistory = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {isLoading, isError, message, orders} = useSelector((state) => state.order)
+  const {isLoading, orders} = useSelector((state) => state.order)
 
   useEffect(() => {
     dispatch(getOrders())
   }, [dispatch])
   
+  const openOrderDetails = (id) => {
+     navigate(`/order-details/${id}`)
+  }
+  
+  
+  
   return (
-    <section>
+    <section style={{height: "77vh"}}>
         <div className='container order'>
            <h2>Your Order History</h2>
            <p>
@@ -53,7 +59,7 @@ const OrderHistory = () => {
                               <tr key={_id}>
                                   <td>{index + 1}</td>
                                   <td>{orderDate} at {orderTime}</td>
-                                  <td>{_id}</td>
+                                  <td onClick={() => openOrderDetails(_id)}>{_id}</td>
                                   <td>${orderAmount}</td>
                                   <td>
                                     <p className={orderStatus !== "Delivered" ? "pending" : "delivered"}>

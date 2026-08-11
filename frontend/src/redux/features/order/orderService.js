@@ -22,7 +22,7 @@ const createOrder = async (formData) => {
 const getOrders = async () => {
     const response = await axios.get(GET_ORDERS_URL)
 
-    return response.data
+    return response.data;
 }
 
 // Get order
@@ -36,7 +36,7 @@ const getOrder = async (id) => {
 const orderService = {
    createOrder,
    getOrders,
-   getOrder
+   getOrder,
 }
 
 export default orderService;

@@ -51,7 +51,7 @@ const Cart = () => {
   
   
   return (
-    <section>
+    <section style={{height: "110vh"}}>
         <div className={`container ${styles.table}`}>
             <h2>Shopping Cart</h2>
             {
