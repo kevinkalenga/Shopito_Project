@@ -25,11 +25,18 @@ const getOrders = async () => {
     return response.data
 }
 
+// Get order
+const getOrder = async (id) => {
+  const response = await axios.get(`${BACKEND_URL}/api/order/${id}`);
+   return response.data;
+};
+
 
 
 const orderService = {
    createOrder,
    getOrders,
+   getOrder
 }
 
 export default orderService;
