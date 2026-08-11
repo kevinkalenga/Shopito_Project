@@ -32,18 +32,18 @@ const orderSchema = mongoose.Schema({
         trim: true
     },
     cartItems: {
-        // type: [Object],
-        type: String,
+        // type: String,
+        type: [Object],
         required: [true],
     },
     shippingAddress: {
-        type: String,
-        // type: Object,
+        //type: String,
+        type: Object,
         required: true,
     },
     coupon: {
-        type: String,
-        // type: Object,
+        //type: String,
+        type: Object,
         required: true,
         default: {
             name: "nil"

@@ -20,7 +20,7 @@ const checkoutSlice = createSlice({
     },
     SAVE_BILLING_ADDRESS(state, action) {
         state.billingAddress = action.payload
-        localStorage.setItem("billingAddress", JSON.stringify(state.billingAddress))
+        localStorage.setItem("billingAddress", JSON.stringify(state.billingAddress));
     },
   }
 });
