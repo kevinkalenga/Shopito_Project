@@ -21,6 +21,9 @@ import ProductDetails from "./components/product/productDetails/ProductDetails";
 import Cart from "./pages/cart/Cart";
 import CheckoutDetails from "./pages/checkout/CheckoutDetails";
 import Checkout from "./pages/checkout/Checkout";
+import CheckoutSuccess from "./pages/checkout/CheckoutSuccess";
+import Order from "./pages/order/Order";
+import OrderDetails from "./pages/order/OrderDetails";
 
 
 const App = () => {
@@ -59,6 +62,9 @@ const App = () => {
                 <Route path="/shop" element={<Product />} />
                 <Route path="/product-details/:id" element={<ProductDetails />} />
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout-success" element={<CheckoutSuccess />} />
+                <Route path="/order-history" element={<Order />} />
+                <Route path="/checkout-details/:id" element={<OrderDetails />} />
                 <Route path="/checkout-details" element={<CheckoutDetails />} />
                 <Route path="/checkout-stripe" element={<Checkout />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
