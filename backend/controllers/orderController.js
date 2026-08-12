@@ -5,6 +5,7 @@ const { calculateTotalPrice } = require("../utils");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY) 
 const User = require("../models/userModel");
 const sendEmail = require("../utils/sendEmail");
+const { orderSuccessEmail } = require("../emailTemplate/orderTemplate");
 
 const createOrder = asyncHandler(async (req, res) => { 
   // coming from the frontend
@@ -38,19 +39,19 @@ const createOrder = asyncHandler(async (req, res) => {
     paymentMethod, 
     coupon
   })
-   //  Send Order Email to the user
+  
+   
+  const emailTemplate = orderSuccessEmail(user.name, cartItems)
+  
+  
+  //  Send Order Email to the user
   await sendEmail(
-        user.email,
-        "Order Confirmation - Shopito",
-        `Hello ${user.name},
-
-    Your order has been successfully created.
-
-    Order Number : ${order._id}
-    Amount : ${orderAmount} $
-
-    Thank you for choosing Shopito!`
-      );
+    user.email,
+    "Order Confirmation - Shopito",
+    `Hello ${user.name}, your order has been successfully created.`,
+    emailTemplate,
+    process.env.EMAIL_USER
+  );
     
     res.status(200).json({message: "Order has been Created"});
 }); 

@@ -11,7 +11,7 @@ const mailGenerator = new MailGen({
 
 
 
-const sendEmail = async (to, subject, text, reply_to, cc) => {
+const sendEmail = async (to, subject, text, template, reply_to, cc) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -22,14 +22,17 @@ const sendEmail = async (to, subject, text, reply_to, cc) => {
     });
 
     
-      const email = {
-        body: {
-          intro: text,
-          outro: "Merci d'avoir choisi Shopito !",
-        },
-      };
+    // Générer le HTML avec MailGen
+    const html = template
+      ? mailGenerator.generate(template)
+      : mailGenerator.generate({
+          body: {
+            intro: text,
+            outro: "Merci d'avoir choisi Shopito !",
+          },
+        });
 
-      const html = mailGenerator.generate(email);
+     
     
     
     
