@@ -46,7 +46,7 @@ const orderService = {
    createOrder,
    getOrders,
    getOrder,
-   updateOrderStatus
+   updateOrderStatus,
 }
 
 export default orderService;

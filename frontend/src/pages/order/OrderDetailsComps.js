@@ -73,7 +73,7 @@ const OrderDetailsComps = ({orderPageLink}) => {
                     <b>Order Amount: </b> {order?.orderAmount}
                   </p>
                   <p>
-                    <b>Coupon:</b> {order?.coupon.name} | {order?.coupon?.discount}%
+                    <b>Coupon:</b> {order?.coupon?.name} | {order?.coupon?.discount}%
                   </p>
                   <p>
                     <b>Payment Method: </b> {order?.paymentMethod} 
@@ -84,12 +84,12 @@ const OrderDetailsComps = ({orderPageLink}) => {
                   <p>
                     <b>Shipping Address:</b> 
                     <br /> 
-                    Address: {order?.shippingAddress.line1},
-                    {order?.shippingAddress.line2}, {order?.shippingAddress.city}
+                    Address: {order?.shippingAddress?.line1},
+                    {order?.shippingAddress?.line2}, {order?.shippingAddress?.city}
                     <br /> 
-                     State: {order?.shippingAddress.state}
+                     State: {order?.shippingAddress?.state}
                     <br />
-                    Country: {order?.shippingAddress.country}
+                    Country: {order?.shippingAddress?.country}
                   </p>
                   <br />
                 

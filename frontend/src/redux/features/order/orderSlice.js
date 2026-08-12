@@ -81,7 +81,7 @@ export const updateOrderStatus = createAsyncThunk(
         error.message ||
         error.toString();
 
-      return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(message)
     }
   }
 );
