@@ -9,7 +9,7 @@ const ListOfOrders = ({openOrderDetails}) => {
   const dispatch = useDispatch();
   // const navigate = useNavigate();
 
-  const {isLoading, orders} = useSelector((state) => state.order)
+  const {isLoading, orders} = useSelector((state) => state.order);
 
   useEffect(() => {
     dispatch(getOrders());

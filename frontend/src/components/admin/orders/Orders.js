@@ -1,13 +1,13 @@
 import React from 'react'
-import ListOfOrders from '../../pages/order/ListOfOrders'
 import { useNavigate } from 'react-router-dom'
+import ListOfOrders from '../../../pages/order/ListOfOrders';
 
 const Orders = () => {
 
    const navigate = useNavigate();
   
     const openOrderDetails = (id) => {
-      navigate(`/order-details/${id}`)
+      navigate(`/admin/order-details/${id}`)
     }
   
   

@@ -14,8 +14,8 @@ import EditProduct from '../../components/admin/editProduct/EditProduct'
 import Coupon from '../../components/admin/coupon/Coupon'
 import UserList from '../../components/admin/users/UserList'
 import EditUser from '../../components/admin/users/EditUser'
-import Orders from '../../components/orders/Orders'
-import OrderDetails from '../../components/orders/OrderDetails'
+import Orders from '../../components/admin/orders/Orders'
+import OrderDetails from '../../components/admin/orders/OrderDetails'
 
 
 const Admin = () => {
