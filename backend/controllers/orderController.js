@@ -3,17 +3,30 @@ const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
 const { calculateTotalPrice } = require("../utils");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY) 
+const User = require("../models/userModel");
+const sendEmail = require("../utils/sendEmail");
 
 const createOrder = asyncHandler(async (req, res) => { 
   // coming from the frontend
     const {orderDate, orderTime, orderAmount, orderStatus, cartItems, shippingAddress, paymentMethod, coupon} = req.body
-  // Validation 
+  
+    // Validation 
    if(!cartItems || !orderStatus || !shippingAddress || !paymentMethod) {
        res.status(404);
        throw new Error("Order data missing");
    }
 
-  //  Create Order 
+   
+    // Récupérer l'utilisateur
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  
+  
+   //  Create Order 
   await Order.create({
     user: req.user._id,
     orderDate, 
@@ -25,7 +38,21 @@ const createOrder = asyncHandler(async (req, res) => {
     paymentMethod, 
     coupon
   })
-   res.status(200).json({message: "Order has been Created"});
+   //  Send Order Email to the user
+  await sendEmail(
+        user.email,
+        "Order Confirmation - Shopito",
+        `Hello ${user.name},
+
+    Your order has been successfully created.
+
+    Order Number : ${order._id}
+    Amount : ${orderAmount} $
+
+    Thank you for choosing Shopito!`
+      );
+    
+    res.status(200).json({message: "Order has been Created"});
 }); 
 
 // Get Orders
