@@ -30,6 +30,15 @@ const getOrder = async (id) => {
   const response = await axios.get(`${BACKEND_URL}/api/order/${id}`);
    return response.data;
 };
+// Update Order Status
+const updateOrderStatus = async (id, formData) => {
+  const response = await axios.patch(
+    `${BACKEND_URL}/api/order/${id}`,
+    formData
+  );
+
+  return response.data;
+};
 
 
 
@@ -37,6 +46,7 @@ const orderService = {
    createOrder,
    getOrders,
    getOrder,
+   updateOrderStatus
 }
 
 export default orderService;

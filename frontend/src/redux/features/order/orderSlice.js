@@ -66,6 +66,26 @@ export const getOrder = createAsyncThunk(
   }
 );
 
+// Update Order Status
+export const updateOrderStatus = createAsyncThunk(
+  "orders/updateOrderStatus",
+
+  async ({ id, formData }, thunkAPI) => {
+    try {
+      return await orderService.updateOrderStatus(id, formData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 
 
 
@@ -136,6 +156,31 @@ const orderSlice = createSlice({
               state.message = action.payload;
                     
               toast.error(action.payload);
+          })
+          // Update Order Status
+          .addCase(updateOrderStatus.pending, (state) => {
+            state.isLoading = true;
+            state.isError = false;
+            state.isSuccess = false;
+            state.message = "";
+          })
+
+          .addCase(updateOrderStatus.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.isError = false;
+
+            state.order = action.payload;
+
+            toast.success("Order status updated successfully");
+          })
+
+          .addCase(updateOrderStatus.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = action.payload;
+
+            toast.error(action.payload);
           })
   }
 });
