@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
-const { calculateTotalPrice } = require("../utils");
+const { calculateTotalPrice, updateProductQuantity } = require("../utils");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY) 
 const User = require("../models/userModel");
 const sendEmail = require("../utils/sendEmail");
@@ -39,6 +39,9 @@ const createOrder = asyncHandler(async (req, res) => {
     paymentMethod, 
     coupon
   })
+
+  // update product quantity after creating
+  await updateProductQuantity(cartItems)
   
    
   const emailTemplate = orderSuccessEmail(user.name, cartItems)
