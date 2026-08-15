@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
    paymentMethod: localStorage.getItem("paymentMethod") ? JSON.parse(localStorage.getItem("paymentMethod")) : "",
-   shipppingAddress: localStorage.getItem("shippingAddress") ? JSON.parse(localStorage.getItem("shippingAddress")) : "",
+   shippingAddress: localStorage.getItem("shippingAddress") ? JSON.parse(localStorage.getItem("shippingAddress")) : "",
    billingAddress: localStorage.getItem("billingAddress") ? JSON.parse(localStorage.getItem("billingAddress")) : ""
 };
 
@@ -15,8 +15,8 @@ const checkoutSlice = createSlice({
         localStorage.setItem("paymentMethod", JSON.stringify(state.paymentMethod))
     },
     SAVE_SHIPPING_ADDRESS(state, action) {
-        state.shipppingAddress = action.payload
-        localStorage.setItem("shipppingAddress", JSON.stringify(state.shipppingAddress))
+        state.shippingAddress = action.payload
+        localStorage.setItem("shippingAddress", JSON.stringify(state.shippingAddress))
     },
     SAVE_BILLING_ADDRESS(state, action) {
         state.billingAddress = action.payload
@@ -28,7 +28,7 @@ const checkoutSlice = createSlice({
 export const {SAVE_PAYMENT_METHOD, SAVE_SHIPPING_ADDRESS, SAVE_BILLING_ADDRESS} = checkoutSlice.actions
 
 export const selectPaymentMethod = (state) => state.checkout.paymentMethod;
-export const selectShippingAddress = (state) => state.checkout.shipppingAddress;
+export const selectShippingAddress = (state) => state.checkout.shippingAddress;
 export const selectBillingAddress = (state) => state.checkout.billingAddress;
 
 export default checkoutSlice.reducer;

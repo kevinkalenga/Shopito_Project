@@ -164,6 +164,7 @@ const payWithStripe = asyncHandler(async (req, res) => {
 })
 
 // Pay with flutterwave 
+// Pay with Flutterwave
 const payWithFlutterwave = asyncHandler(async (req, res) => {
   const { items, shipping, description, coupon } = req.body;
 
@@ -178,7 +179,36 @@ const payWithFlutterwave = asyncHandler(async (req, res) => {
 
   const tx_ref = `shopito-${Date.now()}`;
 
-  // Flutterwave ici
+  const response = await axios.post(
+    "https://api.flutterwave.com/v3/payments",
+    {
+      tx_ref,
+      amount: orderAmount,
+      currency: "USD",
+      redirect_url: `${process.env.REACT_APP_BACKEND_URL}/api/order/flutterwave-response`,
+      customer: {
+        email: req.user?.email,
+        name: req.user?.name,
+        phonenumber: req.user?.phone,
+      },
+      customizations: {
+        title: "Shopito Online Store",
+        description: description || "Payment for product",
+      },
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  res.status(200).json({
+    tx_ref,
+    amount: orderAmount,
+    paymentLink: response.data.data.link,
+  });
 });
 
 

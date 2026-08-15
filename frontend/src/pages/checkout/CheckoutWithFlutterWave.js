@@ -4,14 +4,21 @@ import CheckoutSummary from '../../components/checkout/checkoutSummary/CheckoutS
 import Card from '../../components/card/Card';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCartTotalAmount } from '../../redux/features/cart/cartSlice';
+import { selectCartTotalAmount, selectCartItems, } from '../../redux/features/cart/cartSlice';
+import {
+  selectShippingAddress,
+  selectPaymentMethod
+} from "../../redux/features/checkout/checkoutSlice";
 
 const CheckoutWithFlutterWave = () => {
 
    const navigate = useNavigate();
    const dispatch = useDispatch();
-
+   
+   const cartItems = useSelector(selectCartItems);
    const cartTotalAmount = useSelector(selectCartTotalAmount);
+   const paymentMethod = useSelector(selectPaymentMethod);
+   const shippingAddress = useSelector(selectShippingAddress);
    const {user} = useSelector((state) => state.auth)
   
    function makePayment() {
@@ -21,16 +28,16 @@ const CheckoutWithFlutterWave = () => {
         tx_ref: `shopito-${Date.now()}`,
         amount: cartTotalAmount,
         currency: 'USD',
-        payment_options: 'card, mobilemoneyghana, ussd',
-        redirect_url:`${process.env.REACT_APP_BACKEND_URL}/api/order/response` ,
+        payment_options: 'card',
+        redirect_url:`${process.env.REACT_APP_BACKEND_URL}/api/order/flutterwave-response` ,
         // meta: {
         //   consumer_id: 23,
         //   consumer_mac: '92a3-912ba-1192a',
         // },
         customer: {
-          email: user?.email,
-          phone_number: user?.phone,
-          name: user?.name,
+          email: user.email,
+          phone_number: user.phone,
+          name: user.name,
         },
         customizations: {
           title: 'Shopito Online Store',
