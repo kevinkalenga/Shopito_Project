@@ -252,7 +252,7 @@ export const {
   REMOVE_FROM_CART, 
   CLEAR_CART,
   CALCULATE_TOTAL_QUANTITY, 
-  CALCULATE_SUBTOTAL
+  CALCULATE_SUBTOTAL,
 } = cartSlice.actions 
 // the method when you want to import one thing
 export const selectCartItems = (state) => state.cart.cartItems;

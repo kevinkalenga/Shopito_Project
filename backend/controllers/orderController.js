@@ -163,6 +163,24 @@ const payWithStripe = asyncHandler(async (req, res) => {
 
 })
 
+// Pay with flutterwave 
+const payWithFlutterwave = asyncHandler(async (req, res) => {
+  const { items, shipping, description, coupon } = req.body;
+
+  const products = await Product.find();
+
+  let orderAmount = calculateTotalPrice(products, items);
+
+  if (coupon !== null && coupon?.name !== "nil") {
+    orderAmount =
+      orderAmount - (orderAmount * coupon.discount) / 100;
+  }
+
+  const tx_ref = `shopito-${Date.now()}`;
+
+  // Flutterwave ici
+});
+
 
 
 module.exports = {
@@ -170,5 +188,6 @@ module.exports = {
   getOrders,
   getOrder,
   updateOrderStatus,
-  payWithStripe
+  payWithStripe,
+  payWithFlutterwave
 }

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import { CALCULATE_SUBTOTAL } from '../../../redux/features/cart/cartSlice';
 import { Link } from 'react-router-dom';
-import styles from "./CheckoutSummary.module.scss"
+import styles from "./CheckoutSummary.module.scss";
 import Card from '../../card/Card';
 import { CartDiscount } from "../../verifyCoupon/VerifyCoupon";
 
