@@ -6,6 +6,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 const User = require("../models/userModel");
 const sendEmail = require("../utils/sendEmail");
 const { orderSuccessEmail } = require("../emailTemplate/orderTemplate");
+const axios = require("axios");
 
 const createOrder = asyncHandler(async (req, res) => { 
   // coming from the frontend
@@ -211,6 +212,25 @@ const payWithFlutterwave = asyncHandler(async (req, res) => {
   });
 });
 
+const flutterwaveResponse = async (req, res) => {
+    try {
+        console.log("Flutterwave response:", req.query);
+
+        // traitement du paiement ici
+
+        res.json({
+            success: true,
+            message: "Flutterwave response received"
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 
 
 module.exports = {
@@ -219,5 +239,6 @@ module.exports = {
   getOrder,
   updateOrderStatus,
   payWithStripe,
-  payWithFlutterwave
+  payWithFlutterwave,
+  flutterwaveResponse
 }
