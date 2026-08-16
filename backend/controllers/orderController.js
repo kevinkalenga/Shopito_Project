@@ -166,19 +166,76 @@ const payWithStripe = asyncHandler(async (req, res) => {
 
 // Pay with flutterwave 
 // Pay with Flutterwave
+// const payWithFlutterwave = asyncHandler(async (req, res) => {
+//   const { items, shipping, description, coupon } = req.body;
+
+//   const products = await Product.find();
+
+//   let orderAmount = calculateTotalPrice(products, items);
+
+//   if (coupon !== null && coupon?.name !== "nil") {
+//     orderAmount =
+//       orderAmount - (orderAmount * coupon.discount) / 100;
+//   }
+
+//   const tx_ref = `shopito-${Date.now()}`;
+
+//   const response = await axios.post(
+//     "https://api.flutterwave.com/v3/payments",
+//     {
+//       tx_ref,
+//       amount: orderAmount,
+//       currency: "USD",
+//       redirect_url: `${process.env.REACT_APP_BACKEND_URL}/api/order/flutterwave-response`,
+//       customer: {
+//         email: req.user?.email,
+//         name: req.user?.name,
+//         phonenumber: req.user?.phone,
+//       },
+//       customizations: {
+//         title: "Shopito Online Store",
+//         description: description || "Payment for product",
+//       },
+//     },
+//     {
+//       headers: {
+//         Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
+//         "Content-Type": "application/json",
+//       },
+//     }
+//   );
+
+//   res.status(200).json({
+//     tx_ref,
+//     amount: orderAmount,
+//     paymentLink: response.data.data.link,
+//   });
+// });
+
 const payWithFlutterwave = asyncHandler(async (req, res) => {
-  const { items, shipping, description, coupon } = req.body;
+  const { items, shipping, description, coupon, orderId } = req.body;
+
+  const order = await Order.findById(orderId);
+
+  if (!order) {
+    res.status(404);
+    throw new Error("Order not found");
+  }
 
   const products = await Product.find();
 
   let orderAmount = calculateTotalPrice(products, items);
 
   if (coupon !== null && coupon?.name !== "nil") {
-    orderAmount =
-      orderAmount - (orderAmount * coupon.discount) / 100;
+    orderAmount = orderAmount - (orderAmount * coupon.discount) / 100;
   }
 
   const tx_ref = `shopito-${Date.now()}`;
+
+  // Enregistrer la référence Flutterwave dans la commande
+  order.tx_ref = tx_ref;
+  order.paymentStatus = "pending";
+  await order.save();
 
   const response = await axios.post(
     "https://api.flutterwave.com/v3/payments",
@@ -186,12 +243,15 @@ const payWithFlutterwave = asyncHandler(async (req, res) => {
       tx_ref,
       amount: orderAmount,
       currency: "USD",
-      redirect_url: `${process.env.REACT_APP_BACKEND_URL}/api/order/flutterwave-response`,
+
+      redirect_url: `${process.env.BACKEND_URL}/api/order/flutterwave-response`,
+
       customer: {
-        email: req.user?.email,
-        name: req.user?.name,
-        phonenumber: req.user?.phone,
+        email: req.user.email,
+        name: req.user.name,
+        phonenumber: req.user.phone,
       },
+
       customizations: {
         title: "Shopito Online Store",
         description: description || "Payment for product",
@@ -212,24 +272,55 @@ const payWithFlutterwave = asyncHandler(async (req, res) => {
   });
 });
 
-const flutterwaveResponse = async (req, res) => {
-    try {
-        console.log("Flutterwave response:", req.query);
+const flutterwaveResponse = asyncHandler(async (req, res) => {
+    const { transaction_id, tx_ref } = req.query;
 
-        // traitement du paiement ici
+    if (!transaction_id || !tx_ref) {
+        res.status(400);
+        throw new Error("Flutterwave transaction data missing");
+    }
 
-        res.json({
-            success: true,
-            message: "Flutterwave response received"
-        });
+    const response = await axios.get(
+        `https://api.flutterwave.com/v3/transactions/${transaction_id}/verify`,
+        {
+            headers: {
+                Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
+                "Content-Type": "application/json"
+            }
+        }
+    );
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message: error.message
+    const transaction = response.data.data;
+
+    console.log("Flutterwave transaction:", transaction);
+
+    if (
+        transaction.status !== "successful" ||
+        transaction.tx_ref !== tx_ref
+    ) {
+        return res.status(400).json({
+            success: false,
+            message: "Payment verification failed"
         });
     }
-};
+
+    const order = await Order.findOne({ tx_ref });
+
+    if (!order) {
+        res.status(404);
+        throw new Error("Order not found");
+    }
+
+    order.paymentStatus = "paid";
+    order.transactionId = transaction.id;
+
+    await order.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Payment verified successfully"
+    });
+});
 
 
 

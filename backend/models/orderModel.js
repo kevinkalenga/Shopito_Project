@@ -31,6 +31,22 @@ const orderSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    paymentStatus: {
+        type: String,
+        enum: ["pending", "paid", "failed"],
+        default: "pending"
+    },
+
+    tx_ref: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+
+    transactionId: {
+        type: String,
+        default: null
+    },
     cartItems: {
         // type: String,
         type: [Object],
