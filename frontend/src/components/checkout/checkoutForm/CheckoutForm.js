@@ -28,22 +28,42 @@ const CheckoutForm = () => {
   const paymentMethod = useSelector(selectPaymentMethod)
   const {coupon} = useSelector((state) => state.coupon)
 
-  const saveOrder = () => {
-    const today = new Date()
+  // const saveOrder = () => {
+  //   const today = new Date()
+  //   const formData = {
+  //     // Create according to the backend
+  //     orderDate: today.toDateString(),
+  //     orderTime: today.toLocaleTimeString(),
+  //     orderAmount: cartTotalAmount,
+  //     orderStatus: 'Order Placed...',
+  //     cartItems,
+  //     shippingAddress,
+  //     paymentMethod,
+  //     coupon: coupon != null ? coupon : { name: 'nil'}
+  //   }
+  //   dispatch(createOrder(formData))
+  //   navigate("/checkout-success")
+  // }
+
+  const saveOrder = async () => {
+    const today = new Date();
+
     const formData = {
-      // Create according to the backend
       orderDate: today.toDateString(),
       orderTime: today.toLocaleTimeString(),
       orderAmount: cartTotalAmount,
-      orderStatus: 'Order Placed...',
+      orderStatus: "Order Placed...",
       cartItems,
       shippingAddress,
       paymentMethod,
-      coupon: coupon != null ? coupon : { name: 'nil'}
-    }
-    dispatch(createOrder(formData))
-    navigate("/checkout-success")
-  }
+      paymentStatus: "paid",
+      coupon: coupon != null ? coupon : { name: "nil" }
+    };
+
+    await dispatch(createOrder(formData)).unwrap();
+
+    navigate("/checkout-success");
+  };
 
   useEffect(() => {
      if(!stripe) {
@@ -60,42 +80,95 @@ const CheckoutForm = () => {
 
   }, [stripe])
 
-  const handleSubmit = async (e) => {
-     e.preventDefault();
-     setMessage(null)
+  // const handleSubmit = async (e) => {
+  //    e.preventDefault();
+  //    setMessage(null)
 
-     if(!stripe || !elements) {
-      return;
-     }
-     setIsLoading(true)
+  //    if(!stripe || !elements) {
+  //     return;
+  //    }
+  //    setIsLoading(true)
 
-    await stripe.confirmPayment({
-       elements, 
-       confirmParams: {
-        return_url: `${process.env.REACT_APP_FRONTEND_URL}/checkout-success`,
-       },
-       redirect: "if_required",
-     }).then((result) => {
-       if(result.error) {
-          toast.error(result.error.message)
-          setMessage(result.error.message)
+  //   await stripe.confirmPayment({
+  //      elements, 
+  //      confirmParams: {
+  //       return_url: `${process.env.REACT_APP_FRONTEND_URL}/checkout-success`,
+  //      },
+  //      redirect: "if_required",
+  //    }).then((result) => {
+  //      if(result.error) {
+  //         toast.error(result.error.message)
+  //         setMessage(result.error.message)
+  //         return;
+  //      }
+  //      if(result.paymentIntent) {
+  //        if(result.paymentIntent.status === "succeeded") {
+  //         setIsLoading(false)
+  //         toast.success("Payment Successful")
+  //         saveOrder()
+  //        }
+  //      }
+  //    })
+
+  //    setIsLoading(false)
+  // }
+
+   const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!stripe || !elements) {
           return;
-       }
-       if(result.paymentIntent) {
-         if(result.paymentIntent.status === "succeeded") {
-          setIsLoading(false)
-          toast.success("Payment Successful")
-          saveOrder()
-         }
-       }
-     })
+        }
 
-     setIsLoading(false)
-  }
+        setIsLoading(true);
+        setMessage(null);
 
-  const paymentElementOptions = {
-    layout: "tabs"
-  }
+        try {
+          // 1. Valider le PaymentElement
+          const { error: submitError } = await elements.submit();
+
+          if (submitError) {
+            toast.error(submitError.message);
+            setMessage(submitError.message);
+            setIsLoading(false);
+            return;
+          }
+
+          // 2. Confirmer le paiement Stripe
+          const result = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+              return_url: `${process.env.REACT_APP_FRONTEND_URL}/checkout-success`,
+            },
+            redirect: "if_required",
+          });
+
+          if (result.error) {
+            toast.error(result.error.message);
+            setMessage(result.error.message);
+            setIsLoading(false);
+            return;
+          }
+
+          // 3. Paiement réussi
+          if (result.paymentIntent?.status === "succeeded") {
+            toast.success("Payment Successful");
+
+            await saveOrder();
+          }
+
+        } catch (error) {
+          console.error("STRIPE PAYMENT ERROR:", error);
+          toast.error("Payment failed");
+          setMessage(error.message);
+        }
+
+        setIsLoading(false);
+      };
+
+      const paymentElementOptions = {
+        layout: "tabs"
+      }
   
   return (
      <>

@@ -13,7 +13,7 @@ const calculateTotalPrice = (products, cartItems) => {
        })
 
        if(product) {
-         const quantity = cartItem.cartQuantity;
+         const quantity = cartItem.quantity ?? cartItem.cartQuantity;
          const price = parseFloat(product.price);
          totalPrice += quantity * price;
        }
@@ -42,7 +42,28 @@ const updateProductQuantity = async (cartItems) => {
     await Product.bulkWrite(bulkOption, {});
 }
 
+
+const calculateFlutterwaveTotalPrice = (products, cartItems) => {
+    let totalPrice = 0;
+
+    cartItems.forEach((cartItem) => {
+        const product = products.find(
+            (product) => product._id?.toString() === cartItem._id
+        );
+
+        if (product) {
+            const quantity = cartItem.quantity ?? cartItem.cartQuantity;
+            const price = parseFloat(product.price);
+
+            totalPrice += quantity * price;
+        }
+    });
+
+    return totalPrice;
+};
+
 module.exports = {
     calculateTotalPrice,
-    updateProductQuantity
+    updateProductQuantity,
+    calculateFlutterwaveTotalPrice
 }

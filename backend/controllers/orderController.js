@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
-const { calculateTotalPrice, updateProductQuantity } = require("../utils");
+const { calculateTotalPrice, updateProductQuantity,  calculateFlutterwaveTotalPrice, } = require("../utils");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY) 
 const User = require("../models/userModel");
 const sendEmail = require("../utils/sendEmail");
@@ -10,7 +10,9 @@ const axios = require("axios");
 
 const createOrder = asyncHandler(async (req, res) => { 
   // coming from the frontend
-    const {orderDate, orderTime, orderAmount, orderStatus, cartItems, shippingAddress, paymentMethod, coupon} = req.body
+    const {orderDate, orderTime, orderAmount, orderStatus, cartItems, shippingAddress, paymentMethod, coupon,   paymentStatus,
+    tx_ref,
+    transactionId} = req.body
   
     // Validation 
    if(!cartItems || !orderStatus || !shippingAddress || !paymentMethod) {
@@ -38,7 +40,11 @@ const createOrder = asyncHandler(async (req, res) => {
     cartItems, 
     shippingAddress, 
     paymentMethod, 
-    coupon
+    coupon,
+    paymentStatus: paymentStatus || "pending",
+    tx_ref: tx_ref || null,
+    transactionId: transactionId || null
+  
   })
 
   // update product quantity after creating
@@ -212,65 +218,60 @@ const payWithStripe = asyncHandler(async (req, res) => {
 //   });
 // });
 
-const payWithFlutterwave = asyncHandler(async (req, res) => {
-  const { items, shipping, description, coupon, orderId } = req.body;
+  const payWithFlutterwave = asyncHandler(async (req, res) => {
+    const { items, shipping, description, coupon } = req.body;
 
-  const order = await Order.findById(orderId);
+    const products = await Product.find();
 
-  if (!order) {
-    res.status(404);
-    throw new Error("Order not found");
-  }
+    let orderAmount = calculateFlutterwaveTotalPrice(products, items);
 
-  const products = await Product.find();
+    if (coupon !== null && coupon?.name !== "nil") {
+      orderAmount =
+        orderAmount - (orderAmount * coupon.discount) / 100;
+    }
 
-  let orderAmount = calculateTotalPrice(products, items);
+    const tx_ref = `shopito-${Date.now()}`;
 
-  if (coupon !== null && coupon?.name !== "nil") {
-    orderAmount = orderAmount - (orderAmount * coupon.discount) / 100;
-  }
+    const redirectUrl =
+      "http://localhost:5000/api/order/flutterwave-response";
 
-  const tx_ref = `shopito-${Date.now()}`;
+    console.log("FLUTTERWAVE AMOUNT:", orderAmount);
+    console.log("FLUTTERWAVE ITEMS:", items);
+    console.log("REDIRECT URL:", redirectUrl);
 
-  // Enregistrer la référence Flutterwave dans la commande
-  order.tx_ref = tx_ref;
-  order.paymentStatus = "pending";
-  await order.save();
+    const response = await axios.post(
+      "https://api.flutterwave.com/v3/payments",
+      {
+        tx_ref,
+        amount: orderAmount,
+        currency: "USD",
+        redirect_url: redirectUrl,
 
-  const response = await axios.post(
-    "https://api.flutterwave.com/v3/payments",
-    {
+        customer: {
+          email: req.user.email,
+          name: req.user.name,
+          phonenumber: req.user.phone,
+        },
+
+        customizations: {
+          title: "Shopito Online Store",
+          description: description || "Payment for product",
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.status(200).json({
       tx_ref,
       amount: orderAmount,
-      currency: "USD",
-
-      redirect_url: `${process.env.BACKEND_URL}/api/order/flutterwave-response`,
-
-      customer: {
-        email: req.user.email,
-        name: req.user.name,
-        phonenumber: req.user.phone,
-      },
-
-      customizations: {
-        title: "Shopito Online Store",
-        description: description || "Payment for product",
-      },
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  res.status(200).json({
-    tx_ref,
-    amount: orderAmount,
-    paymentLink: response.data.data.link,
+      paymentLink: response.data.data.link,
+    });
   });
-});
 
 const flutterwaveResponse = asyncHandler(async (req, res) => {
     const { transaction_id, tx_ref } = req.query;
@@ -298,28 +299,14 @@ const flutterwaveResponse = asyncHandler(async (req, res) => {
         transaction.status !== "successful" ||
         transaction.tx_ref !== tx_ref
     ) {
-        return res.status(400).json({
-            success: false,
-            message: "Payment verification failed"
-        });
+        return res.redirect(
+            `${process.env.REACT_APP_FRONTEND_URL}/checkout?payment=failed`
+        );
     }
 
-    const order = await Order.findOne({ tx_ref });
-
-    if (!order) {
-        res.status(404);
-        throw new Error("Order not found");
-    }
-
-    order.paymentStatus = "paid";
-    order.transactionId = transaction.id;
-
-    await order.save();
-
-    res.status(200).json({
-        success: true,
-        message: "Payment verified successfully"
-    });
+    return res.redirect(
+        `http://localhost:3000/checkout-success?transaction_id=${transaction_id}&tx_ref=${tx_ref}&amount=${transaction.amount}`
+    );
 });
 
 

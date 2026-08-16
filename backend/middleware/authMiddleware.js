@@ -12,26 +12,26 @@ const protect = asyncHandler(async (req, res, next) => {
     const token = req.cookies?.token;
 
     if (!token) {
-      console.log("❌ NO TOKEN");
+      console.log("NO TOKEN");
       return res.status(401).json({ message: "No token" });
     }
 
-    console.log("✅ TOKEN FOUND");
+    console.log("TOKEN FOUND");
 
     const verified = jwt.verify(token, process.env.JWT_SECRET);
 
-    console.log("✅ TOKEN VERIFIED :", verified);
+    console.log("TOKEN VERIFIED :", verified);
 
     const user = await User.findById(verified.id).select("-password");
 
     console.log("USER :", user);
 
     if (!user) {
-      console.log("❌ USER NOT FOUND");
+      console.log("USER NOT FOUND");
       return res.status(401).json({ message: "User not found" });
     }
 
-    console.log("✅ USER FOUND :", user._id);
+    console.log("USER FOUND :", user._id);
     console.log("ROLE :", user.role);
 
     req.user = user;
@@ -39,7 +39,7 @@ const protect = asyncHandler(async (req, res, next) => {
     next();
 
   } catch (error) {
-    console.log("❌ PROTECT ERROR :", error);
+    console.log("PROTECT ERROR :", error);
     return res.status(401).json({
       message: "Invalid token",
       error: error.message
