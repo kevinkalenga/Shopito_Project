@@ -59,9 +59,7 @@ const CheckoutSuccess = () => {
 
       }, [transactionId, txRef])
 
-      useEffect(() => {
-        dispatch(CLEAR_CART());
-      }, [dispatch]);
+   
 
   return (
     <>

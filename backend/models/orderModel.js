@@ -45,7 +45,7 @@ const orderSchema = mongoose.Schema({
 
     transactionId: {
         type: String,
-        default: null
+        default: undefined
     },
     cartItems: {
         // type: String,

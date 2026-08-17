@@ -6,7 +6,7 @@ import Card from '../../card/Card'
 import CheckoutSummary from '../checkoutSummary/CheckoutSummary'
 import { Spinner } from '../../loader/Loader'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectCartItems, selectCartTotalAmount } from '../../../redux/features/cart/cartSlice'
+import { selectCartItems, selectCartTotalAmount, CLEAR_CART } from '../../../redux/features/cart/cartSlice'
 import { selectPaymentMethod, selectShippingAddress } from '../../../redux/features/checkout/checkoutSlice'
 import { useNavigate } from 'react-router-dom'
 import { createOrder } from '../../../redux/features/order/orderSlice'
@@ -45,25 +45,59 @@ const CheckoutForm = () => {
   //   navigate("/checkout-success")
   // }
 
-  const saveOrder = async () => {
-    const today = new Date();
+    const saveOrder = async (paymentIntentId) => {
+        console.log("🔥🔥🔥 SAVE ORDER CALLED 🔥🔥🔥");
 
-    const formData = {
-      orderDate: today.toDateString(),
-      orderTime: today.toLocaleTimeString(),
-      orderAmount: cartTotalAmount,
-      orderStatus: "Order Placed...",
-      cartItems,
-      shippingAddress,
-      paymentMethod,
-      paymentStatus: "paid",
-      coupon: coupon != null ? coupon : { name: "nil" }
-    };
+        try {
+          const today = new Date();
 
-    await dispatch(createOrder(formData)).unwrap();
+          console.log("========== SAVE ORDER ==========");
+          console.log("CART ITEMS:", cartItems);
+          console.log("TOTAL:", cartTotalAmount);
+          console.log("PAYMENT METHOD:", paymentMethod);
+          console.log("PAYMENT INTENT ID:", paymentIntentId);
+          console.log("SHIPPING ADDRESS:", shippingAddress);
 
-    navigate("/checkout-success");
-  };
+          const formData = {
+            orderDate: today.toDateString(),
+            orderTime: today.toLocaleTimeString(),
+            orderAmount: cartTotalAmount,
+            orderStatus: "Order Placed...",
+            cartItems,
+            shippingAddress,
+            paymentMethod,
+            paymentStatus: "paid",
+            transactionId: paymentIntentId,
+            coupon: coupon != null ? coupon : { name: "nil" },
+          };
+
+          console.log("SENDING ORDER TO BACKEND...");
+
+          const result = await dispatch(createOrder(formData)).unwrap();
+
+          console.log("========== ORDER CREATED ==========");
+          console.log(result);
+
+          // IMPORTANT :
+          // On vide le panier uniquement APRÈS
+          // la création réussie de la commande.
+          dispatch(CLEAR_CART());
+
+          toast.success("Order created successfully");
+
+          navigate("/checkout-success");
+
+        } catch (error) {
+
+          console.error("========== CREATE ORDER ERROR ==========");
+          console.error(error);
+
+          toast.error(
+            error?.message ||
+            "The payment succeeded but the order could not be created"
+          );
+        }
+      };
 
   useEffect(() => {
      if(!stripe) {
@@ -113,7 +147,7 @@ const CheckoutForm = () => {
   //    setIsLoading(false)
   // }
 
-   const handleSubmit = async (e) => {
+     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!stripe || !elements) {
@@ -152,18 +186,27 @@ const CheckoutForm = () => {
 
           // 3. Paiement réussi
           if (result.paymentIntent?.status === "succeeded") {
+            console.log("========== STRIPE PAYMENT SUCCESS ==========");
+            console.log("PAYMENT INTENT:", result.paymentIntent.id);
+            console.log("STATUS:", result.paymentIntent.status);
+
             toast.success("Payment Successful");
 
+            // Créer la commande en BD
             await saveOrder();
           }
 
         } catch (error) {
           console.error("STRIPE PAYMENT ERROR:", error);
-          toast.error("Payment failed");
-          setMessage(error.message);
-        }
 
-        setIsLoading(false);
+          toast.error(
+            error?.message || "Payment failed"
+          );
+
+          setMessage(error?.message || "Payment failed");
+        } finally {
+          setIsLoading(false);
+        }
       };
 
       const paymentElementOptions = {
