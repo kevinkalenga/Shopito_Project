@@ -193,7 +193,7 @@ const CheckoutForm = () => {
             toast.success("Payment Successful");
 
             // Créer la commande en BD
-            await saveOrder();
+            await saveOrder(result.paymentIntent.id);
           }
 
         } catch (error) {

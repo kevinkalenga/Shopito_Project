@@ -74,24 +74,7 @@ const createOrder = asyncHandler(async (req, res) => {
   // CREATE ORDER CALLED
   // ==============================
 
-  console.log("========== CREATE ORDER CALLED ==========");
-
-  console.log("BODY:", {
-    orderDate: req.body.orderDate,
-    orderTime: req.body.orderTime,
-    orderAmount: req.body.orderAmount,
-    orderStatus: req.body.orderStatus,
-    cartItems: req.body.cartItems,
-    shippingAddress: req.body.shippingAddress,
-    paymentMethod: req.body.paymentMethod,
-    paymentStatus: req.body.paymentStatus,
-    tx_ref: req.body.tx_ref,
-    transactionId: req.body.transactionId
-  });
-
-  console.log("PAYMENT METHOD:", req.body.paymentMethod);
-  console.log("PAYMENT STATUS:", req.body.paymentStatus);
-  console.log("USER:", req.user?._id);
+  
 
 
   // ==============================
@@ -246,11 +229,17 @@ const createOrder = asyncHandler(async (req, res) => {
       cartItems
     );
 
-    await sendEmail(
+   await sendEmail(
       user.email,
       "Order Confirmation - Shopito",
-      `Hello ${user.name}, your order has been successfully created.`,
-      emailTemplate
+      `Hello ${user.name},
+
+    Your order has been successfully created.
+
+    Order Number : ${order._id}
+    Amount : ${orderAmount} $
+
+    Thank you for choosing Shopito!`
     );
 
     console.log("ORDER EMAIL SENT SUCCESSFULLY");
@@ -569,22 +558,22 @@ const flutterwaveResponse = asyncHandler(async (req, res) => {
 
 
 
-const testEmail = asyncHandler(async (req, res) => {
+// const testEmail = asyncHandler(async (req, res) => {
 
-  const info = await sendEmail(
-    "nathanaelkalenga2@gmail.com",
-    "TEST SHOPITO",
-    "Ceci est un test d'envoi depuis Shopito.",
-    null
-  );
+//   const info = await sendEmail(
+//     "nathanaelkalenga2@gmail.com",
+//     "TEST SHOPITO",
+//     "Ceci est un test d'envoi depuis Shopito.",
+//     null
+//   );
 
-  res.status(200).json({
-    message: "Email envoyé",
-    messageId: info.messageId,
-    accepted: info.accepted,
-    rejected: info.rejected,
-  });
-});
+//   res.status(200).json({
+//     message: "Email envoyé",
+//     messageId: info.messageId,
+//     accepted: info.accepted,
+//     rejected: info.rejected,
+//   });
+// });
 
 
 
@@ -595,5 +584,6 @@ module.exports = {
   updateOrderStatus,
   payWithStripe,
   payWithFlutterwave,
-  flutterwaveResponse
+  flutterwaveResponse,
+  
 }
