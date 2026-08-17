@@ -39,6 +39,10 @@ const userSchema = mongoose.Schema(
             type: String,
             default: "+1",
         },
+        balance: {
+            type: Number,
+            default: 0,
+        },
         address: {
             type: Object,
         },
