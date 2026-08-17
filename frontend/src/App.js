@@ -25,6 +25,7 @@ import CheckoutSuccess from "./pages/checkout/CheckoutSuccess";
 import OrderHistory from "./pages/order/OrderHistory";
 import OrderDetails from "./pages/order/OrderDetails";
 import CheckoutWithFlutterWave from "./pages/checkout/CheckoutWithFlutterWave";
+import CheckoutPaypal from "./pages/checkout/CheckoutPaypal";
 
 
 const App = () => {
@@ -69,6 +70,7 @@ const App = () => {
                 <Route path="/checkout-details" element={<CheckoutDetails />} />
                 <Route path="/checkout-stripe" element={<Checkout />} />
                 <Route path="/checkout-flutterwave" element={<CheckoutWithFlutterWave />} />
+                <Route path="/checkout-paypal" element={<CheckoutPaypal />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
                  <Route path="/admin/*" element={
