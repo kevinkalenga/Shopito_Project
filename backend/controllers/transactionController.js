@@ -96,6 +96,28 @@ const depositFundStripe = asyncHandler(async(req, res) => {
    }
 
   //  Create stripe session
+  const session = await stripe.checkout.sessions.create({
+    mode: 'payment',
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "Shopito wallet deposit...",
+            description: `Make a deposit of $${amount} to your shopito wallet...`
+          },
+          unit_amount: amount * 100
+        },
+        quantity: 1
+      }
+    ],
+    customer: user.stripeCustomerId,
+    success_url: `${process.env.FRONTEND_URL}/wallet?payment=successful&amount=${amount}`,
+    cancel_url: `${process.env.FRONTEND_URL}/wallet?payment=failed`,
+  })
+
+  return res.json(session)
 })
 
 module.exports = {
