@@ -11,6 +11,7 @@ const couponRoute = require("./routes/couponRoute");
 const orderRoute = require("./routes/orderRoute");
 const transactionRoute = require("./routes/transactionRoute");
 const stripeRoute = require("./routes/stripeRoute");
+const flutterwaveRoute = require("./routes/flutterwaveRoute");
 const errorHandler = require("./middleware/errorMiddleware")
 
 const app = express() 
@@ -20,6 +21,7 @@ const app = express()
 app.use(cookieParser());
 
 app.use("/api/stripe", stripeRoute);
+app.use("/api/flutterwave", flutterwaveRoute);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));

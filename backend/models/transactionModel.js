@@ -33,7 +33,12 @@ const transactionSchema = mongoose.Schema({
         type: String,
         unique: true,
         sparse: true
-    }
+    },
+    flutterwaveTransactionId: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
 
 
 

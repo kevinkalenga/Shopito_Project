@@ -125,11 +125,74 @@ const depositFundStripe = asyncHandler(async(req, res) => {
   return res.json(session)
 })
 
+
+const depositFundFlutterwave = asyncHandler(async (req, res) => {
+    const { amount } = req.body;
+
+    if (!amount || amount <= 0) {
+        res.status(400);
+        throw new Error("Invalid deposit amount");
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+
+    const tx_ref = `wallet-${user._id}-${Date.now()}`;
+
+    const response = await axios.post(
+        "https://api.flutterwave.com/v3/payments",
+        {
+            tx_ref,
+            amount,
+            currency: "USD",
+
+            redirect_url:
+                `${process.env.BACKEND_URL}/api/transaction/flutterwave-wallet-response`,
+
+            customer: {
+                email: user.email,
+                name: user.name,
+                phonenumber: user.phone || "0000000000",
+            },
+
+            customizations: {
+                title: "Shopito Wallet",
+                description: `Deposit $${amount} into your Shopito wallet`,
+            },
+
+            meta: {
+                userId: user._id.toString(),
+                type: "wallet_deposit",
+            },
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
+                "Content-Type": "application/json",
+            },
+        }
+    );
+
+    res.status(200).json({
+        tx_ref,
+        amount,
+        paymentLink: response.data.data.link,
+    });
+});
+
+
+
+
 module.exports = {
     transferFund,
     verifyAccount,
     getUserTransactions,
-    depositFundStripe
+    depositFundStripe,
+    depositFundFlutterwave
 }
 
 
