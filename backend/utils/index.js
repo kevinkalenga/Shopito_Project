@@ -1,6 +1,6 @@
 const Product = require("../models/productModel");
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY) 
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // Calculate total price 
 
@@ -65,5 +65,6 @@ const calculateFlutterwaveTotalPrice = (products, cartItems) => {
 module.exports = {
     calculateTotalPrice,
     updateProductQuantity,
-    calculateFlutterwaveTotalPrice
+    calculateFlutterwaveTotalPrice,
+    stripe
 }

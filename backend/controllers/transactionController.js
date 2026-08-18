@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const Transaction = require("../models/transactionModel");
+const { stripe } = require("../utils");
+
 
 // Transfer fund
 const transferFund = asyncHandler(async(req, res) => {
@@ -76,10 +78,31 @@ const getUserTransactions = asyncHandler(async(req, res) => {
     
 });
 
+// Deposit fund stripe 
+const depositFundStripe = asyncHandler(async(req, res) => {
+   const {amount} = req.body 
+   // We have access to the user who is protected
+   const user = await User.findById(req.user._id);
+
+   // Create stripe customer 
+
+   if(!user.stripeCustomerId) {
+     const customer = await stripe.customers.create({
+       email: user.email,
+
+     })
+     user.stripeCustomerId = customer.id 
+     user.save()
+   }
+
+  //  Create stripe session
+})
+
 module.exports = {
     transferFund,
     verifyAccount,
-    getUserTransactions
+    getUserTransactions,
+    depositFundStripe
 }
 
 

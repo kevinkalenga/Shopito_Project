@@ -49,6 +49,9 @@ const userSchema = mongoose.Schema(
         cartItems: {
             type: [Object],
         },
+        stripeCustomerId: {
+            type: String,
+        },
         resetPasswordToken: String,
         resetPasswordExpire: Date,
     },{
