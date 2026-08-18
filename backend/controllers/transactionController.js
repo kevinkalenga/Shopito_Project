@@ -53,17 +53,33 @@ const verifyAccount = asyncHandler(async(req, res) => {
 
      if(!user) {
         res.status(400)
-      throw new Error("User account not found")
+        throw new Error("User account not found")
      }
 
 
       res.status(200).json({message: "Account verification successsful!"})
     
 });
+// Get user transactions
+const getUserTransactions = asyncHandler(async(req, res) => {
+    if(req.user.email !== req.body.email) {
+        res.status(400)
+        throw new Error("Not authorized to view transactions.")
+    }
+   const transactions = await Transaction.find({
+     $or: [{sender: req.body.email}, {receiver: req.body.email}]
+   }).sort(
+    {createdAt: -1}
+   ).populate("sender").populate("receiver");
+
+   res.status(200).json(transactions);
+    
+});
 
 module.exports = {
     transferFund,
-    verifyAccount
+    verifyAccount,
+    getUserTransactions
 }
 
 
