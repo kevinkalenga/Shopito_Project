@@ -24,7 +24,8 @@ const transactionSchema = mongoose.Schema({
     },
     status: {
         type: String,
-        required: true
+        required: true,
+        default: "pending",
 
     },
 
