@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const Transaction = require("../models/transactionModel");
 
-
+// Transfer fund
 const transferFund = asyncHandler(async(req, res) => {
     const {amount, sender, receiver, description} = req.body 
 
@@ -45,8 +45,25 @@ const transferFund = asyncHandler(async(req, res) => {
     
 });
 
+
+// verify account
+const verifyAccount = asyncHandler(async(req, res) => {
+    
+     const user = await  User.findOne({email: req.body.receiver}) 
+
+     if(!user) {
+        res.status(400)
+      throw new Error("User account not found")
+     }
+
+
+      res.status(200).json({message: "Account verification successsful!"})
+    
+});
+
 module.exports = {
     transferFund,
+    verifyAccount
 }
 
 
