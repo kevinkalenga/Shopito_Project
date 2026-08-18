@@ -92,7 +92,7 @@ const depositFundStripe = asyncHandler(async(req, res) => {
 
      })
      user.stripeCustomerId = customer.id 
-     user.save()
+     await user.save()
    }
 
   //  Create stripe session
@@ -113,6 +113,11 @@ const depositFundStripe = asyncHandler(async(req, res) => {
       }
     ],
     customer: user.stripeCustomerId,
+    
+    metadata: {
+        userId: user._id.toString()
+    },
+    
     success_url: `${process.env.FRONTEND_URL}/wallet?payment=successful&amount=${amount}`,
     cancel_url: `${process.env.FRONTEND_URL}/wallet?payment=failed`,
   })
