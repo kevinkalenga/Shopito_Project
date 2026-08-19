@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom'
 import { getUser } from '../../redux/features/auth/authSlice';
 import mcImg from "../../assets/mc_symbol.png"
-import { AiOutlineDollarCircle } from "react-icons/ai";
+import { AiOutlineDollarCircle, AiFillDollarCircle, AiFillGift} from "react-icons/ai";
 import { FaRegPaperPlane } from "react-icons/fa";
+import paymentImg from "../../assets/payment.svg" 
 
 const Wallet = () => {
   
@@ -41,8 +42,23 @@ const Wallet = () => {
                          <button className='--btn --btn-danger'><FaRegPaperPlane /> &nbsp; Transfer</button>
                       </div>
                   </div>
-                  <div className='wallet-promo'>
-                    Wallet Promo
+                  <div className='wallet-promo --flex-between --card'>
+                      <div className='wallet-text'>
+                          <span className='--flex-start'>
+                           <AiFillDollarCircle size={25} color='#ff7722' />
+                           <h4>Shopito Wallet</h4>
+                          </span>
+                          <span className='--flex-start'>
+                             <h4>Cashback up to 80%</h4>
+                            <AiFillGift size={20} color='#007bff' />
+                          </span>
+                          <span>
+                             Use your shopito wallet at checkout and get up to 80% cashback.
+                          </span>
+                      </div>
+                      <div className='wallet-img'>
+                          <img src={paymentImg} alt='pay' width={150} />
+                      </div>
                   </div>
                 </div>
              </div>
