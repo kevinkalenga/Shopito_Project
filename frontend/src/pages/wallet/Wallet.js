@@ -8,6 +8,28 @@ import mcImg from "../../assets/mc_symbol.png"
 import { AiOutlineDollarCircle, AiFillDollarCircle, AiFillGift} from "react-icons/ai";
 import { FaRegPaperPlane } from "react-icons/fa";
 import paymentImg from "../../assets/payment.svg" 
+import WalletTransactions from './WalletTransactions';
+
+const transactions = [
+  {
+    _id: 123456,
+    created: "18-08-2026",
+    amount: 100,
+    sender: "marine0033@gmail.com",
+    receiver: "Shopito Store",
+    description: "Payment for products",
+    status:"success"
+  },
+  {
+    _id: 789453,
+    created: "16-08-2026",
+    amount: 100,
+    sender: "marine0033@gmail.com",
+    receiver: "Shopito Store",
+    description: "Payment for products",
+    status:"success"
+  },
+]
 
 const Wallet = () => {
   
@@ -63,6 +85,11 @@ const Wallet = () => {
                 </div>
              </div>
              {/* Wallet Transactions */}
+             {
+               user !== null && (
+                 <WalletTransactions transactions={transactions} user={user} />
+               )
+             }
          </div>
     </section>
   )
