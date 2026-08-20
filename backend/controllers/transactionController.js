@@ -64,12 +64,13 @@ const verifyAccount = asyncHandler(async(req, res) => {
 });
 // Get user transactions
 const getUserTransactions = asyncHandler(async(req, res) => {
-    if(req.user.email !== req.body.email) {
-        res.status(400)
-        throw new Error("Not authorized to view transactions.")
-    }
+    // if(req.user.email !== req.body.email) {
+    //     res.status(400)
+    //     throw new Error("Not authorized to view transactions.")
+    // }
    const transactions = await Transaction.find({
-     $or: [{sender: req.body.email}, {receiver: req.body.email}]
+    // we are getting the user because is protected inside the routes
+     $or: [{sender: req.user.email}, {receiver: req.user.email}]
    }).sort(
     {createdAt: -1}
    ).populate("sender").populate("receiver");

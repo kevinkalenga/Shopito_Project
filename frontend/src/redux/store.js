@@ -9,6 +9,7 @@ import userReducer from "../redux/features/users/userSlice"
 import cartReducer from "../redux/features/cart/cartSlice"
 import checkoutReducer from "../redux/features/checkout/checkoutSlice"
 import orderReducer from "../redux/features/order/orderSlice"
+import transactionReducer from "../redux/features/transaction/transactionSlice"
 
 export const store = configureStore({
     reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
        cart: cartReducer,
        checkout: checkoutReducer,
        order: orderReducer,
+       transaction: transactionReducer,
     }
 })

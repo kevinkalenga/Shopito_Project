@@ -49,10 +49,10 @@ const ListOfOrders = ({openOrderDetails}) => {
                             const {_id, orderDate, orderTime, orderAmount, orderStatus} = order 
 
                             return (
-                              <tr key={_id}>
+                              <tr key={_id} onClick={() => openOrderDetails(_id)}>
                                   <td>{index + 1}</td>
                                   <td>{orderDate} at {orderTime}</td>
-                                  <td onClick={() => openOrderDetails(_id)}>{_id}</td>
+                                  <td>{_id}</td>
                                   <td>${orderAmount}</td>
                                   <td>
                                     <p className={orderStatus !== "Delivered" ? "pending" : "delivered"}>
