@@ -27,6 +27,21 @@ export const getUserTransactions = createAsyncThunk(
     
   }
 )
+// getUserTransactions
+export const verifyAccount = createAsyncThunk(
+  "transactions/verifyAccount",
+
+  async (formData, thunkAPI ) => {
+    try {
+      return await transactionService.verifyAccount(formData)
+    } catch (error) {
+      const message = (error.response && error.response.data && error.response.data.message) || 
+      error.message || error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+    
+  }
+)
 
 
 
@@ -35,7 +50,11 @@ export const getUserTransactions = createAsyncThunk(
 const transactionSlice = createSlice({
   name: "transaction",
   initialState,
-  reducers: {},
+  reducers: {
+    RESET_TRANSACTION_MESSAGE(state) {
+       state.message = ""
+    }
+  },
   extraReducers:(builder) => {
     builder 
       //Get products 
@@ -57,10 +76,28 @@ const transactionSlice = createSlice({
                 state.message = action.payload;
                 toast.error(action.payload);
             })
+      //VerifyAccount 
+            .addCase(verifyAccount.pending, (state) => {
+                  state.isLoading = true;
+              
+            })
+            .addCase(verifyAccount.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.message = action.payload;
+                toast.success(action.payload)
+            })
+            .addCase(verifyAccount.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+                toast.error(action.payload);
+            })
   }
 });
 
-export const {} = transactionSlice.actions 
+export const {RESET_TRANSACTION_MESSAGE} = transactionSlice.actions 
 
 export const selectTransactions = (state) => state.transaction.transactions;
 
