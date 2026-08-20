@@ -27,13 +27,28 @@ export const getUserTransactions = createAsyncThunk(
     
   }
 )
-// getUserTransactions
+// verifyAccount
 export const verifyAccount = createAsyncThunk(
   "transactions/verifyAccount",
 
   async (formData, thunkAPI ) => {
     try {
       return await transactionService.verifyAccount(formData)
+    } catch (error) {
+      const message = (error.response && error.response.data && error.response.data.message) || 
+      error.message || error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+    
+  }
+)
+// transferFund
+export const transferFund = createAsyncThunk(
+  "transactions/transferFund",
+
+  async (formData, thunkAPI ) => {
+    try {
+      return await transactionService.transferFund(formData)
     } catch (error) {
       const message = (error.response && error.response.data && error.response.data.message) || 
       error.message || error.toString()
@@ -89,6 +104,24 @@ const transactionSlice = createSlice({
                 toast.success(action.payload)
             })
             .addCase(verifyAccount.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+                toast.error(action.payload);
+            })
+      //transferFund 
+            .addCase(transferFund.pending, (state) => {
+                  state.isLoading = true;
+              
+            })
+            .addCase(transferFund.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.message = action.payload;
+                toast.success(action.payload)
+            })
+            .addCase(transferFund.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;

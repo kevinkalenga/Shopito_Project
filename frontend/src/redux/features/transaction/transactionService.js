@@ -17,11 +17,18 @@ const verifyAccount = async (formData) => {
      console.log(response);
     return response.data.message;
 }
+// transferFund 
+const transferFund = async (formData) => {
+    const response = await axios.post(API_URL + "/transferFund", formData)
+     console.log(response);
+    return response.data.message;
+}
 
 
 const transactionService = {
    getUserTransactions,
-   verifyAccount
+   verifyAccount,
+   transferFund
 }
 
 
