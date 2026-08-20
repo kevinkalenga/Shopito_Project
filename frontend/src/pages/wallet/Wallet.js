@@ -9,8 +9,9 @@ import { AiOutlineDollarCircle, AiFillDollarCircle, AiFillGift} from "react-icon
 import { FaRegPaperPlane } from "react-icons/fa";
 import paymentImg from "../../assets/payment.svg" 
 import WalletTransactions from './WalletTransactions';
+import { getUserTransactions, selectedTransactions, selectTransactions } from '../../redux/features/transaction/transactionSlice';
 
-const transactions = [
+const transactionss = [
   {
     _id: 123456,
     created: "18-08-2026",
@@ -37,11 +38,18 @@ const Wallet = () => {
    const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const {user} = useSelector((state) => state.auth)
+    const {user} = useSelector((state) => state.auth);
+    const transactions = useSelector(selectTransactions)
 
-    useEffect(() => {
-      dispatch(getUser())
-    }, [dispatch, user])
+      useEffect(() => {
+        dispatch(getUser());
+      }, [dispatch]);
+
+      useEffect(() => {
+        if (user) {
+          dispatch(getUserTransactions());
+        }
+      }, [dispatch, user]);
   
   
   return (

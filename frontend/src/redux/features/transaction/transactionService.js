@@ -7,14 +7,14 @@ const API_URL = `${BACKEND_URL}/api/transaction`;
 // getUserTransactions 
 
 const getUserTransactions = async () => {
-    const response = await axios.get(API_URL + "getUserTransactions")
+    const response = await axios.get(API_URL + "/getUserTransactions")
      console.log(response);
     return response.data;
 }
 
 
 const transactionService = {
-   getUserTransactions
+   getUserTransactions,
 }
 
 

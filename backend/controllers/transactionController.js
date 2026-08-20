@@ -39,7 +39,13 @@ const transferFund = asyncHandler(async(req, res) => {
     )
 
     // Save transaction 
-    await Transaction.create(req.body)
+    await Transaction.create({
+        amount,
+        sender,
+        receiver,
+        description,
+        status: "success"
+    })
 
 
     res.status(200).json({message: "Transaction successsful!"})

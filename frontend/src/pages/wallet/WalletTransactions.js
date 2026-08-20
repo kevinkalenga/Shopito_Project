@@ -7,7 +7,7 @@ const WalletTransactions = ({transactions, user}) => {
   
   
       // Begin Paginate 
-    const itemsPerPage = 1;
+    const itemsPerPage = 10;
     const [itemOffset, setItemOffset] = useState(0);
   
     const endOffset = itemOffset + itemsPerPage;
