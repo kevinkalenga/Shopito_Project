@@ -1,9 +1,11 @@
 import React from 'react'
 import "./DepositModal.scss"
 
-const DepositModal = () => {
+const DepositModal = ({depositData, closeModal, handleDepositChange, depositMoney}) => {
   return (
-    <div>DepositModal</div>
+    <div>
+      <h1>Deposit Modal</h1>
+    </div>
   )
 }
 

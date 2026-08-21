@@ -12,6 +12,7 @@ import WalletTransactions from './WalletTransactions';
 import { getUserTransactions, RESET_RECEIVER, RESET_TRANSACTION_MESSAGE, selectedTransactions, selectTransactionMessage, selectTransactions, transferFund, verifyAccount } from '../../redux/features/transaction/transactionSlice';
 import TransferModal from './TransferModal';
 import { toast } from 'react-toastify';
+import DepositModal from './DepositModal';
 
 const transactionss = [
   {
@@ -33,6 +34,11 @@ const initialState = {
   description: "",
   status: "",
 }
+const initialDepositState = {
+  amount: 0,
+ paymentMethod:""
+ 
+}
 
 const Wallet = () => {
   
@@ -43,7 +49,10 @@ const Wallet = () => {
     const {user} = useSelector((state) => state.auth);
     const transactions = useSelector(selectTransactions)
     const [showTransferModal, setShowTransferModal] = useState(false)
+    const [showDepositModal, setShowDepositModal] = useState(true)
     const [transferData, setTransferData] = useState(initialState)
+    const [depositData, setDepositData] = useState(initialDepositState)
+    const {amount: depositAmount, paymentMethod} = depositData
     const [isVerified, setIsVerified] = useState(false) 
     const {isLoading} = useSelector((state) => state.transaction)
 
@@ -116,7 +125,14 @@ const Wallet = () => {
         await dispatch(getUserTransactions());
       };
     
-    
+      const depositMoney = () => {
+
+      }
+
+      const handleDepositChange = (e) => {
+        const {name, value} = e.target
+        setDepositData({...depositData, [name]: value})
+      }
     
     
     const closeModal = (e) => {
@@ -205,6 +221,17 @@ const Wallet = () => {
               transferMoney={transferMoney}
               verifyUserAccount={verifyUserAccount}
               closeModal={closeModal}
+            />
+          )
+         }
+
+         {
+          showDepositModal && (
+            <DepositModal 
+             depositData={depositData}
+             closeModal={closeModal}
+             handleDepositChange={handleDepositChange}
+             depositMoney={depositMoney}
             />
           )
          }
