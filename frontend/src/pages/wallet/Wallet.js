@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Wallet.scss"
 import PageMenu from '../../components/pageMenu/PageMenu'
 import { useDispatch, useSelector } from "react-redux";
@@ -21,16 +21,16 @@ const transactionss = [
     description: "Payment for products",
     status:"success"
   },
-  {
-    _id: 789453,
-    created: "16-08-2026",
-    amount: 100,
-    sender: "marine0033@gmail.com",
-    receiver: "Shopito Store",
-    description: "Payment for products",
-    status:"success"
-  },
-]
+
+] 
+
+const initialState = {
+  amount: 0,
+  sender: "",
+  receiver: "",
+  description: "",
+  status: "",
+}
 
 const Wallet = () => {
   
@@ -40,6 +40,25 @@ const Wallet = () => {
 
     const {user} = useSelector((state) => state.auth);
     const transactions = useSelector(selectTransactions)
+    const [showTransferModal, setShowTransferModal] = useState(false)
+    const [transferData, setTransferData] = useState(initialState)
+    const [isVerified, setIsVerified] = useState(false) 
+    const {isLoading} = useSelector((state) => state.transaction)
+
+    const {amount, sender, receiver, description, status} = transferData 
+
+    const handleInputChange = () => {
+      
+    }
+    const handleAccountChange = () => {
+
+    }
+    const verifyUserAccount = () => {
+
+    }
+    const transferMoney = () => {
+
+    }
 
       useEffect(() => {
         dispatch(getUser());
