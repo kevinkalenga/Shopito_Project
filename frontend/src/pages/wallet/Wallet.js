@@ -49,7 +49,7 @@ const Wallet = () => {
     const {user} = useSelector((state) => state.auth);
     const transactions = useSelector(selectTransactions)
     const [showTransferModal, setShowTransferModal] = useState(false)
-    const [showDepositModal, setShowDepositModal] = useState(true)
+    const [showDepositModal, setShowDepositModal] = useState(false)
     const [transferData, setTransferData] = useState(initialState)
     const [depositData, setDepositData] = useState(initialDepositState)
     const {amount: depositAmount, paymentMethod} = depositData
@@ -138,7 +138,9 @@ const Wallet = () => {
     const closeModal = (e) => {
        if(e.target.classList.contains("cm")) {
         setShowTransferModal(false)
+        setShowDepositModal(false)
         setTransferData({...initialState})
+        setDepositData({...initialDepositState})
         setIsVerified(false)
        }
     }
@@ -179,7 +181,7 @@ const Wallet = () => {
                       </span>
                       <h4>${user?.balance?.toFixed(2)}</h4>
                       <div className='buttons --flex-center'>
-                         <button className='--btn --btn-primary'><AiOutlineDollarCircle /> &nbsp; Deposit Money</button>
+                         <button className='--btn --btn-primary' onClick={() => setShowDepositModal(true)}><AiOutlineDollarCircle /> &nbsp; Deposit Money</button>
                          <button className='--btn --btn-danger' onClick={() => setShowTransferModal(true)}><FaRegPaperPlane /> &nbsp; Transfer</button>
                       </div>
                   </div>
