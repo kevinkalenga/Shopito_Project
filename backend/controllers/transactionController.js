@@ -6,7 +6,7 @@ const { stripe } = require("../utils");
 
 // Transfer fund
 const transferFund = asyncHandler(async(req, res) => {
-    const {amount, sender, receiver, description} = req.body 
+    const {amount, sender, receiver, description, status} = req.body 
 
     // Validate 
     if(!amount || !sender || !receiver) {

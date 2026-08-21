@@ -9,7 +9,7 @@ import { AiOutlineDollarCircle, AiFillDollarCircle, AiFillGift} from "react-icon
 import { FaRegPaperPlane } from "react-icons/fa";
 import paymentImg from "../../assets/payment.svg" 
 import WalletTransactions from './WalletTransactions';
-import { getUserTransactions, RESET_RECEIVER, RESET_TRANSACTION_MESSAGE, selectedTransactions, selectTransactionMessage, selectTransactions, verifyAccount } from '../../redux/features/transaction/transactionSlice';
+import { getUserTransactions, RESET_RECEIVER, RESET_TRANSACTION_MESSAGE, selectedTransactions, selectTransactionMessage, selectTransactions, transferFund, verifyAccount } from '../../redux/features/transaction/transactionSlice';
 import TransferModal from './TransferModal';
 import { toast } from 'react-toastify';
 
@@ -85,9 +85,40 @@ const Wallet = () => {
         })
       );
     };
-    const transferMoney = () => {
+    
 
-    }
+
+      const transferMoney = async (e) => {
+        e.preventDefault();
+
+        if (amount < 1) {
+          return toast.error("Please enter a valid amount");
+        }
+
+        if (!description) {
+          return toast.error("Please enter a description");
+        }
+
+        const formData = {
+          ...transferData,
+          sender: user.email,
+          status: "Success",
+        };
+
+        await dispatch(transferFund(formData));
+
+        setShowTransferModal(false);
+        setTransferData(initialState);
+        setIsVerified(false);
+
+        dispatch(RESET_RECEIVER());
+        await dispatch(getUser());
+        await dispatch(getUserTransactions());
+      };
+    
+    
+    
+    
     const closeModal = (e) => {
        if(e.target.classList.contains("cm")) {
         setShowTransferModal(false)
@@ -110,6 +141,7 @@ const Wallet = () => {
          if(transactionMessage === "Account verification successsful!") {
           setIsVerified(true)
          }
+      
          dispatch(RESET_TRANSACTION_MESSAGE())
       }, [transactionMessage, dispatch])
   
