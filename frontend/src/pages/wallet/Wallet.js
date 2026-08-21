@@ -9,7 +9,7 @@ import { AiOutlineDollarCircle, AiFillDollarCircle, AiFillGift} from "react-icon
 import { FaRegPaperPlane } from "react-icons/fa";
 import paymentImg from "../../assets/payment.svg" 
 import WalletTransactions from './WalletTransactions';
-import { getUserTransactions, selectedTransactions, selectTransactions } from '../../redux/features/transaction/transactionSlice';
+import { getUserTransactions, RESET_TRANSACTION_MESSAGE, selectedTransactions, selectTransactions } from '../../redux/features/transaction/transactionSlice';
 import TransferModal from './TransferModal';
 
 const transactionss = [
@@ -48,11 +48,15 @@ const Wallet = () => {
 
     const {amount, sender, receiver, description, status} = transferData 
 
-    const handleInputChange = () => {
-      
+    const handleInputChange = (e) => {
+      const {name, value} = e.target
+      setTransferData({...transferData, [name]: value})
     }
-    const handleAccountChange = () => {
-
+    const handleAccountChange = (e) => {
+        const {name, value} = e.target
+      setTransferData({...transferData, [name]: value})
+      setIsVerified(false)
+      dispatch(RESET_TRANSACTION_MESSAGE())
     }
     const verifyUserAccount = () => {
 
@@ -63,6 +67,8 @@ const Wallet = () => {
     const closeModal = (e) => {
        if(e.target.classList.contains("cm")) {
         setShowTransferModal(false)
+        setTransferData({...initialState})
+        setIsVerified(false)
        }
     }
 
