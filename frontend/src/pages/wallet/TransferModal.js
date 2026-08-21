@@ -1,8 +1,8 @@
 import React from 'react'
 import "./TransferModal.scss"
 import { AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import { useRef, useEffect } from 'react';
+
 import {useSelector} from "react-redux"
 import { selectReceiverName } from '../../redux/features/transaction/transactionSlice';
 
