@@ -77,10 +77,10 @@ const Wallet = () => {
   
   return (
     <section>
-         <div className='container'>
+          <div className='container'>
             
-             <PageMenu />
-             <div className='wallet'>
+            <PageMenu />
+            <div className='wallet'>
                 <div className='wallet-data --flex-start --flex-dir-column'>
                   <div className='wallet-info --card --mr'>
                       <span>Hello, </span>
@@ -115,13 +115,13 @@ const Wallet = () => {
                       </div>
                   </div>
                 </div>
-             </div>
-             {/* Wallet Transactions */}
-             {
-               user !== null && (
-                 <WalletTransactions transactions={transactions} user={user} />
-               )
-             }
+              
+                {/* Wallet Transactions */}
+                {
+                  user !== null && (
+                    <WalletTransactions transactions={transactions} user={user} />
+                  )
+                }
          </div>
          {
           showTransferModal && (
@@ -137,7 +137,7 @@ const Wallet = () => {
             />
           )
          }
-        
+        </div>
     </section>
   )
 }
