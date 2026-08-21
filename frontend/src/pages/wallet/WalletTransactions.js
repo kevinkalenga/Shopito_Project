@@ -55,7 +55,7 @@ const WalletTransactions = ({transactions, user}) => {
                       return (
                         <tr key={_id}>
                            <td>{itemOffset + index + 1}</td>
-                           <td>{createdAt}</td>
+                           <td>{new Date(createdAt).toLocaleString()}</td>
                            <td>{_id}</td>
                            <td>{"$"}{amount}</td>
                            <td>{sender === user.email ? 'Debit' : 'Credit'}</td>

@@ -1,10 +1,19 @@
 import React from 'react'
 import "./TransferModal.scss"
 
-const TransferModal = () => {
+const TransferModal = ({
+   transferData, 
+   isVerified,
+   isLoading, 
+   handleInputChange, 
+   handleAccountChange, 
+   verifyUserAccount, 
+   transferMoney, closeModal}) => {
   return (
-    <div>TransferModal</div>
+    <div>
+       <h1>TransferModal</h1>
+    </div>
   )
 }
 
-export default TransferModal
+export default TransferModal;

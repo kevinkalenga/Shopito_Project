@@ -10,6 +10,7 @@ import { FaRegPaperPlane } from "react-icons/fa";
 import paymentImg from "../../assets/payment.svg" 
 import WalletTransactions from './WalletTransactions';
 import { getUserTransactions, selectedTransactions, selectTransactions } from '../../redux/features/transaction/transactionSlice';
+import TransferModal from './TransferModal';
 
 const transactionss = [
   {
@@ -40,7 +41,7 @@ const Wallet = () => {
 
     const {user} = useSelector((state) => state.auth);
     const transactions = useSelector(selectTransactions)
-    const [showTransferModal, setShowTransferModal] = useState(false)
+    const [showTransferModal, setShowTransferModal] = useState(true)
     const [transferData, setTransferData] = useState(initialState)
     const [isVerified, setIsVerified] = useState(false) 
     const {isLoading} = useSelector((state) => state.transaction)
@@ -59,6 +60,9 @@ const Wallet = () => {
     const transferMoney = () => {
 
     }
+    const closeModal = () => {
+
+    }
 
       useEffect(() => {
         dispatch(getUser());
@@ -74,6 +78,7 @@ const Wallet = () => {
   return (
     <section>
          <div className='container'>
+            
              <PageMenu />
              <div className='wallet'>
                 <div className='wallet-data --flex-start --flex-dir-column'>
@@ -118,6 +123,21 @@ const Wallet = () => {
                )
              }
          </div>
+         {
+          showTransferModal && (
+            <TransferModal 
+              transferData={transferData}
+              isVerified={isVerified}
+              isLoading={isLoading} 
+              handleInputChange={handleInputChange}
+              handleAccountChange={handleAccountChange}
+              transferMoney={transferMoney}
+              verifyUserAccount={verifyUserAccount}
+              closeModal={closeModal}
+            />
+          )
+         }
+        
     </section>
   )
 }
