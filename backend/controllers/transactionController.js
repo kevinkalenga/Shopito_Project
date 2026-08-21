@@ -65,7 +65,7 @@ const verifyAccount = asyncHandler(async(req, res) => {
      }
 
 
-      res.status(200).json({message: "Account verification successsful!"})
+      res.status(200).json({receiverName: user.name, message: "Account verification successsful!"})
     
 });
 // Get user transactions

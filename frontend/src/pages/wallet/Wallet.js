@@ -9,7 +9,7 @@ import { AiOutlineDollarCircle, AiFillDollarCircle, AiFillGift} from "react-icon
 import { FaRegPaperPlane } from "react-icons/fa";
 import paymentImg from "../../assets/payment.svg" 
 import WalletTransactions from './WalletTransactions';
-import { getUserTransactions, RESET_TRANSACTION_MESSAGE, selectedTransactions, selectTransactionMessage, selectTransactions, verifyAccount } from '../../redux/features/transaction/transactionSlice';
+import { getUserTransactions, RESET_RECEIVER, RESET_TRANSACTION_MESSAGE, selectedTransactions, selectTransactionMessage, selectTransactions, verifyAccount } from '../../redux/features/transaction/transactionSlice';
 import TransferModal from './TransferModal';
 import { toast } from 'react-toastify';
 
@@ -59,6 +59,7 @@ const Wallet = () => {
       setTransferData({...transferData, [name]: value})
       setIsVerified(false)
       dispatch(RESET_TRANSACTION_MESSAGE())
+      dispatch(RESET_RECEIVER())
     }
     
     const validateEmail = (email) => {

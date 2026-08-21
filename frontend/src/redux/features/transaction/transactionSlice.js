@@ -3,8 +3,9 @@ import transactionService from './transactionService'
 import {toast} from 'react-toastify'
 
 const initialState = {
-   transaction: null,
-   transactions: [],
+    transaction: null,
+    transactions: [],
+    receiverName: "",
     isError: false, 
     isSuccess: false,
     isLoading: false,
@@ -68,7 +69,10 @@ const transactionSlice = createSlice({
   reducers: {
     RESET_TRANSACTION_MESSAGE(state) {
        state.message = ""
-    }
+    },
+    RESET_RECEIVER(state) {
+       state.receiverName = ""
+    },
   },
   extraReducers:(builder) => {
     builder 
@@ -100,8 +104,9 @@ const transactionSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
-                state.message = action.payload;
-                toast.success(action.payload)
+                state.receiverName = action.payload.receiverName;
+                state.message = action.payload.message;
+                toast.success(action.payload.message)
             })
             .addCase(verifyAccount.rejected, (state, action) => {
                 state.isLoading = false;
@@ -130,9 +135,10 @@ const transactionSlice = createSlice({
   }
 });
 
-export const {RESET_TRANSACTION_MESSAGE} = transactionSlice.actions 
+export const {RESET_TRANSACTION_MESSAGE, RESET_RECEIVER} = transactionSlice.actions ;
 
 export const selectTransactions = (state) => state.transaction.transactions;
 export const selectTransactionMessage = (state) => state.transaction.message;
+export const selectReceiverName = (state) => state.transaction.receiverName;
 
 export default transactionSlice.reducer;

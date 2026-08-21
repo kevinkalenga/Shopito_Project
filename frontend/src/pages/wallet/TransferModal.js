@@ -3,6 +3,8 @@ import "./TransferModal.scss"
 import { AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
 import { useRef } from 'react';
 import { useEffect } from 'react';
+import {useSelector} from "react-redux"
+import { selectReceiverName } from '../../redux/features/transaction/transactionSlice';
 
 const TransferModal = ({
    transferData, 
@@ -14,6 +16,7 @@ const TransferModal = ({
    transferMoney, closeModal}) => {
   
   const inputRef = useRef(null) 
+  const receiverName = useSelector(selectReceiverName)
 
   useEffect(() => {
     inputRef.current?.focus()
@@ -40,6 +43,11 @@ const TransferModal = ({
                     </p>
                     <p className='req'>
                         <label>Receivers Account</label>
+                          {
+                            receiverName !== "" && (
+                               <p className='--text-sm'><b className='--color-danger'>Receiver's name</b>: {receiverName}</p>
+                            )
+                          }
                         <span className='--flex-end'>
                           <input type='text' placeholder="Receiver's Account" name='receiver'
                           value={transferData.receiver}
