@@ -125,52 +125,131 @@ const Wallet = () => {
         await dispatch(getUserTransactions());
       };
       
+      // const depositMoney = async (e) => {
+      //     e.preventDefault();
+
+      //     if (depositAmount < 1) {
+      //       return toast.error("Please enter amount greater than 0");
+      //     }
+
+      //     if (!paymentMethod) {
+      //       return toast.error("Please select a payment method");
+      //     }
+
+      //     if (paymentMethod === "flutterwave") {
+      //       try {
+      //         const response = await fetch(
+      //           `${process.env.REACT_APP_BACKEND_URL}/api/transaction/depositFundFlutterwave`,
+      //           {
+      //             method: "POST",
+      //             credentials: "include",
+      //             headers: {
+      //               "Content-Type": "application/json",
+      //             },
+      //             body: JSON.stringify({
+      //               amount: Number(depositAmount),
+      //             }),
+      //           }
+      //         );
+
+      //         const data = await response.json();
+
+      //         if (!response.ok) {
+      //           throw new Error(data.message || "Flutterwave error");
+      //         }
+
+      //         window.location.href = data.paymentLink;
+
+      //       } catch (error) {
+      //         console.error("Flutterwave deposit error:", error);
+      //         toast.error(error.message || "Unable to start payment");
+      //       }
+
+      //       return;
+      //     }
+
+      //     if (paymentMethod === "stripe") {
+      //       return toast.info("Stripe coming soon");
+      //     }
+      // };
+
+
+
       const depositMoney = async (e) => {
-          e.preventDefault();
+        e.preventDefault();
 
-          if (depositAmount < 1) {
-            return toast.error("Please enter amount greater than 0");
-          }
+        if (depositAmount < 1) {
+          return toast.error("Please enter amount greater than 0");
+        }
 
-          if (!paymentMethod) {
-            return toast.error("Please select a payment method");
-          }
+        if (!paymentMethod) {
+          return toast.error("Please select a payment method");
+        }
 
-          if (paymentMethod === "flutterwave") {
-            try {
-              const response = await fetch(
-                `${process.env.REACT_APP_BACKEND_URL}/api/transaction/depositFundFlutterwave`,
-                {
-                  method: "POST",
-                  credentials: "include",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    amount: Number(depositAmount),
-                  }),
-                }
-              );
-
-              const data = await response.json();
-
-              if (!response.ok) {
-                throw new Error(data.message || "Flutterwave error");
+        // Flutterwave
+        if (paymentMethod === "flutterwave") {
+          try {
+            const response = await fetch(
+              `${process.env.REACT_APP_BACKEND_URL}/api/transaction/depositFundFlutterwave`,
+              {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  amount: Number(depositAmount),
+                }),
               }
+            );
 
-              window.location.href = data.paymentLink;
+            const data = await response.json();
 
-            } catch (error) {
-              console.error("Flutterwave deposit error:", error);
-              toast.error(error.message || "Unable to start payment");
+            if (!response.ok) {
+              throw new Error(data.message || "Flutterwave error");
             }
 
-            return;
+            window.location.href = data.paymentLink;
+          } catch (error) {
+            console.error("Flutterwave deposit error:", error);
+            toast.error(error.message || "Unable to start payment");
           }
 
-          if (paymentMethod === "stripe") {
-            return toast.info("Stripe coming soon");
+          return;
+        }
+
+        // Stripe
+        if (paymentMethod === "stripe") {
+          try {
+            const response = await fetch(
+              `${process.env.REACT_APP_BACKEND_URL}/api/transaction/depositFundStripe`,
+              {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  amount: Number(depositAmount),
+                }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(data.message || "Stripe error");
+            }
+
+            // Redirection vers Stripe Checkout
+            window.location.href = data.url;
+          } catch (error) {
+            console.error("Stripe deposit error:", error);
+            toast.error(error.message || "Unable to start Stripe payment");
           }
+
+          return;
+        }
       };
               
 

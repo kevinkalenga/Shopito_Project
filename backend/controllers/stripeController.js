@@ -73,7 +73,7 @@ const stripeWebhook = asyncHandler(async (req, res) => {
                 sender: "Stripe",
                 receiver: user.email,
                 description: "Wallet deposit via Stripe",
-                status: "completed",
+                status: "success",
                 stripeSessionId: session.id
             });
 
