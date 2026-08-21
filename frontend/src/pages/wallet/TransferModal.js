@@ -47,7 +47,7 @@ const TransferModal = ({
                           required/>
                           <input className='--btn --btn-danger --btn-lg' type='button'  name='verify'
                           value={"Verify"}
-                          onChange={verifyUserAccount} 
+                          onClick={verifyUserAccount}
                           />
                         </span>
                     </p>
@@ -60,7 +60,7 @@ const TransferModal = ({
                     </p>
                     {
                       !isVerified && (
-                        <p className='--color-danger'>Please click button above!!!</p>
+                        <p className='--color-danger'>Please click the very button above!!!</p>
                       )
                     }
                     {

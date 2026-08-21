@@ -9,8 +9,9 @@ import { AiOutlineDollarCircle, AiFillDollarCircle, AiFillGift} from "react-icon
 import { FaRegPaperPlane } from "react-icons/fa";
 import paymentImg from "../../assets/payment.svg" 
 import WalletTransactions from './WalletTransactions';
-import { getUserTransactions, RESET_TRANSACTION_MESSAGE, selectedTransactions, selectTransactions } from '../../redux/features/transaction/transactionSlice';
+import { getUserTransactions, RESET_TRANSACTION_MESSAGE, selectedTransactions, selectTransactionMessage, selectTransactions, verifyAccount } from '../../redux/features/transaction/transactionSlice';
 import TransferModal from './TransferModal';
+import { toast } from 'react-toastify';
 
 const transactionss = [
   {
@@ -43,10 +44,11 @@ const Wallet = () => {
     const transactions = useSelector(selectTransactions)
     const [showTransferModal, setShowTransferModal] = useState(false)
     const [transferData, setTransferData] = useState(initialState)
-    const [isVerified, setIsVerified] = useState(true) 
+    const [isVerified, setIsVerified] = useState(false) 
     const {isLoading} = useSelector((state) => state.transaction)
 
     const {amount, sender, receiver, description, status} = transferData 
+    const transactionMessage = useSelector(selectTransactionMessage)
 
     const handleInputChange = (e) => {
       const {name, value} = e.target
@@ -58,9 +60,30 @@ const Wallet = () => {
       setIsVerified(false)
       dispatch(RESET_TRANSACTION_MESSAGE())
     }
-    const verifyUserAccount = () => {
+    
+    const validateEmail = (email) => {
+       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+    
+    
 
-    }
+    const verifyUserAccount = () => {
+      const receiverEmail = receiver.trim();
+
+      if (!receiverEmail) {
+        return toast.error("Please add receiver's account");
+      }
+
+      if (!validateEmail(receiverEmail)) {
+        return toast.error("Please enter a valid email account");
+      }
+
+      dispatch(
+        verifyAccount({
+          receiver: receiverEmail
+        })
+      );
+    };
     const transferMoney = () => {
 
     }
@@ -81,6 +104,13 @@ const Wallet = () => {
           dispatch(getUserTransactions());
         }
       }, [dispatch, user]);
+
+      useEffect(() => {
+         if(transactionMessage === "Account verification successsful!") {
+          setIsVerified(true)
+         }
+         dispatch(RESET_TRANSACTION_MESSAGE())
+      }, [transactionMessage, dispatch])
   
   
   return (

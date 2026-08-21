@@ -133,5 +133,6 @@ const transactionSlice = createSlice({
 export const {RESET_TRANSACTION_MESSAGE} = transactionSlice.actions 
 
 export const selectTransactions = (state) => state.transaction.transactions;
+export const selectTransactionMessage = (state) => state.transaction.message;
 
 export default transactionSlice.reducer;
