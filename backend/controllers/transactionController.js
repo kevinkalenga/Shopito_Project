@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 const Transaction = require("../models/transactionModel");
 const { stripe } = require("../utils");
+const axios = require("axios");
 
 
 // Transfer fund

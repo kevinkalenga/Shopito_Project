@@ -136,7 +136,7 @@ const flutterwaveWebhook = asyncHandler(async (req, res) => {
         sender: "Flutterwave",
         receiver: user.email,
         description: "Wallet deposit via Flutterwave",
-        status: "completed",
+        status: "success",
         flutterwaveTransactionId: transactionId
     });
 
@@ -149,6 +149,81 @@ const flutterwaveWebhook = asyncHandler(async (req, res) => {
     });
 });
 
+
+const flutterwaveWalletResponse = asyncHandler(async (req, res) => {
+  const { status, tx_ref, transaction_id } = req.query;
+
+  if (status !== "successful" || !tx_ref || !transaction_id) {
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/wallet?payment=failed`
+    );
+  }
+
+  const response = await axios.get(
+    `https://api.flutterwave.com/v3/transactions/${transaction_id}/verify`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const transaction = response.data.data;
+
+  if (
+    transaction.status !== "successful" ||
+    transaction.tx_ref !== tx_ref
+  ) {
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/wallet?payment=failed`
+    );
+  }
+
+  if (!tx_ref.startsWith("wallet-")) {
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/wallet?payment=failed`
+    );
+  }
+
+  const parts = tx_ref.split("-");
+  const userId = parts[1];
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/wallet?payment=failed`
+    );
+  }
+
+  const existingTransaction = await Transaction.findOne({
+    flutterwaveTransactionId: transaction_id,
+  });
+
+  if (!existingTransaction) {
+    const amount = Number(transaction.amount);
+
+    await User.findByIdAndUpdate(userId, {
+      $inc: { balance: amount },
+    });
+
+    await Transaction.create({
+      amount,
+      sender: "Flutterwave",
+      receiver: user.email,
+      description: "Wallet deposit via Flutterwave",
+      status: "success",
+      flutterwaveTransactionId: transaction_id,
+    });
+  }
+
+  return res.redirect(
+    `${process.env.FRONTEND_URL}/wallet?payment=successful`
+  );
+});
+
 module.exports = {
-    flutterwaveWebhook
+    flutterwaveWebhook,
+    flutterwaveWalletResponse
 };

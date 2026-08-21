@@ -124,10 +124,55 @@ const Wallet = () => {
         await dispatch(getUser());
         await dispatch(getUserTransactions());
       };
-    
-      const depositMoney = () => {
+      
+      const depositMoney = async (e) => {
+          e.preventDefault();
 
-      }
+          if (depositAmount < 1) {
+            return toast.error("Please enter amount greater than 0");
+          }
+
+          if (!paymentMethod) {
+            return toast.error("Please select a payment method");
+          }
+
+          if (paymentMethod === "flutterwave") {
+            try {
+              const response = await fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/api/transaction/depositFundFlutterwave`,
+                {
+                  method: "POST",
+                  credentials: "include",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    amount: Number(depositAmount),
+                  }),
+                }
+              );
+
+              const data = await response.json();
+
+              if (!response.ok) {
+                throw new Error(data.message || "Flutterwave error");
+              }
+
+              window.location.href = data.paymentLink;
+
+            } catch (error) {
+              console.error("Flutterwave deposit error:", error);
+              toast.error(error.message || "Unable to start payment");
+            }
+
+            return;
+          }
+
+          if (paymentMethod === "stripe") {
+            return toast.info("Stripe coming soon");
+          }
+      };
+              
 
       const handleDepositChange = (e) => {
         const {name, value} = e.target

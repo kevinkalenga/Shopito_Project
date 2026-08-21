@@ -43,7 +43,7 @@ const DepositModal = ({depositData, closeModal, handleDepositChange, depositMone
                          id='stripe'
                          value={"stripe"}
                          onChange={handleDepositChange} 
-                         required/>
+                         />
                          <span className='custom-radio' />
                          Stripe
                        </label>
@@ -56,7 +56,7 @@ const DepositModal = ({depositData, closeModal, handleDepositChange, depositMone
                          id='flutterwave'
                          value={"flutterwave"}
                          onChange={handleDepositChange} 
-                         required/>
+                         />
                          <span className='custom-radio' />
                          Flutterwave
                        </label>
