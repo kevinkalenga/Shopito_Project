@@ -38,21 +38,34 @@ const AddProduct = () => {
 
   // Filter Brands based on selected category 
 
-  const filterBrands = (selectedCategory) => {
-     
-      if (!selectedCategory) {
-         setFilteredBrands([]);
-         return;
-      }
-   
-     const newBrands = brands.filter((brand) => brand.category === selectedCategory)
-     
-     setFilteredBrands(newBrands)
+  useEffect(() => {
+  if (!category) {
+    setFilteredBrands([]);
+    return;
   }
 
-  useEffect(() => {
-     filterBrands(category)
-  }, [category, brands])
+  const newBrands = brands.filter(
+    (brand) => brand.category === category
+  );
+
+  setFilteredBrands(newBrands);
+}, [category, brands])
+
+//   const filterBrands = (selectedCategory) => {
+     
+//       if (!selectedCategory) {
+//          setFilteredBrands([]);
+//          return;
+//       }
+   
+//      const newBrands = brands.filter((brand) => brand.category === selectedCategory)
+     
+//      setFilteredBrands(newBrands)
+//   }
+
+//   useEffect(() => {
+//      filterBrands(category)
+//   }, [category, brands])
   
 
 

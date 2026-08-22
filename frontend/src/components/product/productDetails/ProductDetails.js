@@ -228,11 +228,11 @@ const ProductDetails = () => {
     dispatch(getProduct(id))
   }, [dispatch, id])
 
-  const slideLength = product?.image?.length;
+  // const slideLength = product?.image?.length;
 
-  const nextSlide = () => {
-    setImageIndex(imageIndex === slideLength - 1 ? 0 : imageIndex + 1)
-  }
+  // const nextSlide = () => {
+  //   setImageIndex(imageIndex === slideLength - 1 ? 0 : imageIndex + 1)
+  // }
 
   // Correction : useRef pour conserver l'intervalle entre les rendus
   const slideInterval = useRef(null);

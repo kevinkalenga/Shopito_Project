@@ -32,7 +32,7 @@ const CarouselItem = ({url, name, price, regularPrice, description, product}) =>
   return (
     <div className='carouselItem p-7'>
         <Link to={`/product-details/${product._id}`}>
-           <img className='product--image' src={url} alt='product image' />
+           <img className='product--image' src={url} alt={name} />
            <p className='price'>
             <span>{regularPrice > 0 && <del>${regularPrice}</del>}</span>
              {`$${price}`}
