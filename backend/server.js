@@ -25,16 +25,10 @@ app.use("/api/flutterwave", flutterwaveRoute);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(
-  cors({
-    origin: [
-        "http://localhost:3000",
-        "https://shopitoapp.vercel.app",
-        "https://shopito-frontend-chi.vercel.app",
-    ],
-    credentials: true
-  })
-)
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 // Routes 
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
