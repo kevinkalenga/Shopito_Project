@@ -200,7 +200,7 @@ import {useParams, Link} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux"
 import { getProduct } from '../../../redux/features/product/productSlice'
 import { Spinner } from '../../loader/Loader'
-import ProductRating from '../productRating/productRating'
+import ProductRating from '../productRating/ProductRating'
 import {
   calculateAverageRating
 } from "../../../utils";
