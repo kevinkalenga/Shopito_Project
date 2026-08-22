@@ -21,8 +21,12 @@ export const createOrder = createAsyncThunk(
     try {
       return await orderService.createOrder(formData)
     } catch (error) {
-      const message = (error.response && error.response.data && error.response.data.message) || 
-      error.message || error.toString()
+      const message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
       return thunkAPI.rejectWithValue(message);
     }
     
@@ -98,9 +102,9 @@ const orderSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.
+    builder
       // Create order
-          addCase(createOrder.pending, (state) => {
+          .addCase(createOrder.pending, (state) => {
               state.isLoading = true
           })
           .addCase(createOrder.fulfilled, (state, action) => {
@@ -185,7 +189,7 @@ const orderSlice = createSlice({
   }
 });
 
-export const {} = orderSlice.actions
+
 
 export const selectOrders = (state) => state.order.orders;
 export const selectTotalOrderAmount = (state) => state.order.totalOrderAmount;

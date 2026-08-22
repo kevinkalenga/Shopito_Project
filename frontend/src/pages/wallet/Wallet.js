@@ -2,30 +2,18 @@ import React, { useEffect, useState } from 'react'
 import "./Wallet.scss"
 import PageMenu from '../../components/pageMenu/PageMenu'
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom'
 import { getUser } from '../../redux/features/auth/authSlice';
 import mcImg from "../../assets/mc_symbol.png"
 import { AiOutlineDollarCircle, AiFillDollarCircle, AiFillGift} from "react-icons/ai";
 import { FaRegPaperPlane } from "react-icons/fa";
 import paymentImg from "../../assets/payment.svg" 
 import WalletTransactions from './WalletTransactions';
-import { getUserTransactions, RESET_RECEIVER, RESET_TRANSACTION_MESSAGE, selectedTransactions, selectTransactionMessage, selectTransactions, transferFund, verifyAccount } from '../../redux/features/transaction/transactionSlice';
+import { getUserTransactions, RESET_RECEIVER, RESET_TRANSACTION_MESSAGE, selectTransactionMessage, selectTransactions, transferFund, verifyAccount } from '../../redux/features/transaction/transactionSlice';
 import TransferModal from './TransferModal';
 import { toast } from 'react-toastify';
 import DepositModal from './DepositModal';
 
-const transactionss = [
-  {
-    _id: 123456,
-    created: "18-08-2026",
-    amount: 100,
-    sender: "marine0033@gmail.com",
-    receiver: "Shopito Store",
-    description: "Payment for products",
-    status:"success"
-  },
 
-] 
 
 const initialState = {
   amount: 0,
@@ -44,7 +32,7 @@ const Wallet = () => {
   
   
    const dispatch = useDispatch()
-    const navigate = useNavigate()
+   
 
     const {user} = useSelector((state) => state.auth);
     const transactions = useSelector(selectTransactions)
@@ -56,7 +44,7 @@ const Wallet = () => {
     const [isVerified, setIsVerified] = useState(false) 
     const {isLoading} = useSelector((state) => state.transaction)
 
-    const {amount, sender, receiver, description, status} = transferData 
+    const {amount, receiver, description} = transferData 
     const transactionMessage = useSelector(selectTransactionMessage)
 
     const handleInputChange = (e) => {

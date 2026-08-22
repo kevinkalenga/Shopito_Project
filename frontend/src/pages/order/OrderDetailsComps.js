@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrder } from '../../redux/features/order/orderSlice';
 import { Spinner } from '../../components/loader/Loader';
@@ -7,7 +7,7 @@ import html2canvas from "html2canvas"
 import jsPDF from "jspdf";
 
 const OrderDetailsComps = ({orderPageLink}) => {
-   const navigate = useNavigate();
+   
    const dispatch = useDispatch();
    const {id} = useParams()
    const pdfRef = useRef()

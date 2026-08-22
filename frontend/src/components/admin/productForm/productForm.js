@@ -5,7 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import UploadWidget from './UploadWidget';
 import {BsTrash} from "react-icons/bs"
-import {toast} from 'react-toastify'
+import {toast} from 'react-toastify';
 
 const ProductForm = ({saveProduct, 
   product, 
