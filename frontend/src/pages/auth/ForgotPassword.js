@@ -2,7 +2,7 @@ import styles from "./auth.module.scss";
 import Card from "../../components/card/Card";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { forgotPassword, RESET_AUTH } from "../../redux/features/auth/authSlice";
+import { forgotPassword } from "../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
 import Loader from "../../components/loader/Loader";
 

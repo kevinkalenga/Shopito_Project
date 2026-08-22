@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import Slider from '../../components/slider/Slider'
 import "./Home.scss"
 import HomeInfoBox from './HomeInfoBox'
-import { productData } from '../../components/carousel/data'
 import CarouselItem from '../../components/carousel/CarouselItem'
 import ProductCarousel from '../../components/carousel/Carousel'
 import ProductCategory from './ProductCategory'
