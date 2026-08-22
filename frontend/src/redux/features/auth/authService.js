@@ -22,8 +22,18 @@ const login = async (userData) => {
 };
 
 // Logout User
+// const logout = async () => {
+//   localStorage.removeItem("user");
+// };
+
 const logout = async () => {
+  const response = await axios.get(API_URL + "logout", {
+    
+  });
+
   localStorage.removeItem("user");
+
+  return response.data;
 };
 // Get login status
 const getLoginStatus = async () => {
