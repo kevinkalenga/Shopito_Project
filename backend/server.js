@@ -28,10 +28,11 @@ app.use(express.urlencoded({extended: false}));
 app.use(
   cors({
     origin: [
-      "http://localhost:3000",
+       "http://localhost:3000",
       "https://shopitoapp.vercel.app",
       "https://shopito-frontend-chi.vercel.app",
-      "https://shopito-frontend-bkqhikkra-kevin-kalengas-projects.vercel.app"
+      "https://shopito-frontend-bkqhikkra-kevin-kalengas-projects.vercel.app",
+      "https://shopito-frontend-ewldlngh7-kevin-kalengas-projects.vercel.app"
     ],
     credentials: true
   })
