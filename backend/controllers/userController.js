@@ -47,13 +47,20 @@ const registerUser = asyncHandler(async (req, res) => {
     // if user is created send the token to the frontend
     if(user) {
        const {_id, name, email, role} = user
-       res.cookie("token", token, {
-        path: "/",
-        httpOnly: true, 
-        expires: new Date(Date.now() + 1000 * 86400),
-        // secure: true,
-        // samesite: "none"
-       })
+          res.cookie("token", token, {
+            path: "/",
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 1000 * 86400
+          });
+      //  res.cookie("token", token, {
+      //   path: "/",
+      //   httpOnly: true, 
+      //   expires: new Date(Date.now() + 1000 * 86400),
+      //   // secure: true,
+      //   // samesite: "none"
+      //  })
        // Send user data to the frontend 
        res.status(201).json({
          _id, 
@@ -97,13 +104,20 @@ const loginUser = asyncHandler(async (req, res) => {
 
     if(user && passwordIsCorrect) {
       const newUser = await User.findOne({email}).select("-password")
-       res.cookie("token", token, {
-        path: "/",
-        httpOnly: true, 
-        expires: new Date(Date.now() + 1000 * 86400),
-        // secure: true,
-        // samesite: "none"
-       })
+        res.cookie("token", token, {
+          path: "/",
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          maxAge: 1000 * 86400
+        });
+      //  res.cookie("token", token, {
+      //   path: "/",
+      //   httpOnly: true, 
+      //   expires: new Date(Date.now() + 1000 * 86400),
+      //   // secure: true,
+      //   // samesite: "none"
+      //  })
        // Send user data to the frontend 
        res.status(200).json(
           newUser
@@ -117,12 +131,18 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 const logout = asyncHandler(async (req, res) => {
-  res.clearCookie("token", {
-    path: "/",
-    httpOnly: true,
-    // sameSite: "lax",
-    // secure: false
-  });
+    res.clearCookie("token", {
+      path: "/",
+      httpOnly: true,
+      secure: true,
+      sameSite: "none"
+    });
+  // res.clearCookie("token", {
+  //   path: "/",
+  //   httpOnly: true,
+  //   // sameSite: "lax",
+  //   // secure: false
+  // });
 
   res.status(200).json({ message: "Successfully Logged Out" });
 });
