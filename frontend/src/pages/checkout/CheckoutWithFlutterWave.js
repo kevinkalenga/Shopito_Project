@@ -2,13 +2,12 @@ import React from 'react'
 import styles from "../../components/checkout/checkoutForm/CheckoutForm.module.scss"
 import CheckoutSummary from '../../components/checkout/checkoutSummary/CheckoutSummary'
 import Card from '../../components/card/Card';
-import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCartTotalAmount, selectCartItems, } from '../../redux/features/cart/cartSlice';
+
+import { useSelector } from 'react-redux';
+import { selectCartItems, } from '../../redux/features/cart/cartSlice';
 
 import {
   selectShippingAddress,
-  selectPaymentMethod
 } from "../../redux/features/checkout/checkoutSlice";
 
 const CheckoutWithFlutterWave = () => {

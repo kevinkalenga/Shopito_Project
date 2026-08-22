@@ -238,15 +238,16 @@ const ProductDetails = () => {
   const slideInterval = useRef(null);
 
   useEffect(() => {
-    if(product?.image?.length > 1){
-       const auto = () => {
-        slideInterval.current = setInterval(nextSlide, 3000)
-       }
-       auto()
+    if (product?.image?.length > 1) {
+      slideInterval.current = setInterval(() => {
+        setImageIndex((prevIndex) =>
+          prevIndex === product.image.length - 1 ? 0 : prevIndex + 1
+        )
+      }, 3000)
     }
 
     return () => clearInterval(slideInterval.current)
-  }, [imageIndex, product])
+  }, [product])
 
   const addToCart = (product) => {
      dispatch(ADD_TO_CART(product))
@@ -294,7 +295,7 @@ const ProductDetails = () => {
                               <img
                                 key={index}
                                 src={img}
-                                alt='product image'
+                                alt={product?.name || "Product"}
                                 onClick={() => setImageIndex(index)}
                                 className={
                                   imageIndex === index

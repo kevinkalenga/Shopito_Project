@@ -23,26 +23,25 @@ const Slider = () => {
     const prevSlide = () => {
        setCurrentSlide(currentSlide === 0 ? slideLength - 1 : currentSlide - 1)
     }
-    const nextSlide = () => {
-      setCurrentSlide(currentSlide === slideLength - 1 ? 0 : currentSlide + 1)
-    }
+    // const nextSlide = () => {
+    //   setCurrentSlide(currentSlide === slideLength - 1 ? 0 : currentSlide + 1)
+    // }
   
-   useEffect(() => {
-    setCurrentSlide(0)
-   }, [])
-   
-   useEffect(() => {
-    if(autoScroll) {
-      const auto  = () => {
-        // slideInterval = setInterval(nextSlide, intervalTime)
-        slideInterval.current = setInterval(nextSlide, intervalTime)
-      }
-      auto()
-    }
+    useEffect(() => {
+      setCurrentSlide(0)
+    }, [])
 
-    // return () => clearInterval(slideInterval)
-    return () => clearInterval(slideInterval.current)
-   }, [currentSlide, intervalTime, autoScroll])
+    useEffect(() => {
+      if (autoScroll) {
+        slideInterval.current = setInterval(() => {
+          setCurrentSlide((prevSlide) =>
+            prevSlide === slideLength - 1 ? 0 : prevSlide + 1
+          )
+        }, intervalTime)
+      }
+
+      return () => clearInterval(slideInterval.current)
+    }, [slideLength, intervalTime, autoScroll])
   
     return (
     <div className='slider'>
