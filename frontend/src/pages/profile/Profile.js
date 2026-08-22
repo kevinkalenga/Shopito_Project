@@ -9,7 +9,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { toast } from 'react-toastify';
 import { shortenText } from '../../utils';
 
-const cloud_name = process.env.REACT_APP_CLOUD_NAME;
+//const cloud_name = process.env.REACT_APP_CLOUD_NAME;
 const upload_preset = process.env.REACT_APP_UPLOAD_PRESET;
  const url = "https://api.cloudinary.com/v1_1/dy4ouvvwn/image/upload"
 // const url = `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`;
