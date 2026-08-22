@@ -47,7 +47,7 @@ const OrderDetails = () => {
 
   return (
     <section style={{ height: "100vh" }}>
-      <OrderDetailsComps orderPageLink={"/order-history"} />
+      <OrderDetailsComps orderPageLink={"/order-history"}  downloadPdf={downloadPdf} pdfRef={pdfRef} />
     </section>
   );
 };
