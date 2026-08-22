@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Link, useSearchParams } from "react-router-dom"
 import Confetti from "react-confetti"
 import { useDispatch, useSelector } from "react-redux"
-import { CLEAR_CART, selectCartItems, selectCartTotalAmount } from '../../redux/features/cart/cartSlice'
+import { CLEAR_CART, selectCartItems } from '../../redux/features/cart/cartSlice'
 import { selectPaymentMethod, selectShippingAddress } from "../../redux/features/checkout/checkoutSlice"
 import { createOrder } from '../../redux/features/order/orderSlice'
 
@@ -57,7 +57,7 @@ const CheckoutSuccess = () => {
 
             saveOrder()
 
-      }, [transactionId, txRef])
+      }, [transactionId, txRef, transactionAmount, cartItems, shippingAddress, paymentMethod, coupon, dispatch])
 
    
 

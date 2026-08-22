@@ -24,7 +24,7 @@ const CheckoutPaypal = () => {
    const cartTotalAmount = useSelector(selectCartTotalAmount);
    const paymentMethod = useSelector(selectPaymentMethod);
    const shippingAddress = useSelector(selectShippingAddress);
-   const {user} = useSelector((state) => state.auth)
+   
    const { coupon } = useSelector((state) => state.coupon);
 
    const initialOptions = {

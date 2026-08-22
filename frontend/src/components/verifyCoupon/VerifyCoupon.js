@@ -30,7 +30,7 @@ const VerifyCoupon = () => {
   const [showForm, setShowForm] = useState(false);
   const {coupon} = useSelector((state) => state.coupon)
 
-  const {cartTotalAmount, initialCartTotalAmount} = useSelector((state) => state.cart)
+  // const {cartTotalAmount, initialCartTotalAmount} = useSelector((state) => state.cart)
 
   const verifyCoupon = (e) => {
     e.preventDefault()

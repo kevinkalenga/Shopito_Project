@@ -13,14 +13,14 @@ import {
 
 const CheckoutWithFlutterWave = () => {
 
-   const navigate = useNavigate();
-   const dispatch = useDispatch();
+  //  const navigate = useNavigate();
+  //  const dispatch = useDispatch();
    
    const cartItems = useSelector(selectCartItems);
-   const cartTotalAmount = useSelector(selectCartTotalAmount);
-   const paymentMethod = useSelector(selectPaymentMethod);
+  //  const cartTotalAmount = useSelector(selectCartTotalAmount);
+  //  const paymentMethod = useSelector(selectPaymentMethod);
    const shippingAddress = useSelector(selectShippingAddress);
-   const {user} = useSelector((state) => state.auth)
+  //  const {user} = useSelector((state) => state.auth)
    const { coupon } = useSelector((state) => state.coupon);
   
   //  function makePayment() {

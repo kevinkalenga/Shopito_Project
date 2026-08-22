@@ -1,6 +1,6 @@
 import styles from "./auth.module.scss";
 import Card from "../../components/card/Card";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPassword } from "../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
@@ -11,7 +11,7 @@ const ForgotPassword = () => {
 
   const dispatch = useDispatch();
 
-  const { isLoading, isSuccess, isError } = useSelector(
+  const { isLoading, isSuccess} = useSelector(
     (state) => state.auth
   );
 
@@ -22,7 +22,7 @@ const ForgotPassword = () => {
       return toast.error("Email is required");
     }
 
-    dispatch(forgotPassword(email)) .unwrap()
+    dispatch(forgotPassword(email)).unwrap()
     .then(() => {
       setEmail(""); 
      
