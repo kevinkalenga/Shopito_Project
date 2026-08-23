@@ -553,28 +553,9 @@ const flutterwaveResponse = asyncHandler(async (req, res) => {
 });
 
 
-
-
-
-
-
-// const testEmail = asyncHandler(async (req, res) => {
-
-//   const info = await sendEmail(
-//     "nathanaelkalenga2@gmail.com",
-//     "TEST SHOPITO",
-//     "Ceci est un test d'envoi depuis Shopito.",
-//     null
-//   );
-
-//   res.status(200).json({
-//     message: "Email envoyé",
-//     messageId: info.messageId,
-//     accepted: info.accepted,
-//     rejected: info.rejected,
-//   });
-// });
-
+const payWithWallet = asyncHandler(async (req, res) => {
+  res.send("payWithWallet")
+})
 
 
 module.exports = {
@@ -585,5 +566,6 @@ module.exports = {
   payWithStripe,
   payWithFlutterwave,
   flutterwaveResponse,
+  payWithWallet
   
 }

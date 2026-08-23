@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import Loader from '../../loader/Loader';
 import {useNavigate} from 'react-router-dom';
-import ProductForm from '../productForm/productForm';
+import ProductForm from '../productForm/ProductForm';
+//import ProductForm from '../productForm/productForm';
 import "./AddProduct.scss";
 import { getCategories, getBrands } from '../../../redux/features/categoryAndbrand/categoryAndbrandSlice';
 import { createProduct } from '../../../redux/features/product/productSlice';

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {createOrder, getOrders, getOrder, updateOrderStatus, payWithStripe,  payWithFlutterwave, flutterwaveResponse} = require("../controllers/orderController");
+const {createOrder, getOrders, getOrder, updateOrderStatus, payWithStripe,  payWithFlutterwave, flutterwaveResponse, payWithWallet} = require("../controllers/orderController");
 const {protect, adminOnly} = require("../middleware/authMiddleware")
 
 
@@ -12,6 +12,7 @@ router.get("/getOrders", protect, getOrders);
 
 
 router.post("/create-payment-intent", payWithStripe);
+router.post("/payWithWallet", payWithWallet);
 router.post("/create-flutterwave-payment", protect, payWithFlutterwave);
 
 router.get("/flutterwave-response", flutterwaveResponse);
