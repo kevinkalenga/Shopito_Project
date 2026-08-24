@@ -5,6 +5,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const CREATE_ORDER_URL = `${BACKEND_URL}/api/order/createOrder`;
 const GET_ORDERS_URL = `${BACKEND_URL}/api/order/getOrders`;
+const PAY_WITH_WALLET_URL =`${BACKEND_URL}/api/order/pay-with-wallet`;
 
 
 
@@ -40,6 +41,16 @@ const updateOrderStatus = async (id, formData) => {
   return response.data;
 };
 
+// Pay with wallter 
+const payWithWallet = async (formData) => {
+  const response = await axios.post(
+    PAY_WITH_WALLET_URL,
+    formData
+  );
+
+  return response.data;
+};
+
 
 
 const orderService = {
@@ -47,6 +58,7 @@ const orderService = {
    getOrders,
    getOrder,
    updateOrderStatus,
+   payWithWallet
 }
 
 export default orderService;

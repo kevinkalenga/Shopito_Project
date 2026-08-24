@@ -12,7 +12,7 @@ router.get("/getOrders", protect, getOrders);
 
 
 router.post("/create-payment-intent", payWithStripe);
-router.post("/payWithWallet", protect, payWithWallet);
+router.post("/pay-with-wallet", protect, payWithWallet);
 router.post("/create-flutterwave-payment", protect, payWithFlutterwave);
 
 router.get("/flutterwave-response", flutterwaveResponse);

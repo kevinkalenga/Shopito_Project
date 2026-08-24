@@ -13,7 +13,7 @@ const initialState = {
 }
 
 
-// Create coupon 
+// Create order 
 export const createOrder = createAsyncThunk(
   "orders/createOrder",
 
@@ -32,6 +32,29 @@ export const createOrder = createAsyncThunk(
     
   }
 )
+
+// Pay with Wallet
+export const payWithWallet = createAsyncThunk(
+  "orders/payWithWallet",
+
+  async (formData, thunkAPI) => {
+    try {
+
+      return await orderService.payWithWallet(formData);
+
+    } catch (error) {
+
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 // Get all orders 
 export const getOrders = createAsyncThunk(
@@ -122,7 +145,49 @@ const orderSlice = createSlice({
             state.message = action.payload;
             toast.error(action.payload);
           })
-            // Get orders
+          
+           // =========================================
+          // PAY WITH WALLET
+          // =========================================
+
+          .addCase(payWithWallet.pending, (state) => {
+
+            state.isLoading = true;
+            state.isError = false;
+            state.isSuccess = false;
+            state.message = "";
+
+          })
+
+          .addCase(payWithWallet.fulfilled, (state, action) => {
+
+            state.isLoading = false;
+            state.isSuccess = true;
+            state.isError = false;
+
+            state.order = action.payload.order;
+
+            state.orders.push(action.payload.order);
+
+            state.message = action.payload.message;
+
+          })
+
+          .addCase(payWithWallet.rejected, (state, action) => {
+
+            state.isLoading = false;
+            state.isError = true;
+            state.isSuccess = false;
+
+            state.message = action.payload;
+
+            toast.error(action.payload);
+
+          })
+              
+              
+          
+          // Get orders
           .addCase(getOrders.pending, (state) => {
               state.isLoading = true;
           })

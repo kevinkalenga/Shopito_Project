@@ -22,6 +22,63 @@ const calculateTotalPrice = (products, cartItems) => {
     return totalPrice * 100;
 }
 
+// const calculateWalletTotalPrice = (products, cartItems) => {
+//   let totalPrice = 0;
+
+//   cartItems.forEach(function (cartItem) {
+
+//     const product = products.find(function (product) {
+//       return product._id?.toString() === cartItem._id;
+//     });
+
+//     if (product) {
+
+//       const quantity =
+//         cartItem.quantity ?? cartItem.cartQuantity;
+
+//       const price = parseFloat(product.price);
+
+//       totalPrice += quantity * price;
+//     }
+//   });
+
+//   return totalPrice;
+// };
+
+
+const calculateWalletTotalPrice = (products, cartItems) => {
+  let totalPrice = 0;
+
+  cartItems.forEach((cartItem) => {
+
+    const product = products.find((product) => {
+      return product._id?.toString() === cartItem._id;
+    });
+
+    if (product) {
+
+      const quantity =
+        cartItem.quantity ?? cartItem.cartQuantity;
+
+      const price = parseFloat(product.price);
+
+      console.log("WALLET ITEM:", {
+        product: product._id,
+        name: product.name,
+        price,
+        quantity,
+        subtotal: price * quantity
+      });
+
+      totalPrice += price * quantity;
+    }
+  });
+
+  console.log("WALLET TOTAL:", totalPrice);
+
+  return totalPrice;
+};
+
 const updateProductQuantity = async (cartItems) => {
   let bulkOption = cartItems.map((product) => {
      return {
@@ -66,5 +123,6 @@ module.exports = {
     calculateTotalPrice,
     updateProductQuantity,
     calculateFlutterwaveTotalPrice,
-    stripe
+    stripe,
+    calculateWalletTotalPrice
 }
