@@ -27,6 +27,7 @@ import OrderDetails from "./pages/order/OrderDetails";
 import CheckoutWithFlutterWave from "./pages/checkout/CheckoutWithFlutterWave";
 import CheckoutPaypal from "./pages/checkout/CheckoutPaypal";
 import Wallet from "./pages/wallet/Wallet";
+import CheckoutWallet from "./pages/checkout/CheckoutWallet";
 
 
 const App = () => {
@@ -72,6 +73,7 @@ const App = () => {
                 <Route path="/checkout-stripe" element={<Checkout />} />
                 <Route path="/checkout-flutterwave" element={<CheckoutWithFlutterWave />} />
                 <Route path="/checkout-paypal" element={<CheckoutPaypal />} />
+                <Route path="/checkout-wallet" element={<CheckoutWallet />} />
                 <Route path="/wallet" element={<Wallet />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
