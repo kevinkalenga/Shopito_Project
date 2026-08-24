@@ -402,7 +402,14 @@ const  getCart = asyncHandler(async (req, res) => {
 
 // addToWishlist 
 const addToWishlist = asyncHandler(async (req, res) => {
-  res.send("addToWishlist")
+     const {productId} = req.body 
+
+     await User.findOneAndUpdate(
+      { email: req.user.email },
+      {$addToSet: {wishlist: productId}}
+     )
+
+     res.status(200).json({message: "Product has been added to the wishlist"});
 })
 
 // getWishlist 
