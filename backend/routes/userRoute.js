@@ -14,7 +14,7 @@ const {
     getUsers,
     updateUserByAdmin, 
     deleteUser, 
-    saveCart, getCart} = require("../controllers/userController");
+    saveCart, getCart, addToWishlist, getWishlist, removeFromWishlist} = require("../controllers/userController");
 const {protect, adminOnly} = require("../middleware/authMiddleware")
 
 
@@ -36,6 +36,11 @@ router.post("/reset-password/:token", resetPassword);
 // Cart
 router.get("/getCart", protect, getCart);
 router.patch("/saveCart", protect, saveCart);
+
+// wishlist
+router.get("/addToWishlist", protect, addToWishlist);
+router.get("/getWishlist", protect, getWishlist);
+router.put("/wishlist/:productId", protect, removeFromWishlist);
 
 // Admin
 router.get("/", protect, adminOnly, getUsers);

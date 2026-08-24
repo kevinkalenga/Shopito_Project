@@ -400,6 +400,21 @@ const  getCart = asyncHandler(async (req, res) => {
       res.status(200).json(user.cartItems || []);
 })
 
+// addToWishlist 
+const addToWishlist = asyncHandler(async (req, res) => {
+  res.send("addToWishlist")
+})
+
+// getWishlist 
+const getWishlist = asyncHandler(async (req, res) => {
+  res.send("getWishlist")
+})
+
+// removeFromWishlist 
+const removeFromWishlist = asyncHandler(async (req, res) => {
+  res.send("removeFromWishlist")
+})
+
 
 
 
@@ -420,5 +435,8 @@ module.exports = {
     updateUserByAdmin,
     deleteUser,
     saveCart,
-    getCart
+    getCart,
+    addToWishlist,
+    getWishlist,
+    removeFromWishlist
 }
