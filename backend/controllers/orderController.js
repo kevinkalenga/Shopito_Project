@@ -7,6 +7,7 @@ const User = require("../models/userModel");
 const sendEmail = require("../utils/sendEmail");
 const { orderSuccessEmail } = require("../emailTemplate/orderTemplate");
 const axios = require("axios");
+const Transaction = require("../models/transactionModel");
 
 // const createOrder = asyncHandler(async (req, res) => { 
 //   // coming from the frontend
@@ -553,9 +554,233 @@ const flutterwaveResponse = asyncHandler(async (req, res) => {
 });
 
 
+// const payWithWallet = asyncHandler(async (req, res) => {
+//   const user = await User.findById(req.user._id);
+//   const {items, cartItems, shippingAddress, coupon} = req.body;
+
+//      const products = await Product.find()
+
+//      const today = new Date();
+
+//      let orderAmount;
+//      orderAmount = calculateTotalPrice(products, items)
+//      if(coupon !== null && coupon?.name !== "nil") {
+//       let totalAfterDicount = orderAmount - (orderAmount * coupon.discount) / 100 
+//       orderAmount = totalAfterDicount;
+//      }
+
+//     //  check users wallet balance
+//     if(user.balance < orderAmount) {
+//       res.status(400)
+//       throw new Error("Insufficient balance")
+//     }
+
+//     // create transaction
+//     const newTransaction = await Transaction.create({
+//         amount: orderAmount,
+//         sender: user.email,
+//         receiver: "Shopito Store",
+//         description: "Payment for products",
+//         status: "success"
+//     })
+
+//     // decrease senders wallet balance 
+//     const newBalance = await User.findOneAndUpdate(
+//       {email: user.email},
+//       {
+//         $inc: {balance: -orderAmount},
+//       }
+//     )
+    
+//     // Create order
+
+//     const newOrder = await Order.create({
+//       user: user._id,
+//       orderDate: today.toDateString(),
+//       orderTime: today.toLocaleTimeString(),
+//       orderAmount,
+//       orderStatus: "Order Placed...",
+//       cartItems,
+//       shippingAddress,
+//       paymentMethod: "Shopito Wallet",
+//       coupon
+//     })
+
+//     // Update product quantity 
+//     await updateProductQuantity(cartItems);
+
+//     try {
+
+//         const emailTemplate = orderSuccessEmail(
+//           user.name,
+//           cartItems
+//         );
+
+//       await sendEmail(
+//           user.email,
+//           "Order Confirmation - Shopito",
+//           `Hello ${user.name},
+
+//         Your order has been successfully created.
+
+//         Amount : ${orderAmount} $
+
+//         Thank you for choosing Shopito!`
+//         );
+
+//         console.log("ORDER EMAIL SENT SUCCESSFULLY");
+
+//       } catch (error) {
+
+//         console.error(
+//           "ORDER EMAIL ERROR:",
+//           error.message
+//         );
+
+//         // L'email ne doit pas empêcher
+//         // la commande d'être créée.
+//       }
+
+//       if(newTransaction && newBalance && newOrder) {
+//         return res.status(200).json({
+//           message: "Payment success",
+//           url: `${process.env.FRONTEND_URL}/checkout-success`
+//         })
+//       }
+
+
+//       res.status(200).json({
+//           message: "Something went wrong, please contact the admin",
+          
+//         })
+
+    
+  
+
+// })
+
+
 const payWithWallet = asyncHandler(async (req, res) => {
-  res.send("payWithWallet")
-})
+      const user = await User.findById(req.user._id);
+
+      if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+      }
+
+      const {
+        items,
+        cartItems,
+        shippingAddress,
+        coupon
+      } = req.body;
+
+      const products = await Product.find();
+
+      const today = new Date();
+
+      // Calculate order amount
+      let orderAmount = calculateTotalPrice(products, items);
+
+      // Apply coupon
+      if (coupon && coupon.name !== "nil") {
+        orderAmount =
+          orderAmount -
+          (orderAmount * coupon.discount) / 100;
+      }
+
+      // Make sure amount is valid
+      orderAmount = Number(orderAmount.toFixed(2));
+
+      if (orderAmount < 0) {
+        res.status(400);
+        throw new Error("Invalid order amount");
+      }
+
+      // Check and decrease wallet balance atomically
+      const newBalance = await User.findOneAndUpdate(
+        {
+          _id: user._id,
+          balance: { $gte: orderAmount }
+        },
+        {
+          $inc: {
+            balance: -orderAmount
+          }
+        },
+        {
+          new: true
+        }
+      );
+
+      if (!newBalance) {
+        res.status(400);
+        throw new Error("Insufficient balance");
+      }
+
+      // Create transaction
+      const newTransaction = await Transaction.create({
+        amount: orderAmount,
+        sender: user.email,
+        receiver: "Shopito Store",
+        description: "Payment for products",
+        status: "success"
+      });
+
+      // Create order
+      const newOrder = await Order.create({
+        user: user._id,
+        orderDate: today.toDateString(),
+        orderTime: today.toLocaleTimeString(),
+        orderAmount,
+        orderStatus: "Order Placed...",
+        cartItems,
+        shippingAddress,
+        paymentMethod: "Shopito Wallet",
+        coupon: coupon || null
+      });
+
+      // Update product quantity
+      await updateProductQuantity(cartItems);
+
+      // Send confirmation email
+      try {
+        await sendEmail(
+          user.email,
+          "Order Confirmation - Shopito",
+          `Hello ${user.name},
+
+    Your order has been successfully created.
+
+    Amount: ${orderAmount} $
+
+    Payment method: Shopito Wallet
+
+    Thank you for choosing Shopito!`
+        );
+
+        console.log("ORDER EMAIL SENT SUCCESSFULLY");
+
+      } catch (error) {
+        console.error(
+          "ORDER EMAIL ERROR:",
+          error.message
+        );
+
+        // Email error does not cancel the order
+      }
+
+      // Response
+      return res.status(200).json({
+        message: "Payment success",
+        order: newOrder,
+        transaction: newTransaction,
+        walletBalance: newBalance.balance,
+        url: `${process.env.FRONTEND_URL}/checkout-success`
+      });
+});
+
+
 
 
 module.exports = {
