@@ -401,21 +401,34 @@ const  getCart = asyncHandler(async (req, res) => {
 })
 
 // addToWishlist 
+
 const addToWishlist = asyncHandler(async (req, res) => {
      const {productId} = req.body 
+     
 
-     await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { email: req.user.email },
-      {$addToSet: {wishlist: productId}}
+      {$addToSet: {wishlist: productId}},
+       { new: true }
      )
 
-     res.status(200).json({message: "Product has been added to the wishlist"});
+      
+
+     res.status(200).json({message: "Product has been added to the wishlist",
+          wishlist: user.wishlist
+     });
 })
 
 // getWishlist 
 const getWishlist = asyncHandler(async (req, res) => {
-  res.send("getWishlist")
+  const list = await User.findOne({email: req.user.email})
+  .select("wishlist")
+  .populate("wishlist")
+
+   res.status(200).json(list);
 })
+
+
 
 // removeFromWishlist 
 const removeFromWishlist = asyncHandler(async (req, res) => {
