@@ -401,8 +401,10 @@ const authSlice = createSlice({
     .addCase(removeFromWishlist.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true
-      state.message = action.payload; 
-      toast.success(action.payload)
+      state.message = action.payload.message; 
+      state.wishlist = action.payload.wishlist;
+
+      toast.success(action.payload.message);
      
     })
 

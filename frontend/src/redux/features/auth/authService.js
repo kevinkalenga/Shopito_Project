@@ -75,7 +75,7 @@ const updatePhoto = async (userData) => {
 // Add to wishlist
 const addToWishlist = async (productData) => {
     const response = await axios.post(API_URL + "addToWishlist", productData);
-     return response.data.message;
+     return response.data;
 };
 // get wishlist
 const getWishlist = async () => {
@@ -85,7 +85,7 @@ const getWishlist = async () => {
 // remove wishlist
 const removeFromWishlist = async (productId) => {
     const response = await axios.put(API_URL + `wishlist/${productId}`);
-     return response.data.message;
+     return response.data;
 };
 
 const authService = {
