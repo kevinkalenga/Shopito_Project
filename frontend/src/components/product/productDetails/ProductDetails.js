@@ -209,6 +209,7 @@ import DOMPurify from "dompurify"
 import Card from '../../card/Card'
 import { ADD_TO_CART, selectCartItems, DECREASE_CART, saveCartDB} from '../../../redux/features/cart/cartSlice'
 import { addToWishlist } from "../../../redux/features/auth/authSlice";
+import StarRating from "react-star-ratings";
 
 
 const ProductDetails = () => {
@@ -459,11 +460,54 @@ const ProductDetails = () => {
             )
            }
 
-           {/* Review Section */}
+             {/* Review section */}
+        <Card cardClass={styles.card}>
+          <h3>Product Reviews???</h3>
+          <ProductRating
+                  averageRating={averageRating}
+                  noOfRatings={product?.ratings?.length}
+                />
+                <div className="--underline"></div>
+                <div className={styles.ratings}>
+                  {product !== null && product?.ratings?.length > 0 && (
+                    <p>Product Rating Summary</p>
+                  )}
 
-           <Card cardClass={styles.card}>
-              <h3>Product Review</h3>
-           </Card>
+                  <div className="--m">
+                    {product?.ratings?.length === 0 ? (
+                      <p>There are no reviews for this product yet.</p>
+                    ) : (
+                      <>
+                        {product?.ratings?.map((item, index) => {
+                          const {star, review, reviewDate, name,} = item
+                          return (
+                            <div key={index} className={styles.review}>
+                                <StarRating
+                        starDimension="20px"
+                        starSpacing="2px"
+                        starRatedColor="#F6B01E"
+                        // starHoverColor="#F6B01E"
+                        rating={star}
+                        // changeRating={changeStar}
+                        editing={false}
+                        // isSelectable={true}
+                      />
+                      <p>{review}</p>
+                      <span>
+                        <b>{reviewDate}</b>
+                      </span>
+                      <br />
+                      <span>
+                        <b>By: {name}</b>
+                      </span>
+                            </div>
+                          )
+                        })}
+                      </>
+                    )}
+                  </div>
+                </div>
+        </Card>
 
         </div>
     </section>

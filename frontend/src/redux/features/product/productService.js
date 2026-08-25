@@ -44,7 +44,7 @@ const reviewProduct = async (id, formData) => {
 };
 // Delete Review
 const deleteReview = async (id, formData) => {
-  const response = await axios.delete(`${PRODUCTS_URL}/deleteReview/${id}`);
+  const response = await axios.delete(`${PRODUCTS_URL}/deleteReview/${id}`, {data:formData});
    return response.data.message;
 };
 // Delete Review

@@ -28,7 +28,7 @@ const ReviewProduct = () => {
 
   useEffect(() => {
     dispatch(getProduct(id));
-  }, [dispatch]);
+  }, [dispatch, id]);
   // console.log(product)
 
   const changeStar = (newRating, name) => {
@@ -55,12 +55,21 @@ const ReviewProduct = () => {
     navigate(-1);
   };
 
-  useEffect(() => {
-    const reviewed = product?.ratings.filter((rev) => {
-      return rev.userID === user?._id;
-    });
-    setUserReview(reviewed);
-  }, [product, user]);
+    // useEffect(() => {
+    //   const reviewed = product?.ratings?.filter(
+    //     (rev) => rev.user === user?._id
+    //   );
+
+    //   setUserReview(reviewed || []);
+    // }, [product, user]);
+
+    useEffect(() => {
+      if (product?.ratings && user?._id) {
+        setUserReview(product.ratings);
+      } else {
+        setUserReview([]);
+      }
+    }, [product, user]);
 
   const delReview = async () => {
     const formData = {
@@ -90,7 +99,7 @@ const ReviewProduct = () => {
       star: rate,
       review,
       reviewDate: date,
-      userID: userReview[0].userID
+      userID: userReview[0].user
     };
     // console.log(formData)
     dispatch(updateReview({ id, formData }));
