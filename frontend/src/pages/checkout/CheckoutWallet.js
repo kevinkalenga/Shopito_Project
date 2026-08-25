@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { selectUser } from "../../redux/features/auth/authSlice";
+// import { selectUser } from "../../redux/features/auth/authSlice";
+
+import {
+  selectShippingAddress,
+} from "../../redux/features/checkout/checkoutSlice";
 
 import {
   selectCartItems,
@@ -12,10 +16,10 @@ import {
   CLEAR_CART,
 } from "../../redux/features/cart/cartSlice";
 
-import {
-  selectPaymentMethod,
-  selectShippingAddress,
-} from "../../redux/features/checkout/checkoutSlice";
+// import {
+//   selectPaymentMethod,
+//   selectShippingAddress,
+// } from "../../redux/features/checkout/checkoutSlice";
 
 import {
   payWithWallet,
@@ -49,9 +53,9 @@ const CheckoutWallet = () => {
     selectShippingAddress
   );
 
-  const paymentMethod = useSelector(
-    selectPaymentMethod
-  );
+  // const paymentMethod = useSelector(
+  //   selectPaymentMethod
+  // );
 
   const { coupon } = useSelector(
     (state) => state.coupon

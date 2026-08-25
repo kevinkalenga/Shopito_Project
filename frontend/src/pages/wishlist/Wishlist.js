@@ -6,7 +6,7 @@ import ProductItem from '../../components/product/productItem/ProductItem';
 import { getWishlist, removeFromWishlist } from '../../redux/features/auth/authSlice';
 
 const Wishlist = () => {
-    const [grid, setGrid] = useState(true);
+    const [grid] = useState(true);
     const dispatch = useDispatch();
   const { wishlist} = useSelector((state) => state.auth);
 
