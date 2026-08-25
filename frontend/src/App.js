@@ -29,6 +29,7 @@ import CheckoutPaypal from "./pages/checkout/CheckoutPaypal";
 import Wallet from "./pages/wallet/Wallet";
 import CheckoutWallet from "./pages/checkout/CheckoutWallet";
 import Wishlist from "./pages/wishlist/Wishlist";
+import ReviewProduct from "./pages/reviewProduct/ReviewProduct";
 
 
 const App = () => {
@@ -77,6 +78,7 @@ const App = () => {
                 <Route path="/checkout-wallet" element={<CheckoutWallet />} />
                 <Route path="/wallet" element={<Wallet />} />
                 <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/review-product/:id" element={<ReviewProduct />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
                  <Route path="/admin/*" element={
