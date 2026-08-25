@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProduct, updateProduct } from '../../../redux/features/product/productSlice';
 import { getCategories, getBrands } from '../../../redux/features/categoryAndbrand/categoryAndbrandSlice';
 import { toast } from 'react-toastify';
-import ProductForm from '../productForm/ProductForm';
-//import ProductForm from '../productForm/productForm';
+// import ProductForm from '../productForm/ProductForm';
+import ProductForm from '../productForm/productForm';
 import Loader from '../../loader/Loader';
 
 const EditProduct = () => {
