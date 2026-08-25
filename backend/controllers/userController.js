@@ -431,6 +431,26 @@ const getWishlist = asyncHandler(async (req, res) => {
 
 
 // removeFromWishlist 
+// const removeFromWishlist = asyncHandler(async (req, res) => {
+//   const { productId } = req.params;
+
+//   const user = await User.findOneAndUpdate(
+//     { email: req.user.email },
+//     { $pull: { wishlist: productId } },
+//     { new: true }
+//   );
+
+//   if (!user) {
+//     res.status(404);
+//     throw new Error("User not found");
+//   }
+
+//   res.status(200).json({
+//     message: "Product has been removed from the wishlist",
+//     wishlist: user.wishlist
+//   });
+// });
+
 const removeFromWishlist = asyncHandler(async (req, res) => {
   const { productId } = req.params;
 
@@ -438,7 +458,7 @@ const removeFromWishlist = asyncHandler(async (req, res) => {
     { email: req.user.email },
     { $pull: { wishlist: productId } },
     { new: true }
-  );
+  ).populate("wishlist");
 
   if (!user) {
     res.status(404);
