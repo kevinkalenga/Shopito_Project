@@ -25,15 +25,12 @@ app.use("/api/flutterwave", flutterwaveRoute);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-// app.use(cors({
-//   origin: true,
-//   credentials: true
-// }));
-
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: true,
   credentials: true
 }));
+
+
 // Routes 
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
