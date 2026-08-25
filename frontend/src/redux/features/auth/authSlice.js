@@ -363,10 +363,13 @@ const authSlice = createSlice({
     })
 
     .addCase(addToWishlist.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true
-      state.message = action.payload; 
-       toast.success(action.payload);
+       state.isLoading = false;
+      state.isSuccess = true;
+
+      state.message = action.payload.message;
+      state.wishlist = action.payload.wishlist;
+
+      toast.success(action.payload.message);
     })
 
     .addCase(addToWishlist.rejected, (state, action) => {
