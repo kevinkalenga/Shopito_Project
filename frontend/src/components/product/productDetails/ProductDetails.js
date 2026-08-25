@@ -208,6 +208,7 @@ import { toast } from 'react-toastify'
 import DOMPurify from "dompurify"
 import Card from '../../card/Card'
 import { ADD_TO_CART, selectCartItems, DECREASE_CART, saveCartDB} from '../../../redux/features/cart/cartSlice'
+import { addToWishlist } from "../../../redux/features/auth/authSlice";
 
 
 const ProductDetails = () => {
@@ -263,7 +264,12 @@ const ProductDetails = () => {
      }))
   }
   
-  
+    const addWishlist = async (product) => {
+      const productData = {
+        productId: product._id
+      }
+      dispatch(addToWishlist(productData))
+    };
   
   return (
     <section>
@@ -430,7 +436,7 @@ const ProductDetails = () => {
                            )
                          }
 
-                         <button className="--btn --btn-danger">
+                         <button className="--btn --btn-danger" onClick={() => addWishlist(product)}>
                            ADD TO WISHLIST
                          </button>
 
