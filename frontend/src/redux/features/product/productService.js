@@ -30,12 +30,27 @@ const deleteProduct = async (id) => {
 // Get Product
 const getProduct = async (id) => {
   const response = await axios.get(`${PRODUCTS_URL}/${id}`);
-   return response.data;;
+   return response.data;
 };
 // Update Product
 const updateProduct = async (id, formData) => {
   const response = await axios.patch(`${PRODUCTS_URL}/${id}`, formData);
-   return response.data;;
+   return response.data;
+};
+// Review Product
+const reviewProduct = async (id, formData) => {
+  const response = await axios.patch(PRODUCTS_URL + `review/${id}`, formData);
+   return response.data.message;
+};
+// Delete Review
+const deleteReview = async (id, formData) => {
+  const response = await axios.patch(PRODUCTS_URL + `deleteReview/${id}`, formData);
+   return response.data.message;
+};
+// Delete Review
+const updateReview = async (id, formData) => {
+  const response = await axios.patch(PRODUCTS_URL + `updateReview/${id}`, formData);
+   return response.data.message;
 };
 
 const productService = {
@@ -43,7 +58,10 @@ const productService = {
     getProducts,
     deleteProduct,
     getProduct,
-    updateProduct
+    updateProduct,
+    reviewProduct,
+    deleteReview,
+    updateReview
 
 }
 
