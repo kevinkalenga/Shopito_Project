@@ -24,3 +24,5 @@ const ProductRating = ({averageRating, noOfRatings}) => {
 }
 
 export default ProductRating
+
+
