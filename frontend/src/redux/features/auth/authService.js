@@ -72,6 +72,22 @@ const updatePhoto = async (userData) => {
      return response.data;
 };
 
+// Add to wishlist
+const addToWishlist = async (productData) => {
+    const response = await axios.post(API_URL + "addToWishlist", productData);
+     return response.data.message;
+};
+// get wishlist
+const getWishlist = async () => {
+    const response = await axios.get(API_URL + "getWishlist");
+     return response.data;
+};
+// remove wishlist
+const removeFromWishlist = async (productId) => {
+    const response = await axios.put(API_URL + `wishlist/${productId}`);
+     return response.data.message;
+};
+
 const authService = {
     register,
     login,
@@ -81,7 +97,10 @@ const authService = {
     getLoginStatus,
     getUser,
     updateUser,
-    updatePhoto
+    updatePhoto,
+    addToWishlist,
+    getWishlist,
+    removeFromWishlist
 }
 
 export default authService
