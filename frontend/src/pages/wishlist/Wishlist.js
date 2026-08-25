@@ -4,6 +4,7 @@ import PageMenu from '../../components/pageMenu/PageMenu'
 import { useDispatch, useSelector } from "react-redux";
 import ProductItem from '../../components/product/productItem/ProductItem';
 import { getWishlist, removeFromWishlist } from '../../redux/features/auth/authSlice';
+// import { getWishlist, removeFromWishlist } from '../../redux/features/auth/authSlice';
 
 const Wishlist = () => {
     const [grid] = useState(true);
@@ -11,11 +12,15 @@ const Wishlist = () => {
   const { wishlist} = useSelector((state) => state.auth);
 
   const removeWishlist = async (product) => {
-    console.log(product._id);
-    const productId = product._id
-    await dispatch(removeFromWishlist(productId))
-    await dispatch(getWishlist())
-  };
+      await dispatch(removeFromWishlist(product._id));
+   };
+
+  // const removeWishlist = async (product) => {
+  //   console.log(product._id);
+  //   const productId = product._id
+  //   await dispatch(removeFromWishlist(productId))
+  //   await dispatch(getWishlist())
+  // };
 
   useEffect(() => {
     dispatch(getWishlist())
@@ -35,7 +40,25 @@ const Wishlist = () => {
                <p>No product found in your wishlist.</p>    
              ) : (
                 <>
-                    {wishlist.map((product) => {
+                  {wishlist
+                    .filter((product) => product && product._id)
+                    .map((product) => (
+                      <div key={product._id}>
+                        <ProductItem
+                          {...product}
+                          grid={grid}
+                          product={product}
+                        />
+
+                        <button
+                          className="--btn -btn-primary --btn-block"
+                          onClick={() => removeWishlist(product)}
+                        >
+                          Remove From Wishlist
+                        </button>
+                      </div>
+                  ))}
+                    {/* {wishlist.map((product) => {
                         return (
                             <div key={product._id}>
                             <ProductItem {...product} grid={grid} product={product} />
@@ -46,7 +69,7 @@ const Wishlist = () => {
                             </button>
                           </div>
                         )
-                    })}
+                    })} */}
                 </>
              )}   
           </div>
